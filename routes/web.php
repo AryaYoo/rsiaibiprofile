@@ -21,4 +21,8 @@ Route::prefix('company-profile')->group(function () {
     Route::get('/kontak', function () {
         return view('compro.kontak');
     })->name('compro.kontak');
+
+    Route::get('/under-development', function () {
+        return view('compro.under-development');
+    })->name('compro.under-development');
 });

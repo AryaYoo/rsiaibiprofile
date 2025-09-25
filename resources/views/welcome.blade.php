@@ -87,42 +87,42 @@
                         <img src="{{ asset('images/1.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                     </div>
                     <h3>Layanan Gawat Darurat</h3>
-                    <p>Pemeriksaan kehamilan, konsultasi dokter spesialis, dan layanan persalinan modern.</p>
+                    <p>Tindakan medis cepat dan tepat untuk kondisi darurat ibu dan anak dengan tenaga medis berpengalaman.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <img src="{{ asset('images/2.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                     </div>
                     <h3>Layanan Rawat Inap</h3>
-                    <p>Perawatan anak, imunisasi lengkap, dan konsultasi kesehatan anak secara profesional.</p>
+                    <p>Fasilitas rawat inap yang nyaman dengan perawatan intensif oleh dokter dan perawat profesional</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <img src="{{ asset('images/4.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                     </div>
                     <h3>Layanan Perawatan Khusus</h3>
-                    <p>Layanan kesehatan gigi untuk anak dan ibu, termasuk perawatan preventif dan estetika.</p>
+                    <p>Perawatan kesehatan khusus sesuai kebutuhan pasien.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <img src="{{ asset('images/6.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                     </div>
                     <h3>Layanan Poli Rawat Jalan</h3>
-                    <p>Tes laboratorium lengkap dan cepat dengan hasil akurat untuk diagnosis tepat.</p>
+                    <p>Konsultasi dan pemeriksaan kesehatan rutin bersama dokter spesialis tanpa perlu rawat inap.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <img src="{{ asset('images/7.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                     </div>
                     <h3>Layanan Laboratorium</h3>
-                    <p>Penyediaan obat dan konsultasi penggunaan obat secara aman dan terpercaya.</p>
+                    <p>Pemeriksaan laboratorium lengkap dengan hasil akurat untuk mendukung diagnosis dan pengobatan.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <img src="{{ asset('images/8.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                     </div>
                     <h3>Layanan Farmasi</h3>
-                    <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
+                    <p>PPenyediaan obat-obatan resmi, aman, dan terpercaya, disertai konsultasi penggunaan obat dari apoteker.</p>
                 </div>
             </div>
 

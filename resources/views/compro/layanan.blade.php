@@ -94,14 +94,14 @@
                             <img src="{{ asset('images/1.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Gawat Darurat</h3>
-                        <p>Pemeriksaan kehamilan, konsultasi dokter spesialis, dan layanan persalinan modern.</p>
+                        <p>Tindakan medis cepat dan tepat untuk kondisi darurat ibu dan anak, tersedia 24 jam dengan tenaga medis berpengalaman.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/2.svg') }}" alt="Rawat Inap" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Rawat Inap</h3>
-                        <p>Perawatan anak, imunisasi lengkap, dan konsultasi kesehatan anak secara profesional.</p>
+                        <p>Fasilitas rawat inap yang nyaman dengan perawatan intensif oleh dokter dan perawat profesional untuk ibu dan anak.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -109,7 +109,7 @@
                                 style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Perawatan Khusus</h3>
-                        <p>Layanan kesehatan gigi untuk anak dan ibu, termasuk perawatan preventif dan estetika.</p>
+                        <p>Perawatan kesehatan khusus sesuai kebutuhan pasien, termasuk layanan penunjang dan terapi medis tertentu.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -117,35 +117,35 @@
                                 style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Poli Rawat Jalan</h3>
-                        <p>Tes laboratorium lengkap dan cepat dengan hasil akurat untuk diagnosis tepat.</p>
+                        <p>Konsultasi dan pemeriksaan kesehatan rutin bersama dokter spesialis tanpa perlu rawat inap.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/7.svg') }}" alt="Laboratorium" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Laboratorium</h3>
-                        <p>Penyediaan obat dan konsultasi penggunaan obat secara aman dan terpercaya.</p>
+                        <p>Pemeriksaan laboratorium lengkap dengan hasil akurat untuk mendukung diagnosis dan pengobatan.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/8.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Farmasi</h3>
-                        <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
+                        <p>Penyediaan obat-obatan resmi, aman, dan terpercaya, disertai konsultasi penggunaan obat dari apoteker.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/9.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Gizi</h3>
-                        <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
+                        <p>Konsultasi gizi untuk ibu dan anak dengan perencanaan diet seimbang guna mendukung tumbuh kembang yang optimal.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/10.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Rekam Medik</h3>
-                        <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
+                        <p>Pengelolaan data medis pasien secara rapi, aman, dan terintegrasi untuk menunjang pelayanan kesehatan yang efektif.</p>
                     </div>
                 </div>
             </div>
@@ -158,42 +158,35 @@
                                 style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Administrasi Perkantoran</h3>
-                        <p>Tes laboratorium lengkap dan cepat dengan hasil akurat untuk diagnosis tepat.</p>
+                        <p>Pengelolaan dokumen, surat-menyurat, dan kebutuhan administrasi untuk mendukung kelancaran operasional rumah sakit.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/12.svg') }}" alt="Laboratorium" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Administrasi Keuangan</h3>
-                        <p>Penyediaan obat dan konsultasi penggunaan obat secara aman dan terpercaya.</p>
+                        <p>Pengaturan dan pencatatan transaksi keuangan secara transparan, akuntabel, dan sesuai prosedur.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/13.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Administrasi Rekam Medis</h3>
-                        <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/14.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Kerohanian</h3>
-                        <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
+                        <p>Penyimpanan dan pengelolaan data rekam medis pasien secara rapi, aman, dan mudah diakses.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/15.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Konsultasi Gizi</h3>
-                        <p>Paket pemeriksaan kesehatan rutin untuk ibu dan anak dengan rekomendasi dokter.</p>
+                        <p>Konsultasi gizi dengan tenaga ahli untuk mendukung pola makan sehat dan pemulihan pasien.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <img src="{{ asset('images/16.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
                         </div>
                         <h3>Layanan Ambulance</h3>
-                        <p>Ambulan</p>
+                        <p>Fasilitas transportasi medis darurat yang cepat dan aman untuk kebutuhan pasien.</p>
                     </div>
                 </div>
             </div>

@@ -8,25 +8,25 @@
             <div class="footer-column">
                 <h3>Tautan Cepat</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Layanan</a></li>
-                    <li><a href="#">Tentang</a></li>
-                    <li><a href="#">Berita</a></li>
+                    <li><a href="{{ url('/') }}">Beranda</a></li>
+                    <li><a href="{{ url('/company-profile/layanan') }}">Layanan</a></li>
+                    <li><a href="{{ url('/company-profile/tentang') }}">Tentang</a></li>
+                    <li><a href="{{ url('/company-profile/berita') }}">Berita</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Dukungan</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Bantuan</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Kontak</a></li>
+                    <li><a href="{{ url('/company-profile/under-development') }}">Bantuan</a></li>
+                    <li><a href="{{ url('/company-profile/under-development') }}">FAQ</a></li>
+                    <li><a href="{{ url('/company-profile/kontak') }}">Kontak</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Sosial Media</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">Tiktok</a></li>
+                    <li><a href="{{ url('https://www.instagram.com/rsiaibisby/?hl=en') }}">Instagram</a></li>
+                    <li><a href="{{ url('https://www.tiktok.com/@rsiaibisurabaya') }}">Tiktok</a></li>
                 </ul>
             </div>
         </div>

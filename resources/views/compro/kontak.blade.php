@@ -64,7 +64,7 @@
                     <p class="card-description">
                         Dapatkan informasi lengkap mengenai pelayanan kesehatan umum di RSIA IBI Surabaya.
                     </p>
-                    <a href="#" class="card-button">Selengkapnya</a>
+                    <a href="{{ ('https://api.whatsapp.com/send/?phone=6285852963005&text&type=phone_number&app_absent=0') }}" class="card-button">Selengkapnya</a>
                 </div>
 
                 <!-- Card 2: Pelayanan BPJS -->
@@ -76,7 +76,7 @@
                     <p class="card-description">
                         Informasi mengenai prosedur dan fasilitas bagi pasien dengan jaminan BPJS Kesehatan.
                     </p>
-                    <a href="#" class="card-button">Selengkapnya</a>
+                    <a href="{{ ('https://api.whatsapp.com/send/?phone=6285876279000&text&type=phone_number&app_absent=0') }}" class="card-button">Selengkapnya</a>
                 </div>
 
                 <!-- Card 3: Pendaftaran Poli Non BPJS -->
@@ -88,7 +88,7 @@
                     <p class="card-description">
                         Cara mendaftar poli untuk pasien umum/non BPJS dengan mudah dan cepat.
                     </p>
-                    <a href="#" class="card-button">Selengkapnya</a>
+                    <a href="{{ ('https://docs.google.com/forms/d/e/1FAIpQLScPvWSVAXgbBt71_hHI5m0eF6Ja2d0VMEYkNNyhR42yejZPbw/viewform') }}" class="card-button">Selengkapnya</a>
                 </div>
             </div>
         </div>

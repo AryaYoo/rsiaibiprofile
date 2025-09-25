@@ -329,7 +329,7 @@
         </style>
     </section>
 
-    <section class="accent">
+    {{-- <section class="accent">
         <div class="container">
             <h2 class="accent-title">Struktur Organisasi</h2>
         </div>
@@ -397,7 +397,7 @@
                 }
             }
         </style>
-    </section>
+    </section> --}}
 @endsection
 
 @section('styles')
