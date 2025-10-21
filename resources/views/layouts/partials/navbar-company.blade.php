@@ -11,6 +11,7 @@
                 <li><a href="{{ url('/company-profile/tentang') }}">Tentang</a></li>
                 <li><a href="{{ url('/company-profile/berita') }}">Berita</a></li>
                 <li><a href="{{ url('/company-profile/kontak') }}">Kontak</a></li>
+                <li><a href="{{ url('/company-profile/galeri') }}">Galeri</a></li>
             </ul>
             {{-- <button class="mobile-menu-btn">☰</button>
             <a href="{{ url('/login') }}" class="btn">Hubungi Kami</a> --}}

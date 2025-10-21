@@ -20,6 +20,7 @@
                     <li><a href="{{ url('/company-profile/under-development') }}">Bantuan</a></li>
                     <li><a href="{{ url('/company-profile/under-development') }}">FAQ</a></li>
                     <li><a href="{{ url('/company-profile/kontak') }}">Kontak</a></li>
+                    <li><a href="{{ url('/company-profile/under-development') }}">Kemitraan</a></li>
                 </ul>
             </div>
             <div class="footer-column">

@@ -22,6 +22,10 @@ Route::prefix('company-profile')->group(function () {
         return view('compro.kontak');
     })->name('compro.kontak');
 
+    Route::get('/galeri', function () {
+        return view('compro.galeri');
+    })->name('compro.galeri');
+
     Route::get('/under-development', function () {
         return view('compro.under-development');
     })->name('compro.under-development');
