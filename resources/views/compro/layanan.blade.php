@@ -1,212 +1,117 @@
 @extends('layouts.company')
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="hero text-center hero-bg">
-        <div class="container" style="margin-top: 30px;">
-            <h2 class="hero-title text-3xl font-extrabold mb-4">Layanan Kami</h2>
-            <p class="hero-subtitle max-w-2xl mx-auto">
-                Berbagai layanan kesehatan profesional dan penuh kasih untuk ibu dan anak Anda
-            </p>
+    {{-- Page Header --}}
+    <section id="header" data-nav-label="Layanan" class="page-header">
+        <div class="container">
+            <span class="badge-label">Layanan</span>
+            <h1>Layanan Kami</h1>
+            <p>Berbagai layanan kesehatan profesional dan penuh kasih untuk ibu dan anak Anda</p>
         </div>
-
-        <style>
-            .hero-bg {
-                background-image: url('{{ asset('images/header4bg.svg') }}');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                position: relative;
-                padding: 100px 0 10px;
-                /* dikurangi tinggi */
-            }
-
-            .hero-bg .container {
-                position: relative;
-                z-index: 1;
-            }
-
-            .hero-title {
-                color: #014421ff !important;
-                font-weight: 900;
-            }
-
-            .hero-subtitle {
-                color: #3c3c3cff !important;
-            }
-        </style>
     </section>
 
-
-    <section class="accent">
-        <style>
-            .accent {
-                background-color: var(--primary);
-                height: 50px;
-                width: 100%;
-            }
-        </style>
-    </section>
-
-    <!-- Tab Buttons Section -->
-    <section class="tab-buttons-section">
-        <div class="container text-center py-2">
+    {{-- Tabs --}}
+    <section id="filter" data-nav-label="Filter" style="background: white; padding: 16px 0;">
+        <div class="container" style="text-align: center;">
             <button class="tab-btn active" data-tab="medis">Medis & Keperawatan</button>
             <button class="tab-btn" data-tab="administrasi">Administrasi</button>
         </div>
-
-        <style>
-            .tab-buttons-section {
-                background-color: #f1f1f1;
-                /* abu-abu */
-            }
-
-            .tab-btn {
-                padding: 8px 20px;
-                /* dikurangi sedikit */
-                margin: 0 8px;
-                /* jarak antar tombol sedikit lebih rapat */
-                border: none;
-                background: #e0e0e0;
-                color: #333;
-                font-weight: 600;
-                cursor: pointer;
-                border-radius: 8px;
-                transition: 0.3s;
-            }
-
-            .tab-btn.active {
-                background: var(--primary);
-                color: white;
-            }
-        </style>
     </section>
 
-
-    <!-- Tab Contents Section -->
-    <section class="features">
+    {{-- Content --}}
+    <section id="services-list" data-nav-label="Daftar Layanan" class="section-padding" style="background: var(--bg-main);">
         <div class="container">
             <div class="tab-content" id="medis">
-                <div class="features-grid">
-                    <!-- Contoh feature card -->
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/1.svg') }}" alt="Gawat Darurat" style="width: 40px; height: 40px;">
+                <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+                    @foreach($medis as $service)
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                @if($service->image)
+                                    <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" style="width: 32px; height: 32px; border-radius: 6px;">
+                                @elseif($service->icon)
+                                    <i class="{{ $service->icon }}"></i>
+                                @else
+                                    <i class="bi bi-plus-circle"></i>
+                                @endif
+                            </div>
+                            <h3>{{ $service->title }}</h3>
+                            <p>{{ $service->description }}</p>
                         </div>
-                        <h3>Layanan Gawat Darurat</h3>
-                        <p>Tindakan medis cepat dan tepat untuk kondisi darurat ibu dan anak, tersedia 24 jam dengan tenaga medis berpengalaman.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/2.svg') }}" alt="Rawat Inap" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Rawat Inap</h3>
-                        <p>Fasilitas rawat inap yang nyaman dengan perawatan intensif oleh dokter dan perawat profesional untuk ibu dan anak.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/4.svg') }}" alt="Perawatan Khusus"
-                                style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Perawatan Khusus</h3>
-                        <p>Perawatan kesehatan khusus sesuai kebutuhan pasien, termasuk layanan penunjang dan terapi medis tertentu.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/6.svg') }}" alt="Poli Rawat Jalan"
-                                style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Poli Rawat Jalan</h3>
-                        <p>Konsultasi dan pemeriksaan kesehatan rutin bersama dokter spesialis tanpa perlu rawat inap.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/7.svg') }}" alt="Laboratorium" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Laboratorium</h3>
-                        <p>Pemeriksaan laboratorium lengkap dengan hasil akurat untuk mendukung diagnosis dan pengobatan.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/8.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Farmasi</h3>
-                        <p>Penyediaan obat-obatan resmi, aman, dan terpercaya, disertai konsultasi penggunaan obat dari apoteker.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/9.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Gizi</h3>
-                        <p>Konsultasi gizi untuk ibu dan anak dengan perencanaan diet seimbang guna mendukung tumbuh kembang yang optimal.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/10.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Rekam Medik</h3>
-                        <p>Pengelolaan data medis pasien secara rapi, aman, dan terintegrasi untuk menunjang pelayanan kesehatan yang efektif.</p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
 
             <div class="tab-content" id="administrasi" style="display:none;">
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/11.svg') }}" alt="Poli Rawat Jalan"
-                                style="width: 40px; height: 40px;">
+                <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+                    @foreach($administrasi as $service)
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                @if($service->image)
+                                    <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" style="width: 32px; height: 32px; border-radius: 6px;">
+                                @elseif($service->icon)
+                                    <i class="{{ $service->icon }}"></i>
+                                @else
+                                    <i class="bi bi-plus-circle"></i>
+                                @endif
+                            </div>
+                            <h3>{{ $service->title }}</h3>
+                            <p>{{ $service->description }}</p>
                         </div>
-                        <h3>Layanan Administrasi Perkantoran</h3>
-                        <p>Pengelolaan dokumen, surat-menyurat, dan kebutuhan administrasi untuk mendukung kelancaran operasional rumah sakit.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/12.svg') }}" alt="Laboratorium" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Administrasi Keuangan</h3>
-                        <p>Pengaturan dan pencatatan transaksi keuangan secara transparan, akuntabel, dan sesuai prosedur.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/13.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Administrasi Rekam Medis</h3>
-                        <p>Penyimpanan dan pengelolaan data rekam medis pasien secara rapi, aman, dan mudah diakses.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/15.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Konsultasi Gizi</h3>
-                        <p>Konsultasi gizi dengan tenaga ahli untuk mendukung pola makan sehat dan pemulihan pasien.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <img src="{{ asset('images/16.svg') }}" alt="Farmasi" style="width: 40px; height: 40px;">
-                        </div>
-                        <h3>Layanan Ambulance</h3>
-                        <p>Fasilitas transportasi medis darurat yang cepat dan aman untuk kebutuhan pasien.</p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
+    </section>
 
-        <style>
-            .features-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 30px;
-            }
+    {{-- Jadwal Layanan Section --}}
+    <section id="jadwal-layanan" data-nav-label="Jadwal Dokter" class="section-padding" style="background: white; border-top: 1px solid var(--border-soft);">
+        <div class="container">
+            <div class="section-title reveal">
+                <span class="label">Jadwal Praktek</span>
+            </div>
 
-            .feature-card {
-                background: #fff;
-                border-radius: 15px;
-                padding: 25px;
-                text-align: center;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            }
-        </style>
+            <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+                @forelse($groupedSchedules ?? [] as $doctorName => $doctorSchedules)
+                    @php $firstSchedule = $doctorSchedules->first(); @endphp
+                    <div class="feature-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); padding: 24px;">
+                        @if($firstSchedule->image)
+                            <img src="{{ asset('storage/' . $firstSchedule->image) }}" alt="{{ $doctorName }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
+                        @else
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; margin-bottom: 16px;">
+                                {{ substr($doctorName, strpos($doctorName, ' ') + 1, 1) !== false ? substr($doctorName, strpos($doctorName, ' ') + 1, 1) : substr($doctorName, 0, 1) }}
+                            </div>
+                        @endif
+                        
+                        <h3 style="margin-bottom: 4px; font-size: 1.1rem;">{{ $doctorName }}</h3>
+                        <span style="display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 20px;">
+                            {{ $firstSchedule->specialty ?? 'Umum' }}
+                        </span>
+                        
+                        <div style="width: 100%; text-align: left; background: var(--bg-main); padding: 16px; border-radius: 8px; margin-top: auto;">
+                            <h4 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; border-bottom: 1px solid var(--border-soft); padding-bottom: 8px;">Jadwal Praktik:</h4>
+                            
+                            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                                @foreach($doctorSchedules as $schedule)
+                                <li style="display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;">
+                                    <span style="font-weight: 600; color: var(--text-main); display: flex; align-items: center;">
+                                        <i class="far fa-calendar-check text-emerald-600 mr-2" style="width: 16px;"></i> {{ $schedule->day }}
+                                    </span>
+                                    <span style="color: var(--text-muted); background: white; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-soft); font-size: 0.8rem;">
+                                        {{ $schedule->time }}
+                                    </span>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @empty
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 48px; background: white; border-radius: 16px; border: 1px dashed var(--border-soft);">
+                        <i class="fas fa-calendar-times" style="font-size: 3rem; color: var(--border-soft); margin-bottom: 16px;"></i>
+                        <h3 style="color: var(--text-muted);">Belum ada jadwal dokter yang tersedia.</h3>
+                    </div>
+                @endforelse
+            </div>
+        </div>
 
         <script>
             const tabs = document.querySelectorAll('.tab-btn');
@@ -218,23 +123,18 @@
                     tab.classList.add('active');
 
                     contents.forEach(c => c.style.display = 'none');
-                    document.getElementById(tab.dataset.tab).style.display = 'grid';
+                    document.getElementById(tab.dataset.tab).style.display = 'block';
                 });
             });
         </script>
     </section>
 
-
-
-    <!-- CTA Section -->
-    <section class="cta">
+    {{-- CTA --}}
+    <section id="cta" data-nav-label="Konsultasi" class="cta-modern">
         <div class="container">
             <h2>Konsultasi Kesehatan Anda Sekarang</h2>
-            <p>
-                Jangan tunda untuk menjaga kesehatan Anda dan keluarga. Hubungi kami untuk informasi lebih lanjut atau buat
-                janji temu dengan dokter spesialis.
-            </p>
-            <a href="#" class="btn btn-light">Hubungi Kami</a>
+            <p>Jangan tunda untuk menjaga kesehatan Anda dan keluarga. Hubungi kami untuk informasi lebih lanjut.</p>
+            <a href="{{ url('/company-profile/kontak') }}" class="btn btn-light">Hubungi Kami →</a>
         </div>
     </section>
 @endsection

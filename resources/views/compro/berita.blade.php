@@ -1,243 +1,153 @@
 @extends('layouts.company')
 
 @section('content')
-    <section class="hero text-center hero-bg">
-        <div class="container" style="margin-top: 30px;">
-            <h2 class="hero-title text-3xl font-extrabold mb-4">Informasi Berita</h2>
-            <p class="hero-subtitle max-w-2xl mx-auto">
-                Berita terbaru seputar rumah sakit ibu dan anak IBI Surabaya
-            </p>
-        </div>
-
-        <style>
-            .hero-bg {
-                background-image: url('{{ asset('images/header4bg.svg') }}');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                position: relative;
-                padding: 100px 0 10px;
-                /* dikurangi tinggi */
-            }
-
-            .hero-bg .container {
-                position: relative;
-                z-index: 1;
-            }
-
-            .hero-title {
-                color: #014421ff !important;
-                font-weight: 900;
-            }
-
-            .hero-subtitle {
-                color: #3c3c3cff !important;
-            }
-        </style>
-    </section>
-
-
-    <section class="accent">
-        <style>
-            .accent {
-                background-color: var(--primary);
-                height: 50px;
-                width: 100%;
-            }
-        </style>
-    </section>
-
-    <section class="news-section">
+    {{-- Page Header --}}
+    <section id="header" data-nav-label="Berita" class="page-header">
         <div class="container">
-            <div class="news-grid">
-                <div class="news-card">
-                    <img src="https://via.placeholder.com/400x250" alt="Berita 1">
-                    <div class="news-content">
-                        <span class="news-date">22 September 2025</span>
-                        <h3>Meet Our New Doctor!</h3>
-                        <p>Selamat datang, dr. Heri Slamet Santoso, Sp.OG, Dokter Spesialis Kandungan di RSIA IBI Surabaya. Siap memberikan pelayanan terbaik untuk kesehatan ibu dan calon buah hati tercinta.</p>
-                        <a href="https://www.instagram.com/p/DNrfJAJZKCy/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-                            class="btn" target="_blank" rel="noopener noreferrer">Baca Selengkapnya</a>
-                    </div>
-                </div>
-                <div class="news-card">
-                    <img src="https://via.placeholder.com/400x250" alt="Berita 2">
-                    <div class="news-content">
-                        <span class="news-date">20 September 2025</span>
-                        <h3>Room Tour Ruang VIP RSIA IBI Surabaya</h3>
-                        <p>Setiap momen bersama keluarga adalah istimewa Ruang VIP RSIA hadir untuk memberikan kenyamanan, privasi, dan ketenangan hati. </p>
-                        <a href="https://www.instagram.com/reel/DOZ6KDaEY9W/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-                            class="btn" target="_blank" rel="noopener noreferrer">Baca Selengkapnya</a>
-                    </div>
-                </div>
-                <div class="news-card">
-                    <img src="https://via.placeholder.com/400x250" alt="Berita 3">
-                    <div class="news-content">
-                        <span class="news-date">18 September 2025</span>
-                        <h3>Pelatihan APAR</h3>
-                        <p>Bukan sekadar teori, tapi langsung praktik! Di In House Training kali ini, kami belajar cara mencegah, mengendalikan, hingga menanggulangi kebakaran dengan benar</p>
-                        <a href="https://www.instagram.com/reel/DOnJSbrka33/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-                            class="btn" target="_blank" rel="noopener noreferrer">Baca Selengkapnya</a>
-                    </div>
-                </div>
-            </div>
-            <style>
-                .news-card .btn {
-                    background: var(--primary);
-                    color: white;
-                    padding: 12px 28px;
-                    border-radius: 50px;
-                    font-weight: 600;
-                    text-decoration: none;
-                    display: inline-block;
-                    transition: var(--transition);
-                    border: none;
-                    cursor: pointer;
-                }
-
-                .news-card .btn:hover {
-                    background: var(--secondary);
-                    transform: translateY(-3px);
-                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-                }
-            </style>
+            <span class="badge-label">Berita</span>
+            <h1>Informasi Berita</h1>
+            <p>Berita terbaru seputar rumah sakit ibu dan anak IBI Surabaya</p>
         </div>
+    </section>
 
-        <style>
-            .news-section {
-                padding: 6rem 0;
-                background-color: var(--light);
-            }
+    {{-- News Grid --}}
+    <section id="news-list" data-nav-label="Daftar Berita" class="section-padding" style="background: var(--bg-main);">
+        <div class="container">
+            <div class="news-grid reveal-stagger">
+                @foreach($news as $item)
+                <div class="news-card">
+                    <div class="news-card-image">
+                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://via.placeholder.com/400x250' }}" alt="{{ $item->title }}">
+                    </div>
+                    <div class="news-card-body">
+                        <span class="news-date">
+                            <i class="bi bi-calendar3"></i> {{ $item->created_at->format('d F Y') }}
+                        </span>
+                        <h3>{{ $item->title }}</h3>
+                        <p>{{ Str::limit($item->content, 120) }}</p>
+                        <a href="#" class="news-link">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
 
-            .news-grid {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-            }
+            <div style="margin-top: 48px; display: flex; justify-content: center;">
+                {{ $news->links() }}
+            </div>
+        </div>
+    </section>
 
-            @media (min-width: 768px) {
-                .news-grid {
-                    grid-template-columns: repeat(3, 1fr);
-                }
-            }
+    {{-- Social Media / Instagram Feed Section --}}
+    <section id="instagram" data-nav-label="Instagram" class="section-padding" style="background: white; border-top: 1px solid var(--border-soft);">
+        <div class="container">
+            <div class="section-title reveal" style="text-align: center; margin-bottom: 40px;">
+                <span class="label">Social Media</span>
+                <h2>Instagram <a href="https://www.instagram.com/rsiaibisby/" target="_blank" style="color: var(--primary); text-decoration: none;">@rsiaibisby</a></h2>
+                <p>Ikuti update dan informasi kesehatan terbaru dari media sosial kami</p>
+            </div>
 
-            .news-card {
-                background: white;
-                border-radius: 15px;
-                overflow: hidden;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-                transition: var(--transition);
-            }
+            <div class="reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto;">
+                @foreach($instagramPosts as $post)
+                <div style="border-radius: 16px; overflow: hidden; border: 1px solid var(--border-soft); background: white;">
+                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="{{ $post->post_url }}" style="background:#FFF; border:0; border-radius:0; box-shadow:none; margin: 0; max-width:100%; min-width:100%; padding:0; width:100%;"></blockquote>
+                </div>
+                @endforeach
+            </div>
+            <script async src="//www.instagram.com/embed.js"></script>
 
-            .news-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            }
-
-            .news-card img {
-                width: 100%;
-                height: auto;
-                display: block;
-            }
-
-            .news-content {
-                padding: 20px;
-            }
-
-            .news-date {
-                display: block;
-                font-size: 0.9rem;
-                color: #64748b;
-                margin-bottom: 10px;
-            }
-
-            .news-content h3 {
-                font-size: 1.5rem;
-                color: var(--primary);
-                margin-bottom: 10px;
-            }
-
-            .news-content p {
-                font-size: 1rem;
-                color: #475569;
-                margin-bottom: 15px;
-            }
-
-            .news-content .btn {
-                font-size: 0.9rem;
-                padding: 10px 20px;
-            }
-        </style>
+            <div style="text-align: center; margin-top: 48px;" class="reveal">
+                <a href="https://www.instagram.com/rsiaibisby/" target="_blank" class="btn btn-accent" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border: none; padding: 14px 32px; font-size: 1rem;">
+                    <i class="fab fa-instagram" style="margin-right: 8px;"></i> Kunjungi Instagram Kami
+                </a>
+            </div>
+        </div>
+    </section>
+    {{-- CTA --}}
+    <section id="cta" data-nav-label="Konsultasi" class="cta-modern">
+        <div class="container">
+            <h2>Konsultasi Kesehatan Anda Sekarang</h2>
+            <p>Jangan tunda untuk menjaga kesehatan Anda dan keluarga. Hubungi kami untuk informasi lebih lanjut.</p>
+            <a href="{{ url('/company-profile/kontak') }}" class="btn btn-light">Hubungi Kami →</a>
+        </div>
     </section>
 @endsection
 
 @section('styles')
-    <style>
-        .news-section {
-            padding: 60px 0;
-            background: #f9f9f9;
-        }
+<style>
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+    }
 
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
+    .news-card {
+        background: var(--white, #fff);
+        border-radius: var(--radius, 16px);
+        overflow: hidden;
+        border: 1px solid var(--border-soft, #e4ebe2);
+        transition: var(--transition);
+    }
 
-        .news-card {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s;
-        }
+    .news-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--accent, #85A947);
+    }
 
-        .news-card:hover {
-            transform: translateY(-5px);
-        }
+    .news-card-image {
+        height: 200px;
+        overflow: hidden;
+    }
 
-        .news-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
+    .news-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
 
-        .news-content {
-            padding: 20px;
-        }
+    .news-card:hover .news-card-image img {
+        transform: scale(1.06);
+    }
 
-        .news-content h3 {
-            margin: 10px 0;
-            font-size: 20px;
-            color: #333;
-        }
+    .news-card-body {
+        padding: 24px;
+    }
 
-        .news-date {
-            font-size: 14px;
-            color: #888;
-        }
+    .news-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: var(--text-muted, #5a6b5a);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
 
-        .news-content p {
-            font-size: 15px;
-            color: #555;
-            margin-bottom: 15px;
-        }
+    .news-card-body h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: var(--primary, #123524);
+        line-height: 1.4;
+    }
 
-        .news-content .btn {
-            display: inline-block;
-            padding: 8px 15px;
-            background: #007bff;
-            color: #fff;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: background 0.3s;
-            text-decoration: none;
-        }
+    .news-card-body p {
+        font-size: 0.88rem;
+        color: var(--text-muted, #5a6b5a);
+        line-height: 1.7;
+        margin-bottom: 16px;
+    }
 
-        .news-content .btn:hover {
-            background: #0056b3;
-        }
-    </style>
+    .news-link {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--primary-light, #3E7B27);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .news-link:hover {
+        color: var(--accent, #85A947);
+    }
+</style>
 @endsection

@@ -1,42 +1,30 @@
-// Mobile menu toggle
 document.addEventListener("DOMContentLoaded", function () {
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
+    // Scroll Reveal Animation using Intersection Observer
+    function initRevealObserver() {
+        const revealElements = document.querySelectorAll('.reveal, .reveal-stagger');
 
-    if (menuBtn && navLinks) {
-        menuBtn.addEventListener('click', function () {
-            if (navLinks.style.display === 'flex') {
-                navLinks.style.display = 'none';
-            } else {
-                navLinks.style.display = 'flex';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.gap = '15px';
-                navLinks.style.marginTop = '20px';
-            }
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -30px 0px'
+        });
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
         });
     }
 
-    // Feature card animation on scroll
-    const featureCards = document.querySelectorAll('.feature-card');
+    initRevealObserver();
 
-    function checkScroll() {
-        featureCards.forEach(card => {
-            const cardPosition = card.getBoundingClientRect().top;
-            const screenPosition = window.innerHeight / 1.3;
-            if (cardPosition < screenPosition) {
-                card.style.opacity = 1;
-                card.style.transform = 'translateY(0)';
-            }
+    // Re-observe when tabs are switched (for layanan page)
+    document.querySelectorAll('.tab-btn').forEach(tab => {
+        tab.addEventListener('click', () => {
+            setTimeout(initRevealObserver, 50);
         });
-    }
-
-    // Set initial state for animation
-    featureCards.forEach(card => {
-        card.style.opacity = 0;
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     });
-
-    window.addEventListener('scroll', checkScroll);
-    checkScroll(); // Check on initial load
 });

@@ -13,8 +13,13 @@
         </div>
     </section>
 
-    <section>
-
+    {{-- CTA --}}
+    <section class="cta-modern">
+        <div class="container">
+            <h2>Konsultasi Kesehatan Anda Sekarang</h2>
+            <p>Jangan tunda untuk menjaga kesehatan Anda dan keluarga. Hubungi kami untuk informasi lebih lanjut.</p>
+            <a href="{{ url('/company-profile/kontak') }}" class="btn btn-light">Hubungi Kami →</a>
+        </div>
     </section>
 @endsection
 
