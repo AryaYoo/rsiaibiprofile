@@ -14,9 +14,9 @@ class DoctorService
         $this->doctorRepository = $doctorRepository;
     }
 
-    public function getAllDoctors()
+    public function getAllDoctors($perPage = null)
     {
-        return $this->doctorRepository->all();
+        return $this->doctorRepository->all($perPage);
     }
 
     public function getActiveDoctors()

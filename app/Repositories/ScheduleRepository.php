@@ -14,9 +14,9 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         $this->model = $schedule;
     }
 
-    public function all()
+    public function all($perPage = 10)
     {
-        return $this->model->with('doctor')->latest()->get();
+        return $this->model->with('doctor')->latest()->paginate($perPage);
     }
 
     public function getActiveSchedulesWithDoctors()

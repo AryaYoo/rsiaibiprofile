@@ -14,9 +14,12 @@ class DoctorRepository implements DoctorRepositoryInterface
         $this->model = $doctor;
     }
 
-    public function all()
+    public function all($perPage = null)
     {
-        return $this->model->latest()->get();
+        if ($perPage) {
+            return $this->model->withCount('schedules')->latest()->paginate($perPage);
+        }
+        return $this->model->withCount('schedules')->latest()->get();
     }
 
     public function getActiveDoctors()

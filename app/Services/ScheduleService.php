@@ -13,9 +13,9 @@ class ScheduleService
         $this->scheduleRepository = $scheduleRepository;
     }
 
-    public function getAllSchedules()
+    public function getAllSchedules($perPage = 10)
     {
-        return $this->scheduleRepository->all();
+        return $this->scheduleRepository->all($perPage);
     }
 
     public function storeSchedule(array $data)

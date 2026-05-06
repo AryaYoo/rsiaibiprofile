@@ -36,9 +36,9 @@ class NewsService
         return Setting::where('key', 'news_sidebar_ad')->value('value');
     }
 
-    public function getAllNews()
+    public function getAllNews($perPage = null)
     {
-        return $this->newsRepository->all();
+        return $this->newsRepository->all($perPage);
     }
 
     public function storeNews(array $data, $image = null)

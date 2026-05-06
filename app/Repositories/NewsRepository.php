@@ -14,8 +14,11 @@ class NewsRepository implements NewsRepositoryInterface
         $this->model = $news;
     }
 
-    public function all()
+    public function all($perPage = null)
     {
+        if ($perPage) {
+            return $this->model->latest()->paginate($perPage);
+        }
         return $this->model->latest()->get();
     }
 
