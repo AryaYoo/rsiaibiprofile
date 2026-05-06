@@ -88,7 +88,7 @@
             inset: 0;
             background-size: cover;
             background-position: center;
-            z-index: -1;
+            z-index: 0;
             transition: opacity 1.2s ease-in-out;
         }
         .hero-video-bg {

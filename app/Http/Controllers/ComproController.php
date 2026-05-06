@@ -3,15 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
-use App\Models\News;
 use App\Models\Service;
 use App\Models\Gallery;
-use App\Models\Schedule;
-use App\Models\Doctor;
+use App\Services\ScheduleService;
+use App\Services\DoctorService;
+use App\Services\NewsService;
 use Illuminate\Http\Request;
 
 class ComproController extends Controller
 {
+    protected $scheduleService;
+    protected $doctorService;
+    protected $newsService;
+
+    public function __construct(
+        ScheduleService $scheduleService, 
+        DoctorService $doctorService,
+        NewsService $newsService
+    ) {
+        $this->scheduleService = $scheduleService;
+        $this->doctorService = $doctorService;
+        $this->newsService = $newsService;
+    }
+
     public function index()
     {
         $services = Service::where('category', 'medis')->limit(6)->get();
@@ -20,13 +34,13 @@ class ComproController extends Controller
         $hariIndo = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $todayString = $hariIndo[date('w')];
         
-        $todaySchedules = Schedule::with('doctor')
-            ->where('day', 'like', "%{$todayString}%")
-            ->where('is_active', true)
-            ->orderBy('specialty')
-            ->get();
+        $todaySchedules = $this->scheduleService->getTodaySchedules($todayString);
+
+        $firstPromo = $promotions->first();
+        $heroBg = $firstPromo && $firstPromo->background ? asset('storage/' . $firstPromo->background) : asset('images/hero-background.svg');
+        $heroVideo = $firstPromo && $firstPromo->video ? asset('storage/' . $firstPromo->video) : null;
             
-        return view('welcome', compact('services', 'promotions', 'todaySchedules', 'todayString'));
+        return view('welcome', compact('services', 'promotions', 'todaySchedules', 'todayString', 'heroBg', 'heroVideo'));
     }
 
     public function tentang()
@@ -36,15 +50,8 @@ class ComproController extends Controller
         $vision = Setting::where('key', 'vision')->value('value');
         $mission = json_decode(Setting::where('key', 'mission')->value('value'), true) ?? [];
 
-        // Fetch schedules for the "Dokter Spesialis" section
-        $rawSchedules = Schedule::with('doctor')
-                            ->where('is_active', true)
-                            ->get();
-        
-        $groupedSchedules = $rawSchedules->groupBy('doctor_id');
-        
-        // Extract unique specialties from doctors
-        $specialties = Doctor::where('is_active', true)->pluck('specialty')->unique()->filter()->values();
+        $groupedSchedules = $this->scheduleService->getActiveSchedulesGroupedByDoctor();
+        $specialties = $this->doctorService->getActiveDoctors()->pluck('specialty')->unique()->filter()->values();
 
         return view('compro.tentang', compact('aboutTitle', 'aboutContent', 'vision', 'mission', 'groupedSchedules', 'specialties'));
     }
@@ -54,33 +61,24 @@ class ComproController extends Controller
         $medis = Service::where('category', 'medis')->get();
         $administrasi = Service::where('category', 'administrasi')->get();
         
-        // Fetch all active schedules and group them by Doctor
-        $rawSchedules = Schedule::with('doctor')
-                            ->where('is_active', true)
-                            ->get();
-                            
-        // Group by Doctor ID so each doctor only has 1 card
-        $groupedSchedules = $rawSchedules->groupBy('doctor_id');
+        $groupedSchedules = $this->scheduleService->getActiveSchedulesGroupedByDoctor();
         
         return view('compro.layanan', compact('medis', 'administrasi', 'groupedSchedules'));
     }
 
     public function berita()
     {
-        $news = News::where('is_published', true)->latest()->paginate(9);
+        $news = $this->newsService->getPublishedNews();
         $instagramPosts = \App\Models\InstagramPost::where('is_active', true)->latest()->get();
         return view('compro.berita', compact('news', 'instagramPosts'));
     }
 
     public function beritaDetail($slug)
     {
-        $item = News::where('slug', $slug)->firstOrFail();
-        $recommendations = News::where('id', '!=', $item->id)
-                                ->where('is_published', true)
-                                ->inRandomOrder()
-                                ->limit(2)
-                                ->get();
-        $sidebarAd = Setting::where('key', 'news_sidebar_ad')->value('value');
+        $item = $this->newsService->getNewsBySlug($slug);
+        $recommendations = $this->newsService->getRecommendations($item->id);
+        $sidebarAd = $this->newsService->getSidebarAd();
+        
         return view('compro.berita-detail', compact('item', 'recommendations', 'sidebarAd'));
     }
 

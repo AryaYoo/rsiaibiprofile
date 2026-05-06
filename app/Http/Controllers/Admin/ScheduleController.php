@@ -3,66 +3,71 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Schedule;
+use App\Services\ScheduleService;
+use App\Services\DoctorService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ScheduleController extends Controller
 {
+    protected $scheduleService;
+    protected $doctorService;
+
+    public function __construct(ScheduleService $scheduleService, DoctorService $doctorService)
+    {
+        $this->scheduleService = $scheduleService;
+        $this->doctorService = $doctorService;
+    }
+
     public function index()
     {
-        $schedules = Schedule::with('doctor')->paginate(10);
+        $schedules = $this->scheduleService->getAllSchedules();
         return view('admin.schedules.index', compact('schedules'));
     }
 
     public function create()
     {
-        $doctors = \App\Models\Doctor::where('is_active', true)->orderBy('name')->get();
+        $doctors = $this->doctorService->getActiveDoctors();
         return view('admin.schedules.create', compact('doctors'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
-            'day' => 'required|string',
-            'time' => 'required|string',
-            'is_active' => 'boolean',
+            'day' => 'required|string|max:255',
+            'time' => 'required|string|max:255',
+            'is_active' => 'boolean'
         ]);
 
-        Schedule::create($request->all());
+        $this->scheduleService->storeSchedule($validated);
 
-        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil ditambahkan!');
+        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
-    public function edit(Schedule $schedule)
+    public function edit($id)
     {
-        $doctors = \App\Models\Doctor::where('is_active', true)->orderBy('name')->get();
+        $schedule = $this->scheduleService->getScheduleById($id);
+        $doctors = $this->doctorService->getActiveDoctors();
         return view('admin.schedules.edit', compact('schedule', 'doctors'));
     }
 
-    public function update(Request $request, Schedule $schedule)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
-            'day' => 'required|string',
-            'time' => 'required|string',
-            'is_active' => 'boolean',
+            'day' => 'required|string|max:255',
+            'time' => 'required|string|max:255',
+            'is_active' => 'boolean'
         ]);
 
-        $schedule->update($request->all());
+        $this->scheduleService->updateSchedule($id, $validated);
 
-        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil diperbarui!');
+        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
-    public function destroy(Schedule $schedule)
+    public function destroy($id)
     {
-        if ($schedule->image) {
-            Storage::disk('public')->delete($schedule->image);
-        }
-        
-        $schedule->delete();
-
-        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil dihapus!');
+        $this->scheduleService->deleteSchedule($id);
+        return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 }

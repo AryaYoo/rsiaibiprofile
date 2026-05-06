@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Doctor;
 use App\Http\Controllers\Controller;
+use App\Services\DoctorService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class DoctorController extends Controller
 {
+    protected $doctorService;
+
+    public function __construct(DoctorService $doctorService)
+    {
+        $this->doctorService = $doctorService;
+    }
+
     public function index()
     {
-        $doctors = Doctor::all();
+        $doctors = $this->doctorService->getAllDoctors();
         return view('admin.doctors.index', compact('doctors'));
     }
 
@@ -22,59 +28,41 @@ class DoctorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'is_active' => 'boolean'
         ]);
 
-        $data = $request->all();
+        $this->doctorService->storeDoctor($validated, $request->file('image'));
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('doctors', 'public');
-        }
-
-        Doctor::create($data);
-
-        return redirect()->route('admin.doctors.index')->with('success', 'Data dokter berhasil ditambahkan!');
+        return redirect()->route('admin.doctors.index')->with('success', 'Dokter berhasil ditambahkan.');
     }
 
-    public function edit(Doctor $doctor)
+    public function edit($id)
     {
+        $doctor = $this->doctorService->getDoctorById($id);
         return view('admin.doctors.edit', compact('doctor'));
     }
 
-    public function update(Request $request, Doctor $doctor)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'is_active' => 'boolean'
         ]);
 
-        $data = $request->all();
+        $this->doctorService->updateDoctor($id, $validated, $request->file('image'));
 
-        if ($request->hasFile('image')) {
-            if ($doctor->image) {
-                Storage::disk('public')->delete($doctor->image);
-            }
-            $data['image'] = $request->file('image')->store('doctors', 'public');
-        }
-
-        $doctor->update($data);
-
-        return redirect()->route('admin.doctors.index')->with('success', 'Data dokter berhasil diperbarui!');
+        return redirect()->route('admin.doctors.index')->with('success', 'Profil dokter berhasil diperbarui.');
     }
 
-    public function destroy(Doctor $doctor)
+    public function destroy($id)
     {
-        if ($doctor->image) {
-            Storage::disk('public')->delete($doctor->image);
-        }
-        $doctor->delete();
-
-        return redirect()->route('admin.doctors.index')->with('success', 'Data dokter berhasil dihapus!');
+        $this->doctorService->deleteDoctor($id);
+        return redirect()->route('admin.doctors.index')->with('success', 'Data dokter berhasil dihapus.');
     }
 }
