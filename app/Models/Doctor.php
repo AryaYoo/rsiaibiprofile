@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Schedule extends Model
+class Doctor extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'doctor_id',
-        'day',
-        'time',
+        'name',
+        'specialty',
+        'image',
         'is_active',
     ];
 
-    public function doctor()
+    public function schedules()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->hasMany(Schedule::class);
     }
 }

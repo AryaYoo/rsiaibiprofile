@@ -71,20 +71,20 @@
             </div>
 
             <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
-                @forelse($groupedSchedules ?? [] as $doctorName => $doctorSchedules)
-                    @php $firstSchedule = $doctorSchedules->first(); @endphp
+                @forelse($groupedSchedules ?? [] as $doctorId => $doctorSchedules)
+                    @php $doctor = $doctorSchedules->first()->doctor; @endphp
                     <div class="feature-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); padding: 24px;">
-                        @if($firstSchedule->image)
-                            <img src="{{ asset('storage/' . $firstSchedule->image) }}" alt="{{ $doctorName }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
+                        @if($doctor->image)
+                            <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{ $doctor->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
                         @else
                             <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; margin-bottom: 16px;">
-                                {{ substr($doctorName, strpos($doctorName, ' ') + 1, 1) !== false ? substr($doctorName, strpos($doctorName, ' ') + 1, 1) : substr($doctorName, 0, 1) }}
+                                {{ substr($doctor->name, 0, 1) }}
                             </div>
                         @endif
                         
-                        <h3 style="margin-bottom: 4px; font-size: 1.1rem;">{{ $doctorName }}</h3>
+                        <h3 style="margin-bottom: 4px; font-size: 1.1rem;">{{ $doctor->name }}</h3>
                         <span style="display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 20px;">
-                            {{ $firstSchedule->specialty ?? 'Umum' }}
+                            {{ $doctor->specialty ?? 'Umum' }}
                         </span>
                         
                         <div style="width: 100%; text-align: left; background: var(--bg-main); padding: 16px; border-radius: 8px; margin-top: auto;">

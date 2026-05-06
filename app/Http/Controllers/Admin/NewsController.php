@@ -32,6 +32,10 @@ class NewsController extends Controller
         $news->title = $request->title;
         $news->slug = Str::slug($request->title);
         $news->content = $request->content;
+        $news->meta_title = $request->meta_title;
+        $news->meta_description = $request->meta_description;
+        $news->meta_keywords = $request->meta_keywords;
+        $news->is_published = $request->has('is_published');
         
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('news', 'public');
@@ -59,6 +63,10 @@ class NewsController extends Controller
         $news->title = $request->title;
         $news->slug = Str::slug($request->title);
         $news->content = $request->content;
+        $news->meta_title = $request->meta_title;
+        $news->meta_description = $request->meta_description;
+        $news->meta_keywords = $request->meta_keywords;
+        $news->is_published = $request->has('is_published');
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('news', 'public');

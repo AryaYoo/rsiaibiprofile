@@ -13,8 +13,10 @@ Route::prefix('admienz')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
     
-    // CMS Settings
-    Route::resource('settings', App\Http\Controllers\Admin\ContentController::class)->names('admin.settings');
+    // CMS Settings & Doctors
+    Route::get('settings', [App\Http\Controllers\Admin\ContentController::class, 'index'])->name('admin.settings.index');
+    Route::post('settings', [App\Http\Controllers\Admin\ContentController::class, 'update'])->name('admin.settings.update');
+    Route::resource('doctors', App\Http\Controllers\Admin\DoctorController::class)->names('admin.doctors');
     Route::resource('promotions', App\Http\Controllers\Admin\PromotionController::class)->names('admin.promotions');
     Route::post('promotions/{promotion}/toggle', [App\Http\Controllers\Admin\PromotionController::class, 'toggle'])->name('admin.promotions.toggle');
 
@@ -82,6 +84,7 @@ Route::prefix('company-profile')->group(function () {
     Route::get('/layanan', [App\Http\Controllers\ComproController::class, 'layanan'])->name('compro.layanan');
     Route::get('/tentang', [App\Http\Controllers\ComproController::class, 'tentang'])->name('compro.tentang');
     Route::get('/berita', [App\Http\Controllers\ComproController::class, 'berita'])->name('compro.berita');
+    Route::get('/berita/{slug}', [App\Http\Controllers\ComproController::class, 'beritaDetail'])->name('compro.berita.detail');
     Route::get('/kontak', [App\Http\Controllers\ComproController::class, 'kontak'])->name('compro.kontak');
     Route::get('/galeri', [App\Http\Controllers\ComproController::class, 'galeri'])->name('compro.galeri');
     Route::post('/feedback', [App\Http\Controllers\ComproController::class, 'storeFeedback'])->name('compro.feedback.store');

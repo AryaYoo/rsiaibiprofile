@@ -37,6 +37,36 @@
         </div>
 
         <div class="pt-6 border-t border-gray-100">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Pengaturan SEO (Opsional)</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Meta Title</label>
+                    <input type="text" name="meta_title" value="{{ $news->meta_title }}"
+                        class="block w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        placeholder="Judul untuk mesin pencari...">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Meta Description</label>
+                    <textarea name="meta_description" rows="3"
+                        class="block w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        placeholder="Deskripsi singkat untuk mesin pencari...">{{ $news->meta_description }}</textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Meta Keywords</label>
+                    <input type="text" name="meta_keywords" value="{{ $news->meta_keywords }}"
+                        class="block w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                        placeholder="kata, kunci, berita (pisahkan dengan koma)">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+            <input type="checkbox" name="is_published" id="is_published" value="1" {{ $news->is_published ? 'checked' : '' }}
+                class="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+            <label for="is_published" class="text-sm font-bold text-emerald-800 cursor-pointer">Publikasikan Berita Ini</label>
+        </div>
+
+        <div class="pt-6 border-t border-gray-100">
             <button type="submit" 
                 class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-200 transition-all transform active:scale-95">
                 Simpan Perubahan

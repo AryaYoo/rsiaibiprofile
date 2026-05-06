@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'RSIAIBI | Surabaya')</title>
+    @yield('meta')
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,6 +147,78 @@
 
             window.addEventListener('scroll', updateActive);
             updateActive();
+
+            // Global Smooth Scroll for Hash Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const offset = 80;
+                        const bodyRect = document.body.getBoundingClientRect().top;
+                        const elementRect = targetElement.getBoundingClientRect().top;
+                        const elementPosition = elementRect - bodyRect;
+                        const offsetPosition = elementPosition - offset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update URL hash without jumping
+                        window.history.pushState(null, null, targetId);
+                    }
+                });
+            });
+
+            // Counter Animation
+            const counters = document.querySelectorAll('.counter');
+            
+            const animateCounter = (counter) => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 2000; // 2 seconds
+                const startTime = performance.now();
+                
+                const update = (now) => {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Ease out expo function for premium feel
+                    const easeOut = 1 - Math.pow(2, -10 * progress);
+                    const current = Math.floor(easeOut * target);
+                    
+                    counter.innerText = current;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                
+                requestAnimationFrame(update);
+            };
+
+            const observerOptions = {
+                threshold: 0.2 // Trigger earlier
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Small delay to ensure the 'reveal' animation has started
+                        setTimeout(() => {
+                            animateCounter(entry.target);
+                        }, 200);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            counters.forEach(counter => observer.observe(counter));
         });
     </script>
 </body>

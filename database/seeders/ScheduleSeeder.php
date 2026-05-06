@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Doctor;
 use App\Models\Schedule;
 
 class ScheduleSeeder extends Seeder
@@ -13,78 +14,110 @@ class ScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        $schedules = [
+        // Clear existing data
+        Schedule::truncate();
+        Doctor::truncate();
+
+        // --- MASTER DOKTER ---
+        $doctorsData = [
             [
-                'doctor_name' => 'dr. Budi Santoso, Sp.A',
-                'specialty' => 'Poli Anak',
-                'day' => 'Senin',
-                'time' => '08:00 - 12:00',
-                'is_active' => true,
+                'name' => 'dr. Muhammad Dwinanda Junaedi, Sp.OG',
+                'specialty' => 'Kandungan',
             ],
             [
-                'doctor_name' => 'dr. Siti Aminah, Sp.OG',
-                'specialty' => 'Poli Kandungan',
-                'day' => 'Selasa',
-                'time' => '09:00 - 13:00',
-                'is_active' => true,
+                'name' => 'dr. Jemmy Tlogo, Sp.OG',
+                'specialty' => 'Kandungan',
             ],
             [
-                'doctor_name' => 'dr. Andi Pratama, Sp.PD',
-                'specialty' => 'Poli Penyakit Dalam',
-                'day' => 'Rabu',
-                'time' => '10:00 - 14:00',
-                'is_active' => true,
+                'name' => 'dr. Hermanto Tri Joewono, Sp.OG',
+                'specialty' => 'Kandungan',
             ],
             [
-                'doctor_name' => 'dr. Rina Mulyani, Sp.M',
-                'specialty' => 'Poli Mata',
-                'day' => 'Kamis',
-                'time' => '08:00 - 11:00',
-                'is_active' => true,
+                'name' => 'dr. Marsianto, Sp.OG',
+                'specialty' => 'Kandungan',
             ],
             [
-                'doctor_name' => 'dr. Hendra Wijaya, Sp.B',
-                'specialty' => 'Poli Bedah',
-                'day' => 'Jumat',
-                'time' => '13:00 - 16:00',
-                'is_active' => true,
+                'name' => 'dr. Heri Slamet Santoso, Sp.OG',
+                'specialty' => 'Kandungan',
             ],
             [
-                'doctor_name' => 'dr. Ratna Sari, Sp.KK',
-                'specialty' => 'Poli Kulit & Kelamin',
-                'day' => 'Sabtu',
-                'time' => '09:00 - 12:00',
-                'is_active' => true,
+                'name' => 'dr. Alivia Rizky Nuriyanto, Sp.A',
+                'specialty' => 'Anak',
             ],
             [
-                'doctor_name' => 'dr. Joko Susanto, Sp.THT',
-                'specialty' => 'Poli THT',
-                'day' => 'Minggu',
-                'time' => '10:00 - 12:00',
-                'is_active' => true,
+                'name' => 'dr. Satrio Boediman, Sp.A',
+                'specialty' => 'Anak',
             ],
             [
-                'doctor_name' => 'dr. Anita Larasati, Sp.A',
-                'specialty' => 'Poli Anak',
-                'day' => 'Senin',
-                'time' => '13:00 - 16:00',
-                'is_active' => true,
+                'name' => 'dr. Michael Septian Sihombing, Sp.A',
+                'specialty' => 'Anak',
             ],
             [
-                'doctor_name' => 'dr. Dwi Putra, Sp.OG',
-                'specialty' => 'Poli Kandungan',
-                'day' => 'Kamis',
-                'time' => '14:00 - 17:00',
-                'is_active' => true,
+                'name' => 'dr. Eko Oktiawan Wicaksono, Sp.PD',
+                'specialty' => 'Penyakit Dalam',
             ],
-            [
-                'doctor_name' => 'dr. Maya Indah, Sp.PD',
-                'specialty' => 'Poli Penyakit Dalam',
-                'day' => 'Jumat',
-                'time' => '08:00 - 12:00',
-                'is_active' => true,
-            ]
         ];
+
+        $doctors = [];
+        foreach ($doctorsData as $data) {
+            $doctors[$data['name']] = Doctor::create($data);
+        }
+
+        // --- JADWAL DOKTER ---
+        $schedules = [];
+        $monFri = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+
+        // dr. Muhammad Dwinanda Junaedi, Sp.OG
+        foreach ($monFri as $day) {
+            $schedules[] = ['doctor_id' => $doctors['dr. Muhammad Dwinanda Junaedi, Sp.OG']->id, 'day' => $day, 'time' => '13.00 - 15.00', 'is_active' => true];
+        }
+        $schedules[] = ['doctor_id' => $doctors['dr. Muhammad Dwinanda Junaedi, Sp.OG']->id, 'day' => 'Sabtu', 'time' => '13.00 - 14.00 (Umum)', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Muhammad Dwinanda Junaedi, Sp.OG']->id, 'day' => 'Minggu', 'time' => '13.00 - 14.00 (Umum)', 'is_active' => true];
+
+        // dr. Jemmy Tlogo, Sp.OG
+        foreach ($monFri as $day) {
+            $schedules[] = ['doctor_id' => $doctors['dr. Jemmy Tlogo, Sp.OG']->id, 'day' => $day, 'time' => '20.00 - 22.00', 'is_active' => true];
+        }
+
+        // dr. Hermanto Tri Joewono, Sp.OG
+        foreach (['Rabu', 'Kamis', 'Jumat'] as $day) {
+            $schedules[] = ['doctor_id' => $doctors['dr. Hermanto Tri Joewono, Sp.OG']->id, 'day' => $day, 'time' => '18.30 - 19.30', 'is_active' => true];
+        }
+
+        // dr. Marsianto, Sp.OG
+        foreach (['Sabtu', 'Minggu'] as $day) {
+            $schedules[] = ['doctor_id' => $doctors['dr. Marsianto, Sp.OG']->id, 'day' => $day, 'time' => '18.00 - Selesai', 'is_active' => true];
+        }
+
+        // dr. Heri Slamet Santoso, Sp.OG
+        $schedules[] = ['doctor_id' => $doctors['dr. Heri Slamet Santoso, Sp.OG']->id, 'day' => 'Selasa', 'time' => '15.00 - 18.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Heri Slamet Santoso, Sp.OG']->id, 'day' => 'Kamis', 'time' => '15.00 - 18.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Heri Slamet Santoso, Sp.OG']->id, 'day' => 'Sabtu', 'time' => '09.00 - 11.00', 'is_active' => true];
+
+        // dr. Alivia Rizky Nuriyanto, Sp.A
+        foreach (['Selasa', 'Kamis', 'Jumat'] as $day) {
+            $schedules[] = ['doctor_id' => $doctors['dr. Alivia Rizky Nuriyanto, Sp.A']->id, 'day' => $day, 'time' => '10.30 - 12.30', 'is_active' => true];
+        }
+        $schedules[] = ['doctor_id' => $doctors['dr. Alivia Rizky Nuriyanto, Sp.A']->id, 'day' => 'Sabtu', 'time' => '08.00 - 10.00', 'is_active' => true];
+
+        // dr. Satrio Boediman, Sp.A
+        $schedules[] = ['doctor_id' => $doctors['dr. Satrio Boediman, Sp.A']->id, 'day' => 'Senin', 'time' => '12.30 - 13.30', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Satrio Boediman, Sp.A']->id, 'day' => 'Selasa', 'time' => '19.00 - 21.00 (Umum)', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Satrio Boediman, Sp.A']->id, 'day' => 'Rabu', 'time' => '12.30 - 13.30', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Satrio Boediman, Sp.A']->id, 'day' => 'Kamis', 'time' => '19.00 - 21.00 (Umum)', 'is_active' => true];
+
+        // dr. Michael Septian Sihombing, Sp.A
+        $schedules[] = ['doctor_id' => $doctors['dr. Michael Septian Sihombing, Sp.A']->id, 'day' => 'Senin', 'time' => '16.00 - 18.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Michael Septian Sihombing, Sp.A']->id, 'day' => 'Rabu', 'time' => '17.00 - 19.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Michael Septian Sihombing, Sp.A']->id, 'day' => 'Jumat', 'time' => '16.00 - 18.00', 'is_active' => true];
+
+        // dr. Eko Oktiawan Wicaksono, Sp.PD
+        $schedules[] = ['doctor_id' => $doctors['dr. Eko Oktiawan Wicaksono, Sp.PD']->id, 'day' => 'Senin', 'time' => '19.00 - 21.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Eko Oktiawan Wicaksono, Sp.PD']->id, 'day' => 'Selasa', 'time' => '13.00 - 15.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Eko Oktiawan Wicaksono, Sp.PD']->id, 'day' => 'Rabu', 'time' => '16.00 - 18.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Eko Oktiawan Wicaksono, Sp.PD']->id, 'day' => 'Kamis', 'time' => '13.00 - 15.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Eko Oktiawan Wicaksono, Sp.PD']->id, 'day' => 'Jumat', 'time' => '14.00 - 16.00', 'is_active' => true];
+        $schedules[] = ['doctor_id' => $doctors['dr. Eko Oktiawan Wicaksono, Sp.PD']->id, 'day' => 'Sabtu', 'time' => '11.00 - 14.00', 'is_active' => true];
 
         foreach ($schedules as $schedule) {
             Schedule::create($schedule);

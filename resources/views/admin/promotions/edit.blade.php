@@ -69,6 +69,7 @@
                             <div class="text-center text-gray-400" id="videoPlaceholder">
                                 <i class="fas fa-video text-2xl mb-1"></i>
                                 <p class="text-xs">Belum ada video</p>
+                                <p class="text-[10px] text-emerald-600 mt-1 font-bold">Max: 5MB | Durasi: 15-30s</p>
                             </div>
                         @endif
                     </div>

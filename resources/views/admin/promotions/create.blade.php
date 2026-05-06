@@ -84,6 +84,7 @@
                         <div id="placeholderVideo" class="text-center">
                             <i class="fas fa-video text-2xl text-gray-300 mb-1"></i>
                             <p class="text-xs text-gray-500">Upload Video Loop (MP4)</p>
+                            <p class="text-[10px] text-emerald-600 mt-1 font-bold">Max: 5MB | Durasi: 15-30 detik</p>
                         </div>
                     </div>
                 </div>

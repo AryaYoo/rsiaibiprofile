@@ -4,9 +4,9 @@
     {{-- Page Header --}}
     <section id="header" data-nav-label="Berita" class="page-header">
         <div class="container">
-            <span class="badge-label">Berita</span>
-            <h1>Informasi Berita</h1>
-            <p>Berita terbaru seputar rumah sakit ibu dan anak IBI Surabaya</p>
+            <span class="badge-label">Berita & Artikel</span>
+            <h1>Informasi Berita & Artikel</h1>
+            <p>Update terbaru seputar kesehatan dan rumah sakit ibu dan anak IBI Surabaya</p>
         </div>
     </section>
 
@@ -14,7 +14,7 @@
     <section id="news-list" data-nav-label="Daftar Berita" class="section-padding" style="background: var(--bg-main);">
         <div class="container">
             <div class="news-grid reveal-stagger">
-                @foreach($news as $item)
+                @forelse($news as $item)
                 <div class="news-card">
                     <div class="news-card-image">
                         <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://via.placeholder.com/400x250' }}" alt="{{ $item->title }}">
@@ -25,10 +25,18 @@
                         </span>
                         <h3>{{ $item->title }}</h3>
                         <p>{{ Str::limit($item->content, 120) }}</p>
-                        <a href="#" class="news-link">Baca Selengkapnya →</a>
+                        <a href="{{ route('compro.berita.detail', $item->slug) }}" class="news-link">Baca Selengkapnya →</a>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="text-center py-5 w-100" style="grid-column: 1 / -1;">
+                    <div class="mb-4">
+                        <i class="bi bi-journal-x" style="font-size: 4rem; color: var(--border-soft);"></i>
+                    </div>
+                    <h3 class="text-muted">Belum ada berita atau artikel yang diterbitkan.</h3>
+                    <p class="text-muted">Silakan kembali lagi nanti untuk informasi terbaru.</p>
+                </div>
+                @endforelse
             </div>
 
             <div style="margin-top: 48px; display: flex; justify-content: center;">

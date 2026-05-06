@@ -87,20 +87,20 @@
             </div>
 
             <div class="features-grid reveal-stagger" id="doctor-grid" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
-                @forelse($groupedSchedules ?? [] as $doctorName => $doctorSchedules)
-                    @php $firstSchedule = $doctorSchedules->first(); @endphp
-                    <div class="feature-card doctor-card" data-specialty="{{ $firstSchedule->specialty ?? 'Umum' }}" style="display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); padding: 24px; transition: all 0.3s ease;">
-                        @if($firstSchedule->image)
-                            <img src="{{ asset('storage/' . $firstSchedule->image) }}" alt="{{ $doctorName }}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 3px solid var(--primary-soft);">
+                @forelse($groupedSchedules ?? [] as $doctorId => $doctorSchedules)
+                    @php $doctor = $doctorSchedules->first()->doctor; @endphp
+                    <div class="feature-card doctor-card" data-specialty="{{ $doctor->specialty ?? 'Umum' }}" style="display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); padding: 24px; transition: all 0.3s ease;">
+                        @if($doctor->image)
+                            <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{ $doctor->name }}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 3px solid var(--primary-soft);">
                         @else
                             <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; margin-bottom: 16px;">
-                                {{ substr($doctorName, strpos($doctorName, ' ') + 1, 1) !== false ? substr($doctorName, strpos($doctorName, ' ') + 1, 1) : substr($doctorName, 0, 1) }}
+                                {{ substr($doctor->name, 0, 1) }}
                             </div>
                         @endif
                         
-                        <h3 style="margin-bottom: 4px; font-size: 1.15rem;">{{ $doctorName }}</h3>
+                        <h3 style="margin-bottom: 4px; font-size: 1.15rem;">{{ $doctor->name }}</h3>
                         <span style="display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">
-                            {{ $firstSchedule->specialty ?? 'Umum' }}
+                            {{ $doctor->specialty ?? 'Umum' }}
                         </span>
                     </div>
                 @empty

@@ -72,6 +72,15 @@ class AdminSeeder extends Seeder
                 'value' => 'info@rsiaibi.com',
                 'group' => 'contact'
             ],
+            // Berita Sidebar Ad
+            [
+                'key' => 'news_sidebar_ad',
+                'value' => '<div class="p-4 bg-gray-100 rounded-lg text-center border-2 border-dashed border-gray-300">
+                    <p class="text-gray-500 font-bold mb-0">Ruang Iklan & Kemitraan</p>
+                    <p class="text-xs text-gray-400">Hubungi kami untuk info lebih lanjut</p>
+                </div>',
+                'group' => 'berita'
+            ],
         ];
 
         foreach ($settings as $setting) {

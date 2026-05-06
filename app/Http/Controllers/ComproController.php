@@ -6,6 +6,8 @@ use App\Models\Setting;
 use App\Models\News;
 use App\Models\Service;
 use App\Models\Gallery;
+use App\Models\Schedule;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 
 class ComproController extends Controller
@@ -18,8 +20,9 @@ class ComproController extends Controller
         $hariIndo = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $todayString = $hariIndo[date('w')];
         
-        $todaySchedules = \App\Models\Schedule::where('is_active', true)
+        $todaySchedules = Schedule::with('doctor')
             ->where('day', 'like', "%{$todayString}%")
+            ->where('is_active', true)
             ->orderBy('specialty')
             ->get();
             
@@ -34,15 +37,14 @@ class ComproController extends Controller
         $mission = json_decode(Setting::where('key', 'mission')->value('value'), true) ?? [];
 
         // Fetch schedules for the "Dokter Spesialis" section
-        $rawSchedules = \App\Models\Schedule::where('is_active', true)
-                            ->orderBy('specialty')
-                            ->orderBy('doctor_name')
+        $rawSchedules = Schedule::with('doctor')
+                            ->where('is_active', true)
                             ->get();
         
-        $groupedSchedules = $rawSchedules->groupBy('doctor_name');
+        $groupedSchedules = $rawSchedules->groupBy('doctor_id');
         
-        // Extract unique specialties for the filter dropdown
-        $specialties = $rawSchedules->pluck('specialty')->unique()->filter()->values();
+        // Extract unique specialties from doctors
+        $specialties = Doctor::where('is_active', true)->pluck('specialty')->unique()->filter()->values();
 
         return view('compro.tentang', compact('aboutTitle', 'aboutContent', 'vision', 'mission', 'groupedSchedules', 'specialties'));
     }
@@ -52,23 +54,34 @@ class ComproController extends Controller
         $medis = Service::where('category', 'medis')->get();
         $administrasi = Service::where('category', 'administrasi')->get();
         
-        // Fetch all active schedules and group them by Doctor Name
-        $rawSchedules = \App\Models\Schedule::where('is_active', true)
-                            ->orderBy('specialty')
-                            ->orderBy('doctor_name')
+        // Fetch all active schedules and group them by Doctor
+        $rawSchedules = Schedule::with('doctor')
+                            ->where('is_active', true)
                             ->get();
                             
-        // Group by Doctor Name so each doctor only has 1 card
-        $groupedSchedules = $rawSchedules->groupBy('doctor_name');
+        // Group by Doctor ID so each doctor only has 1 card
+        $groupedSchedules = $rawSchedules->groupBy('doctor_id');
         
         return view('compro.layanan', compact('medis', 'administrasi', 'groupedSchedules'));
     }
 
     public function berita()
     {
-        $news = News::latest()->paginate(9);
+        $news = News::where('is_published', true)->latest()->paginate(9);
         $instagramPosts = \App\Models\InstagramPost::where('is_active', true)->latest()->get();
         return view('compro.berita', compact('news', 'instagramPosts'));
+    }
+
+    public function beritaDetail($slug)
+    {
+        $item = News::where('slug', $slug)->firstOrFail();
+        $recommendations = News::where('id', '!=', $item->id)
+                                ->where('is_published', true)
+                                ->inRandomOrder()
+                                ->limit(2)
+                                ->get();
+        $sidebarAd = Setting::where('key', 'news_sidebar_ad')->value('value');
+        return view('compro.berita-detail', compact('item', 'recommendations', 'sidebarAd'));
     }
 
     public function galeri()

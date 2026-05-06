@@ -10,7 +10,7 @@
             <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
             <li><a href="{{ route('compro.layanan') }}" class="{{ request()->routeIs('compro.layanan') ? 'active' : '' }}">Layanan</a></li>
             <li><a href="{{ route('compro.tentang') }}" class="{{ request()->routeIs('compro.tentang') ? 'active' : '' }}">Tentang</a></li>
-            <li><a href="{{ route('compro.berita') }}" class="{{ request()->routeIs('compro.berita') ? 'active' : '' }}">Berita</a></li>
+            <li><a href="{{ route('compro.berita') }}" class="{{ request()->routeIs('compro.berita') ? 'active' : '' }}">Berita & Artikel</a></li>
             <li><a href="{{ route('compro.kontak') }}" class="{{ request()->routeIs('compro.kontak') ? 'active' : '' }}">Kontak</a></li>
             <li><a href="{{ route('compro.galeri') }}" class="{{ request()->routeIs('compro.galeri') ? 'active' : '' }}">Galeri</a></li>
         </ul>
