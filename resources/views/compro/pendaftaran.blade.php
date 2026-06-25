@@ -39,7 +39,15 @@
                         <span class="step-num">2</span>
                         <i class="fas fa-check step-check" style="display:none;"></i>
                     </div>
-                    <span class="pend-stepper-label">Kunjungan & Kirim</span>
+                    <span class="pend-stepper-label">Kunjungan</span>
+                </div>
+                <div class="pend-stepper-line" id="line-2"></div>
+                <div class="pend-stepper-item locked" id="step-ind-3">
+                    <div class="pend-stepper-circle">
+                        <span class="step-num">3</span>
+                        <i class="fas fa-check step-check" style="display:none;"></i>
+                    </div>
+                    <span class="pend-stepper-label">Ringkasan</span>
                 </div>
             </div>
 
@@ -64,7 +72,7 @@
                         {{-- ======= STEP 1: Data Diri ======= --}}
                         <div class="pend-step active" id="step-1">
                             <div class="pend-step-header">
-                                <div class="pend-step-header-badge">Langkah 1 dari 2</div>
+                                <div class="pend-step-header-badge">Langkah 1 dari 3</div>
                                 <h2>Data Diri</h2>
                                 <p>Isi informasi kontak Anda agar kami bisa menghubungi Anda.</p>
                             </div>
@@ -110,11 +118,11 @@
                             </div>
                         </div>
 
-                        {{-- ======= STEP 2: Info Kunjungan & Kirim ======= --}}
+                        {{-- ======= STEP 2: Info Kunjungan ======= --}}
                         <div class="pend-step pend-step--locked" id="step-2">
                             <div class="pend-step-header">
-                                <div class="pend-step-header-badge">Langkah 2 dari 2</div>
-                                <h2>Info Kunjungan & Kirim</h2>
+                                <div class="pend-step-header-badge">Langkah 2 dari 3</div>
+                                <h2>Info Kunjungan</h2>
                                 <p>Pilih tujuan poli dan sampaikan keluhan Anda.</p>
                             </div>
 
@@ -126,17 +134,6 @@
                             </div>
 
                             <div class="pend-fields">
-                                {{-- Summary Review --}}
-                                <div class="pend-summary" id="summaryBox">
-                                    <div class="pend-summary-title"><i class="fas fa-clipboard-check"></i> Ringkasan Data
-                                        Diri</div>
-                                    <div class="pend-summary-grid">
-                                        <div><span>Nama</span><strong id="sum-nama">—</strong></div>
-                                        <div><span>Email</span><strong id="sum-email">—</strong></div>
-                                        <div><span>No. HP</span><strong id="sum-hp">—</strong></div>
-                                    </div>
-                                </div>
-
                                 <div class="pend-field" data-required>
                                     <label for="tujuan_poli">Tujuan Periksa / Poli <span class="req">*</span></label>
                                     <div class="pend-input-wrap pend-input-wrap--select">
@@ -148,8 +145,7 @@
                                             <option value="Poli Umum" {{ old('tujuan_poli') === 'Poli Umum' ? 'selected' : '' }}>Poli Umum</option>
                                             <option value="Poli Gigi" {{ old('tujuan_poli') === 'Poli Gigi' ? 'selected' : '' }}>Poli Gigi</option>
                                             <option value="Poli Kulit & Kecantikan" {{ old('tujuan_poli') === 'Poli Kulit & Kecantikan' ? 'selected' : '' }}>Poli Kulit & Kecantikan</option>
-                                            <option value="Lainnya" {{ old('tujuan_poli') === 'Lainnya' ? 'selected' : '' }}>
-                                                Lainnya</option>
+                                            <option value="Lainnya" {{ old('tujuan_poli') === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                                         </select>
                                         <i class="fas fa-chevron-down pend-select-arrow"></i>
                                     </div>
@@ -166,23 +162,62 @@
                                     </div>
                                     <span class="pend-field-error" id="err-pesan"></span>
                                 </div>
-
-                                <div class="pend-privacy-note">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <span>Data Anda aman dan hanya digunakan untuk keperluan pendaftaran layanan kesehatan
-                                        di RSIA IBI Surabaya.</span>
-                                </div>
                             </div>
 
                             <div class="pend-step-nav">
                                 <button type="button" class="pend-btn-back" onclick="prevStep(2)">
                                     <i class="fas fa-arrow-left"></i> Kembali
                                 </button>
+                                <button type="button" class="pend-btn-next" onclick="nextStep(2)">
+                                    Lanjut: Ringkasan <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- ======= STEP 3: Ringkasan & Kirim ======= --}}
+                        <div class="pend-step pend-step--locked" id="step-3">
+                            <div class="pend-step-header">
+                                <div class="pend-step-header-badge">Langkah 3 dari 3</div>
+                                <h2>Ringkasan & Kirim</h2>
+                                <p>Periksa kembali data Anda sebelum mengirim pendaftaran.</p>
+                            </div>
+
+                            <div class="pend-locked-overlay" id="overlay-3">
+                                <div class="pend-locked-msg">
+                                    <i class="fas fa-lock"></i>
+                                    <p>Selesaikan <strong>Info Kunjungan</strong> terlebih dahulu</p>
+                                </div>
+                            </div>
+
+                            <div class="pend-fields">
+                                {{-- Summary Review --}}
+                                <div class="pend-summary" id="summaryBox">
+                                    <div class="pend-summary-title"><i class="fas fa-clipboard-check"></i> Ringkasan Data Janji</div>
+                                    <div class="pend-summary-grid">
+                                        <div><span>Nama Lengkap</span><strong id="sum-nama">—</strong></div>
+                                        <div><span>No. HP / WhatsApp</span><strong id="sum-hp">—</strong></div>
+                                        <div style="grid-column: span 2;"><span>Email</span><strong id="sum-email">—</strong></div>
+                                        <div style="grid-column: span 2;"><span>Tujuan Poli</span><strong id="sum-poli">—</strong></div>
+                                        <div style="grid-column: span 2;">
+                                            <span>Keluhan / Pesan</span>
+                                            <p id="sum-pesan" style="font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-top: 4px; background: rgba(18, 53, 36, 0.04); padding: 12px; border-radius: 8px; border: 1px dashed rgba(18, 53, 36, 0.15); font-family: inherit; white-space: pre-line;">—</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pend-privacy-note">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Data Anda aman dan hanya digunakan untuk keperluan pendaftaran layanan kesehatan di RSIA IBI Surabaya.</span>
+                                </div>
+                            </div>
+
+                            <div class="pend-step-nav">
+                                <button type="button" class="pend-btn-back" onclick="prevStep(3)">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>
                                 <button type="submit" class="pend-btn-submit" id="submitBtn">
-                                    <span class="pend-submit-text"><i class="fas fa-paper-plane"></i> Kirim
-                                        Pendaftaran</span>
-                                    <span class="pend-submit-loading" style="display:none;"><i
-                                            class="fas fa-spinner fa-spin"></i> Mengirim...</span>
+                                    <span class="pend-submit-text"><i class="fas fa-paper-plane"></i> Kirim Pendaftaran</span>
+                                    <span class="pend-submit-loading" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Mengirim...</span>
                                 </button>
                             </div>
                         </div>
@@ -321,6 +356,7 @@
             max-width: 680px;
             margin: 0 auto;
             overflow: hidden;
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .pend-steps-slider {
@@ -796,20 +832,26 @@
 @push('scripts')
     <script>
         let currentStep = 1;
-        const TOTAL_STEPS = 2;
+        const TOTAL_STEPS = 3;
 
         document.addEventListener('DOMContentLoaded', function () {
+            // Adjust height initially
+            setTimeout(adjustFormHeight, 150);
+
             // If there were validation errors, unlock step 2 and go there
             @if($errors->any())
                 unlockStep(2);
+                unlockStep(3);
                 @if($errors->has('tujuan_poli') || $errors->has('pesan'))
                     goToStep(2);
                 @endif
             @else
-                    // Set initial tabindex for step 2
-                    const step2 = document.getElementById('step-2');
-                    if (step2) step2.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
-                @endif
+                // Set initial tabindex for steps 2 and 3
+                const step2 = document.getElementById('step-2');
+                if (step2) step2.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
+                const step3 = document.getElementById('step-3');
+                if (step3) step3.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
+            @endif
 
             // Submit validation and loading state
             document.getElementById('pendaftaranForm').addEventListener('submit', function (e) {
@@ -827,7 +869,18 @@
                 btn.querySelector('.pend-submit-loading').style.display = 'inline-flex';
                 btn.disabled = true;
             });
+
+            // Listen for window resize to adjust container height
+            window.addEventListener('resize', adjustFormHeight);
         });
+
+        function adjustFormHeight() {
+            const activeStepEl = document.querySelector('.pend-step.active');
+            const formWrap = document.querySelector('.pend-form-wrap');
+            if (activeStepEl && formWrap) {
+                formWrap.style.height = activeStepEl.offsetHeight + 'px';
+            }
+        }
 
         function validateStep(step) {
             let isValid = true;
@@ -888,7 +941,7 @@
             unlockStep(next);
             goToStep(next);
 
-            if (next === 2) fillSummary();
+            if (next === 3) fillSummary();
         }
 
         function prevStep(from) {
@@ -954,11 +1007,18 @@
                 }
             }
 
-            // Update step line
-            const line = document.getElementById('line-1');
-            if (line) {
-                line.classList.toggle('done', step > 1);
+            // Update step lines
+            const line1 = document.getElementById('line-1');
+            if (line1) {
+                line1.classList.toggle('done', step > 1);
             }
+            const line2 = document.getElementById('line-2');
+            if (line2) {
+                line2.classList.toggle('done', step > 2);
+            }
+
+            // Smooth height transition
+            setTimeout(adjustFormHeight, 50);
 
             // Smooth scroll to form
             const formWrap = document.querySelector('.pend-form-wrap');
@@ -971,6 +1031,8 @@
             document.getElementById('sum-nama').textContent = document.getElementById('nama').value || '—';
             document.getElementById('sum-email').textContent = document.getElementById('email').value || '—';
             document.getElementById('sum-hp').textContent = document.getElementById('no_telp').value || '—';
+            document.getElementById('sum-poli').textContent = document.getElementById('tujuan_poli').value || '—';
+            document.getElementById('sum-pesan').textContent = document.getElementById('pesan').value || '—';
         }
     </script>
 @endpush
