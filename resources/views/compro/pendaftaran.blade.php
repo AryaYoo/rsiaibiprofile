@@ -13,9 +13,6 @@
     PAGE HEADER
     ============================================ --}}
     <section id="header" class="page-header pend-header">
-        <div class="container">
-            <span class="badge-label">Pendaftaran Online</span>
-        </div>
     </section>
 
     {{-- ============================================
@@ -189,22 +186,28 @@
                             <div class="pend-fields">
                                 {{-- Summary Review --}}
                                 <div class="pend-summary" id="summaryBox">
-                                    <div class="pend-summary-title"><i class="fas fa-clipboard-check"></i> Ringkasan Data Janji</div>
+                                    <div class="pend-summary-title"><i class="fas fa-clipboard-check"></i> Ringkasan Data
+                                        Janji</div>
                                     <div class="pend-summary-grid">
                                         <div><span>Nama Lengkap</span><strong id="sum-nama">—</strong></div>
                                         <div><span>No. HP / WhatsApp</span><strong id="sum-hp">—</strong></div>
-                                        <div style="grid-column: span 2;"><span>Email</span><strong id="sum-email">—</strong></div>
-                                        <div style="grid-column: span 2;"><span>Tujuan Poli</span><strong id="sum-poli">—</strong></div>
+                                        <div style="grid-column: span 2;"><span>Email</span><strong
+                                                id="sum-email">—</strong></div>
+                                        <div style="grid-column: span 2;"><span>Tujuan Poli</span><strong
+                                                id="sum-poli">—</strong></div>
                                         <div style="grid-column: span 2;">
                                             <span>Keluhan / Pesan</span>
-                                            <p id="sum-pesan" style="font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-top: 4px; background: rgba(18, 53, 36, 0.04); padding: 12px; border-radius: 8px; border: 1px dashed rgba(18, 53, 36, 0.15); font-family: inherit; white-space: pre-line;">—</p>
+                                            <p id="sum-pesan"
+                                                style="font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-top: 4px; background: rgba(18, 53, 36, 0.04); padding: 12px; border-radius: 8px; border: 1px dashed rgba(18, 53, 36, 0.15); font-family: inherit; white-space: pre-line;">
+                                                —</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="pend-privacy-note">
                                     <i class="fas fa-shield-alt"></i>
-                                    <span>Data Anda aman dan hanya digunakan untuk keperluan pendaftaran layanan kesehatan di RSIA IBI Surabaya.</span>
+                                    <span>Data Anda aman dan hanya digunakan untuk keperluan pendaftaran layanan kesehatan
+                                        di RSIA IBI Surabaya.</span>
                                 </div>
                             </div>
 
@@ -213,8 +216,10 @@
                                     <i class="fas fa-arrow-left"></i> Kembali
                                 </button>
                                 <button type="submit" class="pend-btn-submit" id="submitBtn">
-                                    <span class="pend-submit-text"><i class="fas fa-paper-plane"></i> Kirim Pendaftaran</span>
-                                    <span class="pend-submit-loading" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Mengirim...</span>
+                                    <span class="pend-submit-text"><i class="fas fa-paper-plane"></i> Kirim
+                                        Pendaftaran</span>
+                                    <span class="pend-submit-loading" style="display:none;"><i
+                                            class="fas fa-spinner fa-spin"></i> Mengirim...</span>
                                 </button>
                             </div>
                         </div>
@@ -242,23 +247,26 @@
 @section('styles')
     <style>
         /* ============================================
-       PAGE HEADER
-    ============================================ */
+           PAGE HEADER
+        ============================================ */
+        .pend-header {
+            padding: 95px 0 15px !important;
+        }
         .pend-header h1 .pend-accent {
             color: var(--accent);
         }
 
         /* ============================================
-       WIZARD SECTION
-    ============================================ */
+           WIZARD SECTION
+        ============================================ */
         .pend-wizard-section {
             background: var(--bg-main);
             padding: 64px 0 80px;
         }
 
         /* ============================================
-       STEP INDICATOR
-    ============================================ */
+           STEP INDICATOR
+        ============================================ */
         .pend-stepper {
             display: flex;
             align-items: center;
@@ -347,8 +355,8 @@
         }
 
         /* ============================================
-       FORM WRAP
-    ============================================ */
+           FORM WRAP
+        ============================================ */
         .pend-form-wrap {
             max-width: 680px;
             margin: 0 auto;
@@ -364,8 +372,8 @@
         }
 
         /* ============================================
-       ALERTS
-    ============================================ */
+           ALERTS
+        ============================================ */
         .pend-alert {
             display: flex;
             align-items: flex-start;
@@ -405,8 +413,8 @@
         }
 
         /* ============================================
-       STEP CARD
-    ============================================ */
+           STEP CARD
+        ============================================ */
         .pend-step {
             width: 100%;
             flex: 0 0 100%;
@@ -456,8 +464,8 @@
         }
 
         /* ============================================
-       LOCK OVERLAY
-    ============================================ */
+           LOCK OVERLAY
+        ============================================ */
         .pend-locked-overlay {
             position: absolute;
             inset: 0;
@@ -492,8 +500,8 @@
         }
 
         /* ============================================
-       FIELDS
-    ============================================ */
+           FIELDS
+        ============================================ */
         .pend-fields {
             padding: 32px 40px;
             display: flex;
@@ -535,8 +543,8 @@
         }
 
         /* ============================================
-       INPUTS
-    ============================================ */
+           INPUTS
+        ============================================ */
         .pend-input-wrap {
             position: relative;
             display: flex;
@@ -614,8 +622,8 @@
         }
 
         /* ============================================
-       SUMMARY
-    ============================================ */
+           SUMMARY
+        ============================================ */
         .pend-summary {
             background: var(--primary-soft);
             border: 1px solid rgba(18, 53, 36, 0.12);
@@ -662,8 +670,8 @@
         }
 
         /* ============================================
-       PRIVACY NOTE
-    ============================================ */
+           PRIVACY NOTE
+        ============================================ */
         .pend-privacy-note {
             display: flex;
             align-items: flex-start;
@@ -683,8 +691,8 @@
         }
 
         /* ============================================
-       STEP NAV
-    ============================================ */
+           STEP NAV
+        ============================================ */
         .pend-step-nav {
             display: flex;
             align-items: center;
@@ -763,8 +771,8 @@
         }
 
         /* ============================================
-       RESPONSIVE
-    ============================================ */
+           RESPONSIVE
+        ============================================ */
         @media (max-width: 768px) {
             .pend-stepper-line {
                 width: 48px;
@@ -843,12 +851,12 @@
                     goToStep(2);
                 @endif
             @else
-                // Set initial tabindex for steps 2 and 3
-                const step2 = document.getElementById('step-2');
-                if (step2) step2.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
-                const step3 = document.getElementById('step-3');
-                if (step3) step3.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
-            @endif
+                            // Set initial tabindex for steps 2 and 3
+                            const step2 = document.getElementById('step-2');
+                    if (step2) step2.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
+                    const step3 = document.getElementById('step-3');
+                    if (step3) step3.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
+                @endif
 
             // Submit validation and loading state
             document.getElementById('pendaftaranForm').addEventListener('submit', function (e) {
