@@ -11,6 +11,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather Sans', sans-serif; font-weight: 700; }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @yield('styles')
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -22,44 +23,72 @@
                     <i class="fas fa-hospital-alt mr-2"></i> RSIA IBI
                 </h1>
             </div>
-            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-chart-line w-6"></i> Dashboard
-                </a>
-                <a href="{{ route('admin.promotions.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.promotions.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-ad w-6"></i> Promosi
-                </a>
-                <a href="{{ route('admin.news.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.news.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-newspaper w-6"></i> Berita
-                </a>
-                <a href="{{ route('admin.services.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.services.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-concierge-bell w-6"></i> Layanan
-                </a>
-                <a href="{{ route('admin.gallery.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.gallery.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-images w-6"></i> Galeri
-                </a>
-                <a href="{{ route('admin.doctors.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.doctors.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-user-md w-6"></i> Master Dokter
-                </a>
-                <a href="{{ route('admin.schedules.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.schedules.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-calendar-alt w-6"></i> Jadwal Dokter
-                </a>
-                <a href="{{ route('admin.instagram.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.instagram.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fab fa-instagram w-6"></i> Instagram
-                </a>
-                <a href="{{ route('admin.feedback.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.feedback.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-comment-dots w-6"></i> Kritik & Saran
-                </a>
-                <a href="{{ route('admin.appointments.index') }}" class="flex items-center justify-between px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.appointments.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <span><i class="fas fa-calendar-check w-6"></i> Janji Online</span>
-                    @php $pendingCount = \App\Models\Appointment::where('status','menunggu')->count(); @endphp
-                    @if($pendingCount > 0)
-                        <span class="ml-2 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $pendingCount }}</span>
-                    @endif
-                </a>
-                <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.settings.index') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-cog w-6"></i> Pengaturan
-                </a>
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                {{-- Tanpa Dropdown --}}
+                <div class="space-y-1">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                        <i class="fas fa-chart-line w-6"></i> Dashboard
+                    </a>
+                    <a href="{{ route('admin.doctors.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.doctors.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                        <i class="fas fa-user-md w-6"></i> Master Dokter
+                    </a>
+                    <a href="{{ route('admin.schedules.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.schedules.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                        <i class="fas fa-calendar-alt w-6"></i> Jadwal Dokter
+                    </a>
+                </div>
+
+                {{-- Dropdown Website --}}
+                <div x-data="{ open: {{ request()->routeIs('admin.promotions.*', 'admin.news.*', 'admin.services.*', 'admin.gallery.*', 'admin.instagram.*', 'admin.settings.*') ? 'true' : 'false' }} }" class="space-y-1">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-lg font-['Merriweather_Sans'] text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none {{ request()->routeIs('admin.promotions.*', 'admin.news.*', 'admin.services.*', 'admin.gallery.*', 'admin.instagram.*', 'admin.settings.*') ? 'text-emerald-700 font-bold bg-emerald-50/50' : '' }}">
+                        <span class="flex items-center"><i class="fas fa-globe w-6"></i> Website</span>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
+                    </button>
+                    <div x-show="open" x-transition.opacity.duration.200ms class="pl-4 space-y-1" style="display: none;">
+                        <a href="{{ route('admin.promotions.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.promotions.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-ad w-5 mr-2 text-xs"></i> Promosi
+                        </a>
+                        <a href="{{ route('admin.news.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.news.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-newspaper w-5 mr-2 text-xs"></i> Berita
+                        </a>
+                        <a href="{{ route('admin.services.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.services.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-concierge-bell w-5 mr-2 text-xs"></i> Layanan
+                        </a>
+                        <a href="{{ route('admin.gallery.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.gallery.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-images w-5 mr-2 text-xs"></i> Galeri
+                        </a>
+                        <a href="{{ route('admin.instagram.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.instagram.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fab fa-instagram w-5 mr-2 text-xs"></i> Instagram
+                        </a>
+                        <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.settings.index') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-cog w-5 mr-2 text-xs"></i> Pengaturan
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Dropdown Pesan --}}
+                <div x-data="{ open: {{ request()->routeIs('admin.appointments.*', 'admin.feedback.*') ? 'true' : 'false' }} }" class="space-y-1">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-lg font-['Merriweather_Sans'] text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none {{ request()->routeIs('admin.appointments.*', 'admin.feedback.*') ? 'text-emerald-700 font-bold bg-emerald-50/50' : '' }}">
+                        <span class="flex items-center"><i class="fas fa-envelope-open-text w-6"></i> Pesan</span>
+                        <div class="flex items-center gap-2">
+                            @php $pendingCount = \App\Models\Appointment::where('status','menunggu')->count(); @endphp
+                            @if($pendingCount > 0)
+                                <span class="bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $pendingCount }}</span>
+                            @endif
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
+                        </div>
+                    </button>
+                    <div x-show="open" x-transition.opacity.duration.200ms class="pl-4 space-y-1" style="display: none;">
+                        <a href="{{ route('admin.appointments.index') }}" class="flex items-center justify-between px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.appointments.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <span class="flex items-center"><i class="fas fa-calendar-check w-5 mr-2 text-xs"></i> Janji Online</span>
+                            @if($pendingCount > 0)
+                                <span class="bg-yellow-400 text-yellow-900 text-[9px] font-bold px-1.5 py-0.5 rounded-full">{{ $pendingCount }}</span>
+                            @endif
+                        </a>
+                        <a href="{{ route('admin.feedback.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.feedback.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-comment-dots w-5 mr-2 text-xs"></i> Kritik & Saran
+                        </a>
+                    </div>
+                </div>
             </nav>
             <div class="p-4 border-t border-gray-200">
                 <form action="{{ route('logout') }}" method="POST">
