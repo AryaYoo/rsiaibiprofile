@@ -169,7 +169,6 @@
                         {{-- ======= STEP 3: Ringkasan & Kirim ======= --}}
                         <div class="pend-step pend-step--locked" id="step-3">
                             <div class="pend-step-header">
-                                <div class="pend-step-header-badge">Langkah 3 dari 3</div>
                                 <h2>Ringkasan & Kirim</h2>
                                 <p>Periksa kembali data Anda sebelum mengirim pendaftaran.</p>
                             </div>
@@ -244,6 +243,11 @@
 
 @section('styles')
     <style>
+        /* Hide Whatsapp Float only on this page */
+        .whatsapp-float {
+            display: none !important;
+        }
+
         /* ============================================
                PAGE HEADER
             ============================================ */
