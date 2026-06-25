@@ -101,6 +101,10 @@ header.scrolled {
     padding-top: 8px;
 }
 
+.nav-toggle {
+    display: none;
+}
+
 .nav-capsule {
     pointer-events: all;
     display: flex;
@@ -802,8 +806,67 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .nav-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: var(--primary);
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: 8px;
+        outline: none;
+        transition: color 0.3s;
+    }
+    
+    .nav-toggle:hover {
+        color: var(--primary-light);
+    }
+    
+    .nav-capsule {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 56px;
+        padding: 10px 24px;
+        transition: border-radius 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .nav-capsule.active {
+        border-radius: 24px;
+    }
+    
     .nav-links {
         display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 0 0 10px;
+        list-style: none;
+        text-align: center;
+    }
+    
+    .nav-links.active {
+        display: flex !important;
+    }
+    
+    .nav-links li {
+        width: 100%;
+    }
+    
+    .nav-links li a {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 0;
+        height: auto;
+    }
+    
+    .nav-links li a.btn-cta {
+        margin-left: 0;
+        margin-top: 8px;
+        justify-content: center;
+        padding: 12px 0;
     }
 
     .overlap-bar-inner {
