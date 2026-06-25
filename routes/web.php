@@ -67,10 +67,16 @@ Route::prefix('admienz')->group(function () {
     
     // CMS Feedback
     Route::resource('feedback', App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'show', 'destroy'])->names([
-        'index' => 'admin.feedback.index',
-        'show' => 'admin.feedback.show',
+        'index'   => 'admin.feedback.index',
+        'show'    => 'admin.feedback.show',
         'destroy' => 'admin.feedback.destroy',
     ]);
+    
+    // Janji Online (Appointments)
+    Route::get('appointments', [App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('admin.appointments.index');
+    Route::get('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'show'])->name('admin.appointments.show');
+    Route::patch('appointments/{appointment}/status', [App\Http\Controllers\Admin\AppointmentController::class, 'updateStatus'])->name('admin.appointments.updateStatus');
+    Route::delete('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
     
     // Future CMS Routes
     // Route::resource('news', NewsController::class);
@@ -88,6 +94,8 @@ Route::prefix('company-profile')->group(function () {
     Route::get('/kontak', [App\Http\Controllers\ComproController::class, 'kontak'])->name('compro.kontak');
     Route::get('/galeri', [App\Http\Controllers\ComproController::class, 'galeri'])->name('compro.galeri');
     Route::post('/feedback', [App\Http\Controllers\ComproController::class, 'storeFeedback'])->name('compro.feedback.store');
+    Route::get('/pendaftaran', [App\Http\Controllers\ComproController::class, 'pendaftaran'])->name('compro.pendaftaran');
+    Route::post('/pendaftaran', [App\Http\Controllers\ComproController::class, 'pendaftaranStore'])->name('compro.pendaftaran.store');
     Route::get('/under-development', function () {
         return view('compro.under-development');
     })->name('compro.under-development');

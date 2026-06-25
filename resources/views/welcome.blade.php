@@ -34,8 +34,8 @@
                 <p>Dengan kasih, profesionalisme, dan perhatian penuh — kami hadir untuk memberikan layanan terbaik bagi ibu
                     dan anak Anda.</p>
                 <div class="hero-split-buttons">
-                    <a href="#schedules" class="btn-hero primary">Jadwal Dokter Hari Ini</a>
-                    <a href="{{ url('/company-profile/kontak') }}" class="btn-hero outline">Hubungi Kami</a>
+                    <a href="#schedules" class="btn-hero outline">Jadwal Dokter Hari Ini</a>
+                    <a href="{{ route('compro.pendaftaran') }}" class="btn-hero primary">Pendaftaran Online</a>
                 </div>
             </div>
 

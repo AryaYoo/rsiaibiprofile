@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Setting;
 use App\Models\Service;
 use App\Models\Gallery;
+use App\Models\Appointment;
 use App\Services\ScheduleService;
 use App\Services\DoctorService;
 use App\Services\NewsService;
@@ -110,5 +111,28 @@ class ComproController extends Controller
         \App\Models\Feedback::create($request->all());
 
         return redirect()->back()->with('success', 'Terima kasih atas kritik dan saran Anda! Pesan telah kami terima.');
+    }
+
+    public function pendaftaran()
+    {
+        return view('compro.pendaftaran');
+    }
+
+    public function pendaftaranStore(Request $request)
+    {
+        $request->validate([
+            'nama'        => 'required|string|max:255',
+            'email'       => 'required|email|max:255',
+            'no_telp'     => 'required|string|max:20',
+            'tujuan_poli' => 'required|string|max:255',
+            'pesan'       => 'required|string',
+        ]);
+
+        Appointment::create($request->only([
+            'nama', 'email', 'no_telp', 'tujuan_poli', 'pesan',
+        ]));
+
+        return redirect()->route('compro.pendaftaran')
+            ->with('success', 'Pendaftaran janji Anda telah berhasil dikirim! Tim kami akan menghubungi Anda melalui WhatsApp atau email untuk konfirmasi jadwal.');
     }
 }

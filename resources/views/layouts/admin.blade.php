@@ -50,6 +50,13 @@
                 <a href="{{ route('admin.feedback.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.feedback.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
                     <i class="fas fa-comment-dots w-6"></i> Kritik & Saran
                 </a>
+                <a href="{{ route('admin.appointments.index') }}" class="flex items-center justify-between px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.appointments.*') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
+                    <span><i class="fas fa-calendar-check w-6"></i> Janji Online</span>
+                    @php $pendingCount = \App\Models\Appointment::where('status','menunggu')->count(); @endphp
+                    @if($pendingCount > 0)
+                        <span class="ml-2 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $pendingCount }}</span>
+                    @endif
+                </a>
                 <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.settings.index') ? 'bg-emerald-50 text-emerald-700' : 'text-gray-600 hover:bg-gray-100' }}">
                     <i class="fas fa-cog w-6"></i> Pengaturan
                 </a>
