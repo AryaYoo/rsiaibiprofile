@@ -69,7 +69,6 @@
                         {{-- ======= STEP 1: Data Diri ======= --}}
                         <div class="pend-step active" id="step-1">
                             <div class="pend-step-header">
-                                <div class="pend-step-header-badge">Langkah 1 dari 3</div>
                                 <h2>Data Diri</h2>
                                 <p>Isi informasi kontak Anda agar kami bisa menghubungi Anda.</p>
                             </div>
@@ -118,7 +117,6 @@
                         {{-- ======= STEP 2: Info Kunjungan ======= --}}
                         <div class="pend-step pend-step--locked" id="step-2">
                             <div class="pend-step-header">
-                                <div class="pend-step-header-badge">Langkah 2 dari 3</div>
                                 <h2>Info Kunjungan</h2>
                                 <p>Pilih tujuan poli dan sampaikan keluhan Anda.</p>
                             </div>
@@ -247,26 +245,27 @@
 @section('styles')
     <style>
         /* ============================================
-           PAGE HEADER
-        ============================================ */
+               PAGE HEADER
+            ============================================ */
         .pend-header {
             padding: 95px 0 15px !important;
         }
+
         .pend-header h1 .pend-accent {
             color: var(--accent);
         }
 
         /* ============================================
-           WIZARD SECTION
-        ============================================ */
+               WIZARD SECTION
+            ============================================ */
         .pend-wizard-section {
             background: var(--bg-main);
             padding: 64px 0 80px;
         }
 
         /* ============================================
-           STEP INDICATOR
-        ============================================ */
+               STEP INDICATOR
+            ============================================ */
         .pend-stepper {
             display: flex;
             align-items: center;
@@ -355,8 +354,8 @@
         }
 
         /* ============================================
-           FORM WRAP
-        ============================================ */
+               FORM WRAP
+            ============================================ */
         .pend-form-wrap {
             max-width: 680px;
             margin: 0 auto;
@@ -372,8 +371,8 @@
         }
 
         /* ============================================
-           ALERTS
-        ============================================ */
+               ALERTS
+            ============================================ */
         .pend-alert {
             display: flex;
             align-items: flex-start;
@@ -413,8 +412,8 @@
         }
 
         /* ============================================
-           STEP CARD
-        ============================================ */
+               STEP CARD
+            ============================================ */
         .pend-step {
             width: 100%;
             flex: 0 0 100%;
@@ -464,8 +463,8 @@
         }
 
         /* ============================================
-           LOCK OVERLAY
-        ============================================ */
+               LOCK OVERLAY
+            ============================================ */
         .pend-locked-overlay {
             position: absolute;
             inset: 0;
@@ -500,8 +499,8 @@
         }
 
         /* ============================================
-           FIELDS
-        ============================================ */
+               FIELDS
+            ============================================ */
         .pend-fields {
             padding: 32px 40px;
             display: flex;
@@ -543,8 +542,8 @@
         }
 
         /* ============================================
-           INPUTS
-        ============================================ */
+               INPUTS
+            ============================================ */
         .pend-input-wrap {
             position: relative;
             display: flex;
@@ -622,8 +621,8 @@
         }
 
         /* ============================================
-           SUMMARY
-        ============================================ */
+               SUMMARY
+            ============================================ */
         .pend-summary {
             background: var(--primary-soft);
             border: 1px solid rgba(18, 53, 36, 0.12);
@@ -670,8 +669,8 @@
         }
 
         /* ============================================
-           PRIVACY NOTE
-        ============================================ */
+               PRIVACY NOTE
+            ============================================ */
         .pend-privacy-note {
             display: flex;
             align-items: flex-start;
@@ -691,8 +690,8 @@
         }
 
         /* ============================================
-           STEP NAV
-        ============================================ */
+               STEP NAV
+            ============================================ */
         .pend-step-nav {
             display: flex;
             align-items: center;
@@ -771,41 +770,110 @@
         }
 
         /* ============================================
-           RESPONSIVE
-        ============================================ */
+               RESPONSIVE
+            ============================================ */
         @media (max-width: 768px) {
+            .pend-header {
+                padding: 70px 0 10px !important;
+            }
+
+            .pend-wizard-section {
+                padding: 15px 0 25px;
+            }
+
+            .pend-stepper {
+                margin-bottom: 20px;
+            }
+
+            .pend-stepper-circle {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
+
+            .pend-stepper-item {
+                gap: 6px;
+            }
+
+            .pend-stepper-label {
+                font-size: 0.75rem;
+            }
+
             .pend-stepper-line {
-                width: 48px;
+                width: 40px;
+                margin-bottom: 20px;
             }
 
             .pend-step-header,
             .pend-fields,
             .pend-step-nav {
-                padding-left: 20px;
-                padding-right: 20px;
+                padding-left: 15px;
+                padding-right: 15px;
             }
 
             .pend-step-header {
-                padding-top: 24px;
-                padding-bottom: 20px;
+                padding-top: 15px;
+                padding-bottom: 10px;
+            }
+
+            .pend-step-header-badge {
+                margin-bottom: 8px;
+                font-size: 0.65rem;
+                padding: 3px 10px;
+            }
+
+            .pend-step-header h2 {
+                font-size: 1.25rem;
+                margin-bottom: 4px;
             }
 
             .pend-fields {
-                padding-top: 24px;
-                gap: 20px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                gap: 12px;
             }
 
             .pend-field-row {
                 grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .pend-field label {
+                font-size: 0.75rem;
+            }
+
+            .pend-input {
+                padding: 10px 14px 10px 38px;
+                font-size: 0.85rem;
+            }
+
+            .pend-input-icon {
+                font-size: 0.8rem;
+                left: 14px;
+            }
+
+            .pend-input-icon--top {
+                top: 12px;
+            }
+
+            .pend-textarea {
+                min-height: 80px;
+            }
+
+            .pend-summary {
+                padding: 15px;
             }
 
             .pend-summary-grid {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
 
             .pend-step-nav {
                 flex-direction: column;
-                gap: 12px;
+                gap: 10px;
+                padding-top: 15px;
+                padding-bottom: 15px;
             }
 
             .pend-btn-next,
@@ -813,22 +881,24 @@
             .pend-btn-submit {
                 width: 100%;
                 justify-content: center;
+                padding: 12px 20px;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
             .pend-stepper-label {
-                font-size: 0.7rem;
+                font-size: 0.65rem;
             }
 
             .pend-stepper-circle {
-                width: 38px;
-                height: 38px;
-                font-size: 0.85rem;
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
             }
 
             .pend-stepper-line {
-                width: 28px;
+                width: 25px;
             }
         }
     </style>
@@ -851,8 +921,8 @@
                     goToStep(2);
                 @endif
             @else
-                            // Set initial tabindex for steps 2 and 3
-                            const step2 = document.getElementById('step-2');
+                                        // Set initial tabindex for steps 2 and 3
+                                        const step2 = document.getElementById('step-2');
                     if (step2) step2.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
                     const step3 = document.getElementById('step-3');
                     if (step3) step3.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
