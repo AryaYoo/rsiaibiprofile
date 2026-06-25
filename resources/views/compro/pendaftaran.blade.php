@@ -140,12 +140,9 @@
                                         <i class="fas fa-hospital pend-input-icon"></i>
                                         <select id="tujuan_poli" name="tujuan_poli" required class="pend-input pend-select">
                                             <option value="" disabled selected>-- Pilih Poli --</option>
-                                            <option value="Poli Kandungan" {{ old('tujuan_poli') === 'Poli Kandungan' ? 'selected' : '' }}>Poli Kandungan</option>
                                             <option value="Poli Anak" {{ old('tujuan_poli') === 'Poli Anak' ? 'selected' : '' }}>Poli Anak</option>
-                                            <option value="Poli Umum" {{ old('tujuan_poli') === 'Poli Umum' ? 'selected' : '' }}>Poli Umum</option>
-                                            <option value="Poli Gigi" {{ old('tujuan_poli') === 'Poli Gigi' ? 'selected' : '' }}>Poli Gigi</option>
-                                            <option value="Poli Kulit & Kecantikan" {{ old('tujuan_poli') === 'Poli Kulit & Kecantikan' ? 'selected' : '' }}>Poli Kulit & Kecantikan</option>
-                                            <option value="Lainnya" {{ old('tujuan_poli') === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                            <option value="Poli Penyakit Dalam" {{ old('tujuan_poli') === 'Poli Penyakit Dalam' ? 'selected' : '' }}>Poli Penyakit Dalam</option>
+                                            <option value="Poli OBGYN" {{ old('tujuan_poli') === 'Poli OBGYN' ? 'selected' : '' }}>Poli OBGYN</option>
                                         </select>
                                         <i class="fas fa-chevron-down pend-select-arrow"></i>
                                     </div>
