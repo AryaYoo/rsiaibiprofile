@@ -1,10 +1,10 @@
 @extends('layouts.company')
 
-@section('title', 'Pendaftaran Janji Online | RSIA IBI Surabaya')
+@section('title', 'Pendaftaran Online | RSIA IBI Surabaya')
 
 @section('meta')
     <meta name="description"
-        content="Daftarkan janji temu online Anda dengan dokter spesialis di RSIA IBI Surabaya. Cepat, mudah, dan tanpa antrian panjang.">
+        content="Daftarkan janji temu online Anda di RSIA IBI Surabaya. Pilih jalur pendaftaran sesuai jenis penjamin Anda — BPJS Kesehatan atau Umum / Asuransi Swasta.">
 @endsection
 
 @section('content')
@@ -12,217 +12,74 @@
     {{-- ============================================
     PAGE HEADER
     ============================================ --}}
-    <section id="header" class="page-header pend-header">
+    <section id="header" class="page-header berita-header">
+        <div class="container">
+            <span class="badge-label">Pendaftaran Online</span>
+            <h1>Pilih Jenis Pendaftaran</h1>
+            <p>Silahkan pilih pendaftaran sesuai dengan jenis penjamin atau asuransi kesehatan Anda.</p>
+        </div>
     </section>
 
     {{-- ============================================
-    STEP WIZARD
+    PENDAFTARAN PILIHAN SECTION
     ============================================ --}}
-    <section class="pend-wizard-section">
+    <section class="pend-pick-section">
         <div class="container">
 
-            {{-- Step Indicator --}}
-            <div class="pend-stepper" id="stepIndicator">
-                <div class="pend-stepper-item active" id="step-ind-1">
-                    <div class="pend-stepper-circle">
-                        <span class="step-num">1</span>
-                        <i class="fas fa-check step-check" style="display:none;"></i>
-                    </div>
-                    <span class="pend-stepper-label">Data Diri</span>
-                </div>
-                <div class="pend-stepper-line" id="line-1"></div>
-                <div class="pend-stepper-item locked" id="step-ind-2">
-                    <div class="pend-stepper-circle">
-                        <span class="step-num">2</span>
-                        <i class="fas fa-check step-check" style="display:none;"></i>
-                    </div>
-                    <span class="pend-stepper-label">Kunjungan</span>
-                </div>
-                <div class="pend-stepper-line" id="line-2"></div>
-                <div class="pend-stepper-item locked" id="step-ind-3">
-                    <div class="pend-stepper-circle">
-                        <span class="step-num">3</span>
-                        <i class="fas fa-check step-check" style="display:none;"></i>
-                    </div>
-                    <span class="pend-stepper-label">Ringkasan</span>
-                </div>
-            </div>
+            {{-- Cards --}}
+            <div class="pend-pick-grid">
 
-            {{-- Form Card --}}
-            <div class="pend-form-wrap">
-
-                @if(session('success'))
-                    <div class="pend-alert pend-alert--success">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <strong>Pendaftaran Berhasil Dikirim!</strong>
-                            <span>{{ session('success') }}</span>
+                {{-- Card BPJS --}}
+                <a href="{{ route('compro.pendaftaran.bpjs') }}" class="pend-pick-card pend-pick-card--bpjs"
+                    id="card-bpjs">
+                    <div class="pend-pick-card-inner">
+                        <div class="pend-pick-card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="pend-pick-card-badge">BPJS Kesehatan</div>
+                        <h2>Pasien BPJS<br>Kesehatan</h2>
+                        <p>Pendaftaran menggunakan kartu BPJS Kesehatan melalui aplikasi <strong>Mobile JKN</strong>. Kami
+                            akan memandu Anda langkah demi langkah.</p>
+                        <ul class="pend-pick-list">
+                            <li><i class="fas fa-check-circle"></i> Peserta BPJS Kesehatan aktif</li>
+                            <li><i class="fas fa-check-circle"></i> Memiliki surat rujukan FKTP</li>
+                            <li><i class="fas fa-check-circle"></i> Menggunakan aplikasi Mobile JKN</li>
+                        </ul>
+                        <div class="pend-pick-card-cta">
+                            <span>Lihat Panduan</span>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
-                @endif
-
-                <form action="{{ route('compro.pendaftaran.store') }}" method="POST" id="pendaftaranForm" novalidate>
-                    @csrf
-
-                    <div class="pend-steps-slider">
-
-                        {{-- ======= STEP 1: Data Diri ======= --}}
-                        <div class="pend-step active" id="step-1">
-                            <div class="pend-step-header">
-                                <h2>Data Diri</h2>
-                                <p>Isi informasi kontak Anda agar kami bisa menghubungi Anda.</p>
-                            </div>
-
-                            <div class="pend-fields">
-                                <div class="pend-field" data-required>
-                                    <label for="nama">Nama Lengkap <span class="req">*</span></label>
-                                    <div class="pend-input-wrap">
-                                        <i class="fas fa-user pend-input-icon"></i>
-                                        <input type="text" id="nama" name="nama" placeholder="Nama lengkap pasien"
-                                            value="{{ old('nama') }}" class="pend-input" required autocomplete="name">
-                                    </div>
-                                    <span class="pend-field-error" id="err-nama"></span>
-                                </div>
-
-                                <div class="pend-field-row">
-                                    <div class="pend-field" data-required>
-                                        <label for="email">Email <span class="req">*</span></label>
-                                        <div class="pend-input-wrap">
-                                            <i class="fas fa-envelope pend-input-icon"></i>
-                                            <input type="email" id="email" name="email" placeholder="email@contoh.com"
-                                                value="{{ old('email') }}" class="pend-input" required autocomplete="email">
-                                        </div>
-                                        <span class="pend-field-error" id="err-email"></span>
-                                    </div>
-                                    <div class="pend-field" data-required>
-                                        <label for="no_telp">Nomor Telepon / HP <span class="req">*</span></label>
-                                        <div class="pend-input-wrap">
-                                            <i class="fas fa-phone pend-input-icon"></i>
-                                            <input type="tel" id="no_telp" name="no_telp" placeholder="08xxxxxxxxxx"
-                                                value="{{ old('no_telp') }}" class="pend-input" required>
-                                        </div>
-                                        <span class="pend-field-error" id="err-no_telp"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="pend-step-nav">
-                                <div></div>
-                                <button type="button" class="pend-btn-next" onclick="nextStep(1)">
-                                    Lanjut: Info Kunjungan <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        {{-- ======= STEP 2: Info Kunjungan ======= --}}
-                        <div class="pend-step pend-step--locked" id="step-2">
-                            <div class="pend-step-header">
-                                <h2>Info Kunjungan</h2>
-                                <p>Pilih tujuan poli dan sampaikan keluhan Anda.</p>
-                            </div>
-
-                            <div class="pend-locked-overlay" id="overlay-2">
-                                <div class="pend-locked-msg">
-                                    <i class="fas fa-lock"></i>
-                                    <p>Selesaikan <strong>Data Diri</strong> terlebih dahulu</p>
-                                </div>
-                            </div>
-
-                            <div class="pend-fields">
-                                <div class="pend-field" data-required>
-                                    <label for="tujuan_poli">Tujuan Periksa / Poli <span class="req">*</span></label>
-                                    <div class="pend-input-wrap pend-input-wrap--select">
-                                        <i class="fas fa-hospital pend-input-icon"></i>
-                                        <select id="tujuan_poli" name="tujuan_poli" required class="pend-input pend-select">
-                                            <option value="" disabled selected>-- Pilih Poli --</option>
-                                            <option value="Poli Anak" {{ old('tujuan_poli') === 'Poli Anak' ? 'selected' : '' }}>Poli Anak</option>
-                                            <option value="Poli Penyakit Dalam" {{ old('tujuan_poli') === 'Poli Penyakit Dalam' ? 'selected' : '' }}>Poli Penyakit Dalam</option>
-                                            <option value="Poli OBGYN" {{ old('tujuan_poli') === 'Poli OBGYN' ? 'selected' : '' }}>Poli OBGYN</option>
-                                        </select>
-                                        <i class="fas fa-chevron-down pend-select-arrow"></i>
-                                    </div>
-                                    <span class="pend-field-error" id="err-tujuan_poli"></span>
-                                </div>
-
-                                <div class="pend-field" data-required>
-                                    <label for="pesan">Keluhan / Pesan <span class="req">*</span></label>
-                                    <div class="pend-input-wrap pend-input-wrap--textarea">
-                                        <i class="fas fa-comment-medical pend-input-icon pend-input-icon--top"></i>
-                                        <textarea id="pesan" name="pesan" rows="4"
-                                            placeholder="Ceritakan keluhan Anda atau informasi yang perlu diketahui dokter..."
-                                            class="pend-input pend-textarea" required>{{ old('pesan') }}</textarea>
-                                    </div>
-                                    <span class="pend-field-error" id="err-pesan"></span>
-                                </div>
-                            </div>
-
-                            <div class="pend-step-nav">
-                                <button type="button" class="pend-btn-back" onclick="prevStep(2)">
-                                    <i class="fas fa-arrow-left"></i> Kembali
-                                </button>
-                                <button type="button" class="pend-btn-next" onclick="nextStep(2)">
-                                    Lanjut: Ringkasan <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        {{-- ======= STEP 3: Ringkasan & Kirim ======= --}}
-                        <div class="pend-step pend-step--locked" id="step-3">
-                            <div class="pend-step-header">
-                                <h2>Ringkasan & Kirim</h2>
-                                <p>Periksa kembali data Anda sebelum mengirim pendaftaran.</p>
-                            </div>
-
-                            <div class="pend-locked-overlay" id="overlay-3">
-                                <div class="pend-locked-msg">
-                                    <i class="fas fa-lock"></i>
-                                    <p>Selesaikan <strong>Info Kunjungan</strong> terlebih dahulu</p>
-                                </div>
-                            </div>
-
-                            <div class="pend-fields">
-                                {{-- Summary Review --}}
-                                <div class="pend-summary" id="summaryBox">
-                                    <div class="pend-summary-title"><i class="fas fa-clipboard-check"></i> Ringkasan Data
-                                        Janji</div>
-                                    <div class="pend-summary-grid">
-                                        <div><span>Nama Lengkap</span><strong id="sum-nama">—</strong></div>
-                                        <div><span>No. HP / WhatsApp</span><strong id="sum-hp">—</strong></div>
-                                        <div style="grid-column: span 2;"><span>Email</span><strong
-                                                id="sum-email">—</strong></div>
-                                        <div style="grid-column: span 2;"><span>Tujuan Poli</span><strong
-                                                id="sum-poli">—</strong></div>
-                                        <div style="grid-column: span 2;">
-                                            <span>Keluhan / Pesan</span>
-                                            <p id="sum-pesan"
-                                                style="font-size: 0.9rem; font-weight: 600; color: var(--primary); margin-top: 4px; background: rgba(18, 53, 36, 0.04); padding: 12px; border-radius: 8px; border: 1px dashed rgba(18, 53, 36, 0.15); font-family: inherit; white-space: pre-line;">
-                                                —</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="pend-privacy-note">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <span>Data Anda aman dan hanya digunakan untuk keperluan pendaftaran layanan kesehatan
-                                        di RSIA IBI Surabaya.</span>
-                                </div>
-                            </div>
-
-                            <div class="pend-step-nav">
-                                <button type="button" class="pend-btn-back" onclick="prevStep(3)">
-                                    <i class="fas fa-arrow-left"></i> Kembali
-                                </button>
-                                <button type="submit" class="pend-btn-submit" id="submitBtn">
-                                    <span class="pend-submit-text"><i class="fas fa-paper-plane"></i> Kirim
-                                        Pendaftaran</span>
-                                    <span class="pend-submit-loading" style="display:none;"><i
-                                            class="fas fa-spinner fa-spin"></i> Mengirim...</span>
-                                </button>
-                            </div>
-                        </div>
-
+                    <div class="pend-pick-card-bg-icon">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                </form>
+                </a>
+
+                {{-- Card Umum --}}
+                <a href="{{ route('compro.pendaftaran.umum') }}" class="pend-pick-card pend-pick-card--umum"
+                    id="card-umum">
+                    <div class="pend-pick-card-inner">
+                        <div class="pend-pick-card-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="pend-pick-card-badge">Umum / Asuransi Swasta</div>
+                        <h2>Pasien Umum &<br>Asuransi Swasta</h2>
+                        <p>Pendaftaran secara langsung tanpa menggunakan BPJS — termasuk pasien umum, asuransi swasta,
+                            perusahaan rekanan, atau mandiri.</p>
+                        <ul class="pend-pick-list">
+                            <li><i class="fas fa-check-circle"></i> Pasien umum / mandiri</li>
+                            <li><i class="fas fa-check-circle"></i> Asuransi swasta / perusahaan</li>
+                            <li><i class="fas fa-check-circle"></i> Isi formulir online langsung</li>
+                        </ul>
+                        <div class="pend-pick-card-cta">
+                            <span>Daftar Sekarang</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="pend-pick-card-bg-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                </a>
             </div>
 
         </div>
@@ -243,666 +100,569 @@
 
 @section('styles')
     <style>
-        /* Hide Whatsapp Float only on this page */
-        .whatsapp-float {
-            display: none !important;
-        }
 
+        .berita-header {
+            padding-bottom: 30px !important; /* sesuaikan angka */
+        }
         /* ============================================
                PAGE HEADER
             ============================================ */
-        .pend-header {
+        .pend-pick-header {
             padding: 95px 0 15px !important;
         }
 
-        .pend-header h1 .pend-accent {
-            color: var(--accent);
+        /* ============================================
+               MAIN SECTION
+            ============================================ */
+        .pend-pick-section {
+            background: var(--bg-main);
+            padding: 72px 0 88px;
+            min-height: calc(100svh - 110px);
+            display: flex;
+            align-items: center;
+        }
+
+        .pend-pick-section>.container {
+            width: 100%;
         }
 
         /* ============================================
-               WIZARD SECTION
+               HEADING
             ============================================ */
-        .pend-wizard-section {
-            background: var(--bg-main);
-            padding: 64px 0 80px;
-        }
-
-        /* ============================================
-               STEP INDICATOR
-            ============================================ */
-        .pend-stepper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            margin-bottom: 48px;
-        }
-
-        .pend-stepper-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-        }
-
-        .pend-stepper-circle {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1rem;
-            border: 3px solid var(--border-soft);
-            background: var(--white);
-            color: var(--text-muted);
-            transition: all 0.35s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        .pend-stepper-item.active .pend-stepper-circle {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: var(--white);
-            box-shadow: 0 0 0 6px rgba(18, 53, 36, 0.1);
-        }
-
-        .pend-stepper-item.done .pend-stepper-circle {
-            background: var(--primary-light);
-            border-color: var(--primary-light);
-            color: var(--white);
-        }
-
-        .pend-stepper-item.locked .pend-stepper-circle {
-            background: var(--bg-main);
-            border-color: var(--border-soft);
-            color: var(--border-soft);
-        }
-
-        .pend-stepper-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-muted);
+        .pend-pick-heading {
             text-align: center;
-            transition: color 0.3s;
-            white-space: nowrap;
+            margin-bottom: 56px;
         }
 
-        .pend-stepper-item.active .pend-stepper-label {
-            color: var(--primary);
-        }
-
-        .pend-stepper-item.done .pend-stepper-label {
-            color: var(--primary-light);
-        }
-
-        .pend-stepper-item.locked .pend-stepper-label {
-            color: var(--border-soft);
-        }
-
-        .pend-stepper-line {
-            width: 120px;
-            height: 3px;
-            background: var(--border-soft);
-            border-radius: 3px;
-            margin-bottom: 28px;
-            transition: background 0.4s ease;
-            flex-shrink: 0;
-        }
-
-        .pend-stepper-line.done {
-            background: var(--primary-light);
-        }
-
-        /* ============================================
-               FORM WRAP
-            ============================================ */
-        .pend-form-wrap {
-            max-width: 680px;
-            margin: 0 auto;
-            overflow: hidden;
-            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .pend-steps-slider {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 100%;
-            align-items: flex-start;
-        }
-
-        /* ============================================
-               ALERTS
-            ============================================ */
-        .pend-alert {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 18px 24px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .pend-alert i {
-            font-size: 1.2rem;
-            margin-top: 1px;
-            flex-shrink: 0;
-        }
-
-        .pend-alert div {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .pend-alert strong {
-            font-weight: 800;
-            display: block;
-        }
-
-        .pend-alert--success {
-            background: #ecfdf5;
-            border: 1px solid #10b981;
-            color: #065f46;
-        }
-
-        .pend-alert--success i {
-            color: #10b981;
-        }
-
-        /* ============================================
-               STEP CARD
-            ============================================ */
-        .pend-step {
-            width: 100%;
-            flex: 0 0 100%;
-            box-sizing: border-box;
-            background: var(--white);
-            border-radius: var(--radius);
-            border: 1px solid var(--border-soft);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            position: relative;
-            transition: all 0.35s ease;
-        }
-
-        .pend-step--locked {
-            opacity: 0.6;
-        }
-
-        .pend-step-header {
-            padding: 32px 40px 28px;
-            border-bottom: 1px solid var(--border-soft);
-            background: linear-gradient(135deg, var(--primary-soft) 0%, var(--white) 100%);
-        }
-
-        .pend-step-header-badge {
+        .pend-pick-tag {
             display: inline-block;
-            background: var(--primary);
-            color: var(--accent);
-            padding: 4px 14px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 6px 18px;
             border-radius: 60px;
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(18, 53, 36, 0.12);
         }
 
-        .pend-step-header h2 {
-            font-size: 1.5rem;
+        .pend-pick-heading h1 {
+            font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 6px;
+            margin-bottom: 14px;
+            line-height: 1.2;
         }
 
-        .pend-step-header p {
+        .pend-pick-accent {
+            color: var(--primary-light);
+            position: relative;
+        }
+
+        .pend-pick-heading p {
+            font-size: 1rem;
             color: var(--text-muted);
-            font-size: 0.92rem;
-            margin: 0;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* ============================================
-               LOCK OVERLAY
+               CARDS GRID
             ============================================ */
-        .pend-locked-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 10;
+        .pend-pick-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pend-pick-card {
+            display: block;
+            text-decoration: none;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+        }
+
+        .pend-pick-card:hover {
+            transform: translateY(-8px);
+            text-decoration: none;
+        }
+
+        /* BPJS Card — Solid Dark Green */
+        .pend-pick-card--bpjs {
+            background: var(--primary);
+        }
+
+        .pend-pick-card--bpjs:hover {
+            border-color: var(--accent);
+            box-shadow: 0 24px 56px rgba(18, 53, 36, 0.35);
+        }
+
+        /* Umum Card — White with accent border */
+        .pend-pick-card--umum {
+            background: var(--white);
+            border: 2px solid var(--border-soft);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pend-pick-card--umum:hover {
+            border-color: var(--primary);
+            box-shadow: 0 24px 56px rgba(18, 53, 36, 0.15);
+        }
+
+        /* Card Inner */
+        .pend-pick-card-inner {
+            padding: 40px 36px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Icon */
+        .pend-pick-card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(245, 247, 243, 0.6);
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-            transition: opacity 0.35s ease;
-            border-radius: var(--radius);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            transition: all 0.3s;
         }
 
-        .pend-locked-msg {
-            text-align: center;
+        .pend-pick-card--bpjs .pend-pick-card-icon {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--accent);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .pend-pick-card--bpjs:hover .pend-pick-card-icon {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .pend-pick-card--umum .pend-pick-card-icon {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1.5px solid rgba(18, 53, 36, 0.1);
+        }
+
+        .pend-pick-card--umum:hover .pend-pick-card-icon {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Badge */
+        .pend-pick-card-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 60px;
+            margin-bottom: 14px;
+        }
+
+        .pend-pick-card--bpjs .pend-pick-card-badge {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .pend-pick-card--umum .pend-pick-card-badge {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border: 1px solid rgba(18, 53, 36, 0.1);
+        }
+
+        /* Heading */
+        .pend-pick-card-inner h2 {
+            font-size: 1.55rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 14px;
+        }
+
+        .pend-pick-card--bpjs .pend-pick-card-inner h2 {
+            color: var(--white);
+        }
+
+        .pend-pick-card--umum .pend-pick-card-inner h2 {
+            color: var(--primary);
+        }
+
+        /* Description */
+        .pend-pick-card-inner p {
+            font-size: 0.9rem;
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .pend-pick-card--bpjs .pend-pick-card-inner p {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .pend-pick-card--bpjs .pend-pick-card-inner p strong {
+            color: var(--white);
+        }
+
+        .pend-pick-card--umum .pend-pick-card-inner p {
             color: var(--text-muted);
         }
 
-        .pend-locked-msg i {
-            font-size: 2.5rem;
-            color: var(--border-soft);
-            margin-bottom: 12px;
-            display: block;
+        /* List */
+        .pend-pick-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .pend-locked-msg p {
-            font-size: 0.95rem;
+        .pend-pick-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.87rem;
             font-weight: 600;
-            color: var(--text-muted);
-            margin: 0;
+        }
+
+        .pend-pick-list li i {
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .pend-pick-card--bpjs .pend-pick-list li {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .pend-pick-card--bpjs .pend-pick-list li i {
+            color: var(--accent);
+        }
+
+        .pend-pick-card--umum .pend-pick-list li {
+            color: var(--text-main);
+        }
+
+        .pend-pick-card--umum .pend-pick-list li i {
+            color: var(--primary);
+        }
+
+        /* CTA Row */
+        .pend-pick-card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            padding: 12px 22px;
+            border-radius: 12px;
+            transition: all 0.25s;
+        }
+
+        .pend-pick-card--bpjs .pend-pick-card-cta {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .pend-pick-card--bpjs:hover .pend-pick-card-cta {
+            background: var(--white);
+        }
+
+        .pend-pick-card--umum .pend-pick-card-cta {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .pend-pick-card--umum:hover .pend-pick-card-cta {
+            background: var(--primary-light);
+        }
+
+        .pend-pick-card-cta i {
+            transition: transform 0.25s;
+        }
+
+        .pend-pick-card:hover .pend-pick-card-cta i {
+            transform: translateX(4px);
+        }
+
+        /* Background Decorative Icon */
+        .pend-pick-card-bg-icon {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 9rem;
+            pointer-events: none;
+            z-index: 0;
+            transition: all 0.4s;
+        }
+
+        .pend-pick-card--bpjs .pend-pick-card-bg-icon {
+            color: rgba(255, 255, 255, 0.04);
+        }
+
+        .pend-pick-card--umum .pend-pick-card-bg-icon {
+            color: rgba(18, 53, 36, 0.04);
+        }
+
+        .pend-pick-card:hover .pend-pick-card-bg-icon {
+            transform: scale(1.08) rotate(5deg);
         }
 
         /* ============================================
-               FIELDS
+               INFO BAR
             ============================================ */
-        .pend-fields {
-            padding: 32px 40px;
+        .pend-pick-info-bar {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            padding: 24px 36px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pend-pick-info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .pend-pick-info-item>i {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .pend-pick-info-item div {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 3px;
         }
 
-        .pend-field-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .pend-field {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .pend-field label {
+        .pend-pick-info-item strong {
             font-size: 0.84rem;
             font-weight: 800;
             color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .req {
-            color: #ef4444;
-        }
-
-        .pend-field-error {
-            font-size: 0.78rem;
-            color: #ef4444;
-            font-weight: 600;
-            min-height: 16px;
-            display: block;
-            margin-top: -4px;
-        }
-
-        /* ============================================
-               INPUTS
-            ============================================ */
-        .pend-input-wrap {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .pend-input-wrap--textarea {
-            align-items: flex-start;
-        }
-
-        .pend-input-icon {
-            position: absolute;
-            left: 16px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            pointer-events: none;
-            z-index: 1;
-            transition: color 0.2s;
-        }
-
-        .pend-input-icon--top {
-            top: 16px;
-        }
-
-        .pend-input {
-            width: 100%;
-            padding: 14px 16px 14px 44px;
-            border-radius: 12px;
-            border: 1.5px solid var(--border-soft);
-            background: var(--bg-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            outline: none;
-            transition: all 0.2s;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .pend-input:focus {
-            border-color: var(--primary);
-            background: var(--white);
-            box-shadow: 0 0 0 4px rgba(18, 53, 36, 0.06);
-        }
-
-        .pend-input-wrap:focus-within .pend-input-icon {
-            color: var(--primary);
-        }
-
-        .pend-input.is-error {
-            border-color: #ef4444;
-            background: #fff5f5;
-        }
-
-        .pend-textarea {
-            resize: vertical;
-            min-height: 110px;
-            line-height: 1.6;
-        }
-
-        .pend-input-wrap--select {
-            position: relative;
-        }
-
-        .pend-select {
-            cursor: pointer;
-        }
-
-        .pend-select-arrow {
-            position: absolute;
-            right: 16px;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            pointer-events: none;
-        }
-
-        /* ============================================
-               SUMMARY
-            ============================================ */
-        .pend-summary {
-            background: var(--primary-soft);
-            border: 1px solid rgba(18, 53, 36, 0.12);
-            border-radius: 14px;
-            padding: 24px;
-        }
-
-        .pend-summary-title {
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pend-summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px 24px;
-        }
-
-        .pend-summary-grid>div {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .pend-summary-grid span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .pend-summary-grid strong {
-            font-size: 0.9rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        /* ============================================
-               PRIVACY NOTE
-            ============================================ */
-        .pend-privacy-note {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 14px 18px;
-            background: var(--primary-soft);
-            border-radius: 10px;
+        .pend-pick-info-item span {
             font-size: 0.82rem;
             color: var(--text-muted);
-            line-height: 1.5;
         }
 
-        .pend-privacy-note i {
-            color: var(--primary-light);
+        .pend-pick-info-divider {
+            width: 1px;
+            height: 48px;
+            background: var(--border-soft);
+            margin: 0 28px;
             flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        /* ============================================
-               STEP NAV
-            ============================================ */
-        .pend-step-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 40px 32px;
-            border-top: 1px solid var(--border-soft);
-            background: var(--bg-main);
-        }
-
-        .pend-btn-next {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 12px;
-            padding: 14px 28px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 6px 16px rgba(18, 53, 36, 0.18);
-            margin-left: auto;
-        }
-
-        .pend-btn-next:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(18, 53, 36, 0.25);
-        }
-
-        .pend-btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: transparent;
-            color: var(--text-muted);
-            border: 1.5px solid var(--border-soft);
-            border-radius: 12px;
-            padding: 13px 22px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .pend-btn-back:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--primary-soft);
-        }
-
-        .pend-btn-submit {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: var(--white);
-            border: none;
-            border-radius: 12px;
-            padding: 14px 32px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 8px 20px rgba(18, 53, 36, 0.2);
-        }
-
-        .pend-btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(18, 53, 36, 0.3);
         }
 
         /* ============================================
                RESPONSIVE
             ============================================ */
         @media (max-width: 768px) {
-            .pend-header {
-                padding: 70px 0 10px !important;
+            .berita-header {
+                padding: 90px 0 30px;
             }
 
-            .pend-wizard-section {
-                padding: 15px 0 25px;
+            .berita-header .badge-label {
+                display: inline-block;
+                margin-bottom: 12px;
+                padding: 6px 16px;
+                background: #6fa85e; /* hijau lebih terang dari background */
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                color: #fff;
             }
 
-            .pend-stepper {
+            .berita-header h1 {
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 1.3;
+                margin-bottom: 10px;
+            }
+
+            .berita-header p {
+                font-size: 14px;
+                line-height: 1.6;
+                color: #cfe8d8;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+            .pend-pick-header {
+                padding: 64px 0 0 !important;
+            }
+
+            .pend-pick-section {
+    padding: 24px 0 48px;
+    min-height: calc(100svh - 300px);
+}
+
+            .pend-pick-heading {
                 margin-bottom: 20px;
             }
 
-            .pend-stepper-circle {
-                width: 36px;
-                height: 36px;
-                font-size: 0.85rem;
-            }
-
-            .pend-stepper-item {
-                gap: 6px;
-            }
-
-            .pend-stepper-label {
-                font-size: 0.75rem;
-            }
-
-            .pend-stepper-line {
-                width: 40px;
-                margin-bottom: 20px;
-            }
-
-            .pend-step-header,
-            .pend-fields,
-            .pend-step-nav {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-
-            .pend-step-header {
-                padding-top: 15px;
-                padding-bottom: 10px;
-            }
-
-            .pend-step-header-badge {
+            .pend-pick-heading h1 {
+                font-size: 1.55rem;
                 margin-bottom: 8px;
-                font-size: 0.65rem;
-                padding: 3px 10px;
             }
 
-            .pend-step-header h2 {
-                font-size: 1.25rem;
-                margin-bottom: 4px;
+            .pend-pick-tag {
+                font-size: 0.68rem;
+                padding: 5px 14px;
+                margin-bottom: 10px;
             }
 
-            .pend-fields {
-                padding-top: 15px;
-                padding-bottom: 15px;
+            .pend-pick-heading p {
+                display: none;
+            }
+
+            .pend-pick-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 12px;
+                margin-bottom: 0;
             }
 
-            .pend-field-row {
-                grid-template-columns: 1fr;
-                gap: 12px;
+            .pend-pick-card {
+                border-radius: 16px;
             }
 
-            .pend-field label {
-                font-size: 0.75rem;
-            }
-
-            .pend-input {
-                padding: 10px 14px 10px 38px;
-                font-size: 0.85rem;
-            }
-
-            .pend-input-icon {
-                font-size: 0.8rem;
-                left: 14px;
-            }
-
-            .pend-input-icon--top {
-                top: 12px;
-            }
-
-            .pend-textarea {
-                min-height: 80px;
-            }
-
-            .pend-summary {
-                padding: 15px;
-            }
-
-            .pend-summary-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .pend-step-nav {
+            .pend-pick-card-inner {
+                min-height: 168px;
+                padding: 14px 10px 12px;
+                display: flex;
                 flex-direction: column;
-                gap: 10px;
-                padding-top: 15px;
-                padding-bottom: 15px;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
             }
 
-            .pend-btn-next,
-            .pend-btn-back,
-            .pend-btn-submit {
+            .pend-pick-card-icon {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                font-size: 1.05rem;
+                margin: 0 auto 10px;
+            }
+
+            .pend-pick-card-badge {
+                align-self: center;
+                max-width: 100%;
+                font-size: 0.58rem;
+                line-height: 1.25;
+                padding: 4px 7px;
+                margin-bottom: 8px;
+                white-space: normal;
+            }
+
+            .pend-pick-card-inner h2 {
+                font-size: 0.95rem;
+                line-height: 1.25;
+                margin-bottom: 12px;
+            }
+
+            .pend-pick-card-inner p,
+            .pend-pick-list {
+                display: none;
+            }
+
+            .pend-pick-card-cta {
                 width: 100%;
                 justify-content: center;
-                padding: 12px 20px;
-                font-size: 0.85rem;
+                gap: 6px;
+                font-size: 0.72rem;
+                line-height: 1.2;
+                padding: 9px 6px;
+                border-radius: 10px;
+                margin-top: auto;
+                text-align: center;
+            }
+
+            .pend-pick-card-bg-icon {
+                right: -14px;
+                bottom: -12px;
+                font-size: 5rem;
+            }
+
+            .pend-pick-info-bar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 24px;
+                align-items: flex-start;
+            }
+
+            .pend-pick-info-item {
+                width: 100%;
+            }
+
+            .pend-pick-info-divider {
+                width: 100%;
+                height: 1px;
+                margin: 0;
             }
         }
 
         @media (max-width: 480px) {
-            .pend-stepper-label {
-                font-size: 0.65rem;
+            .pend-pick-heading h1 {
+                font-size: 1.35rem;
             }
 
-            .pend-stepper-circle {
-                width: 32px;
-                height: 32px;
-                font-size: 0.8rem;
+            .pend-pick-card-inner h2 {
+                font-size: 0.82rem;
             }
 
-            .pend-stepper-line {
-                width: 25px;
+            .pend-pick-grid {
+                gap: 10px;
+            }
+
+            .pend-pick-card-inner {
+                min-height: 152px;
+                padding: 12px 8px 10px;
+            }
+
+            .pend-pick-card-icon {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 8px;
+            }
+
+            .pend-pick-card-badge {
+                font-size: 0.5rem;
+                padding: 3px 6px;
+                margin-bottom: 7px;
+            }
+
+            .pend-pick-card-cta {
+                font-size: 0.64rem;
+                padding: 8px 5px;
+            }
+
+            .pend-pick-card-cta i {
+                display: none;
             }
         }
     </style>
@@ -910,208 +670,18 @@
 
 @push('scripts')
     <script>
-        let currentStep = 1;
-        const TOTAL_STEPS = 3;
-
+        // Entrance animation for cards
         document.addEventListener('DOMContentLoaded', function () {
-            // Adjust height initially
-            setTimeout(adjustFormHeight, 150);
-
-            // If there were validation errors, unlock step 2 and go there
-            @if($errors->any())
-                unlockStep(2);
-                unlockStep(3);
-                @if($errors->has('tujuan_poli') || $errors->has('pesan'))
-                    goToStep(2);
-                @endif
-            @else
-                                        // Set initial tabindex for steps 2 and 3
-                                        const step2 = document.getElementById('step-2');
-                    if (step2) step2.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
-                    const step3 = document.getElementById('step-3');
-                    if (step3) step3.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
-                @endif
-
-            // Submit validation and loading state
-            document.getElementById('pendaftaranForm').addEventListener('submit', function (e) {
-                if (!validateStep(1) || !validateStep(2)) {
-                    e.preventDefault();
-                    if (!validateStep(1)) {
-                        goToStep(1);
-                    } else {
-                        goToStep(2);
-                    }
-                    return false;
-                }
-                const btn = document.getElementById('submitBtn');
-                btn.querySelector('.pend-submit-text').style.display = 'none';
-                btn.querySelector('.pend-submit-loading').style.display = 'inline-flex';
-                btn.disabled = true;
+            const cards = document.querySelectorAll('.pend-pick-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 150 + (index * 120));
             });
-
-            // Listen for window resize to adjust container height
-            window.addEventListener('resize', adjustFormHeight);
         });
-
-        function adjustFormHeight() {
-            const activeStepEl = document.querySelector('.pend-step.active');
-            const formWrap = document.querySelector('.pend-form-wrap');
-            if (activeStepEl && formWrap) {
-                formWrap.style.height = activeStepEl.offsetHeight + 'px';
-            }
-        }
-
-        function validateStep(step) {
-            let isValid = true;
-            const stepEl = document.getElementById('step-' + step);
-
-            // Clear previous errors
-            stepEl.querySelectorAll('.pend-field-error').forEach(el => el.textContent = '');
-            stepEl.querySelectorAll('.pend-input').forEach(el => el.classList.remove('is-error'));
-
-            if (step === 1) {
-                const nama = document.getElementById('nama');
-                const email = document.getElementById('email');
-                const hp = document.getElementById('no_telp');
-
-                if (!nama.value.trim()) {
-                    showError('err-nama', 'Nama lengkap wajib diisi.', nama);
-                    isValid = false;
-                }
-                if (!email.value.trim()) {
-                    showError('err-email', 'Email wajib diisi.', email);
-                    isValid = false;
-                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-                    showError('err-email', 'Format email tidak valid.', email);
-                    isValid = false;
-                }
-                if (!hp.value.trim()) {
-                    showError('err-no_telp', 'Nomor telepon wajib diisi.', hp);
-                    isValid = false;
-                }
-            }
-
-            if (step === 2) {
-                const poli = document.getElementById('tujuan_poli');
-                const pesan = document.getElementById('pesan');
-
-                if (!poli.value) {
-                    showError('err-tujuan_poli', 'Tujuan poli wajib dipilih.', poli);
-                    isValid = false;
-                }
-                if (!pesan.value.trim()) {
-                    showError('err-pesan', 'Keluhan atau pesan wajib diisi.', pesan);
-                    isValid = false;
-                }
-            }
-
-            return isValid;
-        }
-
-        function showError(errId, message, inputEl) {
-            document.getElementById(errId).textContent = message;
-            if (inputEl) inputEl.classList.add('is-error');
-        }
-
-        function nextStep(from) {
-            if (!validateStep(from)) return;
-
-            const next = from + 1;
-            unlockStep(next);
-            goToStep(next);
-
-            if (next === 3) fillSummary();
-        }
-
-        function prevStep(from) {
-            goToStep(from - 1);
-        }
-
-        function unlockStep(step) {
-            const overlay = document.getElementById('overlay-' + step);
-            const stepEl = document.getElementById('step-' + step);
-
-            if (overlay) {
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-            }
-
-            stepEl.classList.remove('pend-step--locked');
-        }
-
-        function goToStep(step) {
-            currentStep = step;
-
-            // Slide to the current step
-            const slider = document.querySelector('.pend-steps-slider');
-            if (slider) {
-                slider.style.transform = `translateX(-${(step - 1) * 100}%)`;
-            }
-
-            // Toggle active class and disable/enable tab index
-            for (let i = 1; i <= TOTAL_STEPS; i++) {
-                const stepEl = document.getElementById('step-' + i);
-                if (stepEl) {
-                    if (i === step) {
-                        stepEl.classList.add('active');
-                        stepEl.querySelectorAll('input, select, textarea, button').forEach(el => el.removeAttribute('tabindex'));
-                    } else {
-                        stepEl.classList.remove('active');
-                        stepEl.querySelectorAll('input, select, textarea, button').forEach(el => el.setAttribute('tabindex', '-1'));
-                    }
-                }
-            }
-
-            // Update step indicator
-            for (let i = 1; i <= TOTAL_STEPS; i++) {
-                const ind = document.getElementById('step-ind-' + i);
-                if (ind) {
-                    ind.classList.remove('active', 'done', 'locked');
-
-                    if (i < step) ind.classList.add('done');
-                    else if (i === step) ind.classList.add('active');
-                    else ind.classList.add('locked');
-
-                    const numEl = ind.querySelector('.step-num');
-                    const checkEl = ind.querySelector('.step-check');
-                    if (numEl && checkEl) {
-                        if (i < step) {
-                            numEl.style.display = 'none';
-                            checkEl.style.display = 'inline';
-                        } else {
-                            numEl.style.display = 'inline';
-                            checkEl.style.display = 'none';
-                        }
-                    }
-                }
-            }
-
-            // Update step lines
-            const line1 = document.getElementById('line-1');
-            if (line1) {
-                line1.classList.toggle('done', step > 1);
-            }
-            const line2 = document.getElementById('line-2');
-            if (line2) {
-                line2.classList.toggle('done', step > 2);
-            }
-
-            // Smooth height transition
-            setTimeout(adjustFormHeight, 50);
-
-            // Smooth scroll to form
-            const formWrap = document.querySelector('.pend-form-wrap');
-            if (formWrap) {
-                formWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-
-        function fillSummary() {
-            document.getElementById('sum-nama').textContent = document.getElementById('nama').value || '—';
-            document.getElementById('sum-email').textContent = document.getElementById('email').value || '—';
-            document.getElementById('sum-hp').textContent = document.getElementById('no_telp').value || '—';
-            document.getElementById('sum-poli').textContent = document.getElementById('tujuan_poli').value || '—';
-            document.getElementById('sum-pesan').textContent = document.getElementById('pesan').value || '—';
-        }
     </script>
 @endpush

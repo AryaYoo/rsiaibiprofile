@@ -567,6 +567,32 @@ header.scrolled {
     line-height: 1.7;
 }
 
+/* ---- Schedule Cards ---- */
+.schedules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.schedule-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-sm);
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 36px;
+    transition: var(--transition);
+}
+
+.schedule-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+
 /* ============================================
    BUTTONS — Global
    ============================================ */
@@ -778,6 +804,11 @@ footer {
 }
 
 @media (max-width: 992px) {
+    .hero-split {
+        min-height: auto;
+        padding: 100px 0 60px;
+    }
+
     .hero-split-content {
         grid-template-columns: 1fr;
         text-align: center;
@@ -800,7 +831,8 @@ footer {
         grid-template-columns: 1fr 1fr;
     }
 
-    .features-grid {
+    .features-grid,
+    .schedules-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -869,8 +901,15 @@ footer {
         padding: 12px 0;
     }
 
+    .overlap-bar {
+        margin-top: -32px;
+        padding: 0 16px;
+    }
+
     .overlap-bar-inner {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 24px 16px;
+        gap: 16px;
     }
 
     .footer-content {
@@ -878,8 +917,86 @@ footer {
         text-align: center;
     }
 
-    .features-grid {
+    footer {
+        padding: 40px 20px 24px;
+    }
+
+    .features-grid,
+    .schedules-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .feature-card,
+    .schedule-card {
+        padding: 24px 20px;
+    }
+
+    .hero-split-slider .carousel-item img {
+        height: 240px;
+    }
+
+    .section-padding {
+        padding: 48px 0;
+    }
+
+    .section-title {
+        margin-bottom: 36px;
+    }
+
+    .cta-modern {
+        padding: 48px 16px;
+    }
+
+    .cta-modern h2 {
+        font-size: 1.8rem;
+    }
+
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .whatsapp-float img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-split-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .hero-split-buttons .btn-hero {
+        width: 100%;
+    }
+
+    .hero-split-slider .carousel-item img {
+        height: 200px;
+    }
+
+    .overlap-bar-inner {
+        padding: 20px 12px;
+        gap: 12px;
+    }
+
+    .stat-item h4 {
+        font-size: 1.3rem;
+    }
+
+    .stat-item p {
+        font-size: 0.78rem;
+    }
+
+    .tab-btn {
+        padding: 8px 16px;
+        font-size: 0.78rem;
+        margin: 4px 2px;
     }
 }
 

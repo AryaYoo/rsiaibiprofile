@@ -95,7 +95,9 @@ Route::prefix('company-profile')->group(function () {
     Route::get('/galeri', [App\Http\Controllers\ComproController::class, 'galeri'])->name('compro.galeri');
     Route::post('/feedback', [App\Http\Controllers\ComproController::class, 'storeFeedback'])->name('compro.feedback.store');
     Route::get('/pendaftaran', [App\Http\Controllers\ComproController::class, 'pendaftaran'])->name('compro.pendaftaran');
-    Route::post('/pendaftaran', [App\Http\Controllers\ComproController::class, 'pendaftaranStore'])->name('compro.pendaftaran.store');
+    Route::get('/pendaftaran/umum', [App\Http\Controllers\ComproController::class, 'pendaftaranUmum'])->name('compro.pendaftaran.umum');
+    Route::post('/pendaftaran/umum', [App\Http\Controllers\ComproController::class, 'pendaftaranUmumStore'])->name('compro.pendaftaran.umum.store');
+    Route::get('/pendaftaran/bpjs', [App\Http\Controllers\ComproController::class, 'pendaftaranBpjs'])->name('compro.pendaftaran.bpjs');
     Route::get('/under-development', function () {
         return view('compro.under-development');
     })->name('compro.under-development');

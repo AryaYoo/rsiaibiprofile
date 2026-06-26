@@ -210,9 +210,9 @@
                 <p>Jadwal dapat berubah, harap hubungi admin untuk konfirmasi</p>
             </div>
 
-            <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+            <div class="schedules-grid reveal-stagger">
                 @forelse($todaySchedules ?? [] as $schedule)
-                    <div class="feature-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm);">
+                    <div class="schedule-card">
                         @if($schedule->doctor->image)
                             <img src="{{ asset('storage/' . $schedule->doctor->image) }}" alt="{{ $schedule->doctor->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
                         @else

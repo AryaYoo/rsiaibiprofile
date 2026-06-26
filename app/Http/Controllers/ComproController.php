@@ -118,7 +118,12 @@ class ComproController extends Controller
         return view('compro.pendaftaran');
     }
 
-    public function pendaftaranStore(Request $request)
+    public function pendaftaranUmum()
+    {
+        return view('compro.pendaftaran-umum');
+    }
+
+    public function pendaftaranUmumStore(Request $request)
     {
         $request->validate([
             'nama'        => 'required|string|max:255',
@@ -132,7 +137,12 @@ class ComproController extends Controller
             'nama', 'email', 'no_telp', 'tujuan_poli', 'pesan',
         ]));
 
-        return redirect()->route('compro.pendaftaran')
+        return redirect()->route('compro.pendaftaran.umum')
             ->with('success', 'Pendaftaran janji Anda telah berhasil dikirim! Tim kami akan menghubungi Anda melalui WhatsApp atau email untuk konfirmasi jadwal.');
+    }
+
+    public function pendaftaranBpjs()
+    {
+        return view('compro.pendaftaran-bpjs');
     }
 }

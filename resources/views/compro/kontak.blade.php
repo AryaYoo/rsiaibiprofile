@@ -2,6 +2,234 @@
 
 @section('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .contact-services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 24px;
+        }
+
+        .contact-service-card {
+            text-align: center;
+        }
+
+        .contact-feedback-wrap {
+            margin-top: 64px;
+            width: 100%;
+        }
+
+        .contact-feedback-card {
+            padding: 60px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-feedback-head {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .contact-feedback-head h2 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-feedback-head p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .contact-form {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .contact-field {
+            margin-bottom: 32px;
+        }
+
+        .contact-message-field {
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 992px) {
+            .contact-services-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 18px !important;
+            }
+
+            .contact-service-card:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .contact-feedback-card {
+                padding: 40px 28px !important;
+                border-radius: 18px !important;
+            }
+
+            .contact-feedback-head {
+                margin-bottom: 32px !important;
+            }
+
+            .contact-feedback-head h2 {
+                font-size: 1.8rem !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #info.section-padding {
+                padding-top: 42px;
+                padding-bottom: 54px;
+            }
+
+            .contact-services-grid {
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+            }
+
+            .contact-service-card {
+                padding: 22px 18px !important;
+                border-radius: 16px !important;
+            }
+
+            .contact-service-card .feature-icon {
+                width: 48px !important;
+                height: 48px !important;
+                margin-bottom: 14px !important;
+                font-size: 1.15rem !important;
+            }
+
+            .contact-service-card h3 {
+                font-size: 1.05rem !important;
+                margin-bottom: 8px !important;
+            }
+
+            .contact-service-card p {
+                font-size: 0.9rem !important;
+                line-height: 1.55 !important;
+                margin-bottom: 16px !important;
+            }
+
+            .contact-service-card .btn {
+                display: inline-flex;
+                align-items: center;
+                width: 100%;
+                justify-content: center;
+                padding: 11px 16px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .contact-feedback-wrap {
+                margin-top: 32px !important;
+            }
+
+            .contact-feedback-card {
+                padding: 28px 16px !important;
+                border-radius: 16px !important;
+            }
+
+            .contact-feedback-head {
+                margin-bottom: 24px !important;
+            }
+
+            .contact-feedback-head .feature-icon {
+                width: 52px !important;
+                height: 52px !important;
+                border-radius: 14px !important;
+                font-size: 1.25rem !important;
+                margin-bottom: 14px !important;
+            }
+
+            .contact-feedback-head h2 {
+                font-size: 1.45rem !important;
+            }
+
+            .contact-feedback-head p {
+                font-size: 0.92rem !important;
+                line-height: 1.6;
+            }
+
+            .contact-form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 18px !important;
+                margin-bottom: 18px !important;
+            }
+
+            .contact-field,
+            .contact-message-field {
+                margin-bottom: 18px !important;
+            }
+
+            .contact-form label {
+                font-size: 0.76rem !important;
+                line-height: 1.35;
+                margin-bottom: 8px !important;
+            }
+
+            .contact-form input,
+            .contact-form textarea {
+                padding: 13px 14px !important;
+                border-radius: 10px !important;
+                font-size: 0.92rem !important;
+            }
+
+            .contact-form textarea {
+                min-height: 140px;
+            }
+
+            .contact-form button[type="submit"] {
+                height: auto !important;
+                min-height: 52px;
+                padding: 14px 16px !important;
+                font-size: 0.92rem !important;
+                letter-spacing: 0 !important;
+                white-space: normal;
+            }
+
+            #cta.cta-modern h2 {
+                font-size: 1.45rem;
+            }
+
+            #cta.cta-modern p {
+                font-size: 0.92rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            #header.page-header {
+                padding-top: 96px;
+                padding-bottom: 42px;
+            }
+
+            #header.page-header h1 {
+                font-size: 2rem;
+            }
+
+            #header.page-header p {
+                font-size: 0.95rem;
+            }
+
+            .contact-service-card {
+                padding: 18px 14px !important;
+            }
+
+            .contact-feedback-card {
+                padding: 24px 12px !important;
+            }
+
+            .contact-feedback-head h2 {
+                font-size: 1.3rem !important;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -17,9 +245,9 @@
     {{-- Services Info --}}
     <section id="info" data-nav-label="Informasi" class="section-padding" style="background: var(--bg-main);">
         <div class="container">
-            <div class="features-grid" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+            <div class="features-grid contact-services-grid">
                 {{-- Card Umum --}}
-                <div class="feature-card" style="text-align: center;">
+                <div class="feature-card contact-service-card">
                     <div class="feature-icon" style="margin: 0 auto 20px;">
                         <i class="fas fa-hospital-user"></i>
                     </div>
@@ -31,7 +259,7 @@
                 </div>
 
                 {{-- Card BPJS --}}
-                <div class="feature-card" style="text-align: center;">
+                <div class="feature-card contact-service-card">
                     <div class="feature-icon" style="margin: 0 auto 20px;">
                         <i class="fas fa-id-card"></i>
                     </div>
@@ -43,7 +271,7 @@
                 </div>
 
                 {{-- Card Non BPJS --}}
-                <div class="feature-card" style="text-align: center;">
+                <div class="feature-card contact-service-card">
                     <div class="feature-icon" style="margin: 0 auto 20px;">
                         <i class="fas fa-calendar-check"></i>
                     </div>
@@ -56,14 +284,14 @@
             </div>
 
             {{-- Formulir Kritik & Saran --}}
-            <div class="reveal" style="margin-top: 64px; width: 100%;">
-                <div class="feature-card" style="padding: 60px; border-radius: 24px; box-shadow: var(--shadow-lg);">
-                    <div style="text-align: center; margin-bottom: 48px;">
+            <div class="reveal contact-feedback-wrap">
+                <div class="feature-card contact-feedback-card">
+                    <div class="contact-feedback-head">
                         <div class="feature-icon" style="margin: 0 auto 20px; width: 64px; height: 64px; font-size: 1.6rem; border-radius: 18px;">
                             <i class="fas fa-envelope-open-text"></i>
                         </div>
-                        <h2 style="font-size: 2.2rem; margin-bottom: 12px;">Kritik & Saran</h2>
-                        <p style="color: var(--text-muted); font-size: 1.1rem;">Masukan Anda sangat berharga bagi peningkatan kualitas pelayanan kami.</p>
+                        <h2>Kritik & Saran</h2>
+                        <p>Masukan Anda sangat berharga bagi peningkatan kualitas pelayanan kami.</p>
                     </div>
 
                     @if(session('success'))
@@ -72,9 +300,9 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('compro.feedback.store') }}" method="POST" style="max-width: 1000px; margin: 0 auto;">
+                    <form action="{{ route('compro.feedback.store') }}" method="POST" class="contact-form">
                         @csrf
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
+                        <div class="contact-form-grid">
                             <div>
                                 <label style="display: block; font-size: 0.9rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Nama Lengkap *</label>
                                 <input type="text" name="name" required placeholder="Masukkan nama Anda" style="width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--bg-main); outline: none; transition: all 0.2s; font-size: 1rem;" onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(18, 53, 36, 0.05)';" onblur="this.style.borderColor='var(--border-soft)'; this.style.boxShadow='none';">
@@ -84,11 +312,11 @@
                                 <input type="email" name="email" placeholder="email@contoh.com" style="width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--bg-main); outline: none; transition: all 0.2s; font-size: 1rem;" onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(18, 53, 36, 0.05)';" onblur="this.style.borderColor='var(--border-soft)'; this.style.boxShadow='none';">
                             </div>
                         </div>
-                        <div style="margin-bottom: 32px;">
+                        <div class="contact-field">
                             <label style="display: block; font-size: 0.9rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Subjek Pesan</label>
                             <input type="text" name="subject" placeholder="Apa perihal pesan Anda?" style="width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--bg-main); outline: none; transition: all 0.2s; font-size: 1rem;" onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(18, 53, 36, 0.05)';" onblur="this.style.borderColor='var(--border-soft)'; this.style.boxShadow='none';">
                         </div>
-                        <div style="margin-bottom: 40px;">
+                        <div class="contact-message-field">
                             <label style="display: block; font-size: 0.9rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Pesan Anda *</label>
                             <textarea name="message" required rows="6" placeholder="Tuliskan kritik, saran, atau pertanyaan Anda di sini..." style="width: 100%; padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--bg-main); outline: none; resize: vertical; transition: all 0.2s; font-size: 1rem; line-height: 1.6;" onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 4px rgba(18, 53, 36, 0.05)';" onblur="this.style.borderColor='var(--border-soft)'; this.style.boxShadow='none';"></textarea>
                         </div>

@@ -1,5 +1,124 @@
 @extends('layouts.company')
 
+@section('styles')
+    <style>
+        #services-list .service-list-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 24px;
+        }
+
+        #services-list .service-list-card {
+            min-width: 0;
+        }
+
+        #services-list .service-list-card h3,
+        #services-list .service-list-card p {
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 992px) {
+            #services-list .service-list-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 16px !important;
+            }
+
+            #services-list .service-list-card {
+                padding: 22px 18px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #filter {
+                padding: 12px 0 !important;
+            }
+
+            #filter .container {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .tab-btn {
+                width: 100%;
+                min-width: 0;
+                padding: 10px 8px !important;
+                font-size: 0.76rem !important;
+                line-height: 1.25;
+                white-space: normal;
+            }
+
+            #services-list.section-padding {
+                padding-top: 34px;
+                padding-bottom: 46px;
+            }
+
+            #services-list .service-list-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 10px !important;
+            }
+
+            #services-list .service-list-card {
+                padding: 14px 9px !important;
+                border-radius: 14px !important;
+            }
+
+            #services-list .service-list-card .feature-icon {
+                width: 42px !important;
+                height: 42px !important;
+                border-radius: 12px !important;
+                margin-bottom: 10px !important;
+                font-size: 1.05rem !important;
+            }
+
+            #services-list .service-list-card .feature-icon img {
+                width: 24px !important;
+                height: 24px !important;
+            }
+
+            #services-list .service-list-card h3 {
+                font-size: 0.86rem !important;
+                line-height: 1.25;
+                margin-bottom: 6px !important;
+            }
+
+            #services-list .service-list-card p {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-size: 0.72rem !important;
+                line-height: 1.45 !important;
+                margin-bottom: 0 !important;
+            }
+        }
+
+        @media (max-width: 420px) {
+            #services-list .service-list-grid {
+                gap: 8px !important;
+            }
+
+            #services-list .service-list-card {
+                padding: 12px 7px !important;
+            }
+
+            #services-list .service-list-card .feature-icon {
+                width: 38px !important;
+                height: 38px !important;
+            }
+
+            #services-list .service-list-card h3 {
+                font-size: 0.78rem !important;
+            }
+
+            #services-list .service-list-card p {
+                -webkit-line-clamp: 2;
+                font-size: 0.66rem !important;
+            }
+        }
+    </style>
+@endsection
+
 @section('content')
     {{-- Page Header --}}
     <section id="header" data-nav-label="Layanan" class="page-header">
@@ -22,9 +141,9 @@
     <section id="services-list" data-nav-label="Daftar Layanan" class="section-padding" style="background: var(--bg-main);">
         <div class="container">
             <div class="tab-content" id="medis">
-                <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+                <div class="features-grid reveal-stagger service-list-grid">
                     @foreach($medis as $service)
-                        <div class="feature-card">
+                        <div class="feature-card service-list-card">
                             <div class="feature-icon">
                                 @if($service->image)
                                     <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" style="width: 32px; height: 32px; border-radius: 6px;">
@@ -42,9 +161,9 @@
             </div>
 
             <div class="tab-content" id="administrasi" style="display:none;">
-                <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+                <div class="features-grid reveal-stagger service-list-grid">
                     @foreach($administrasi as $service)
-                        <div class="feature-card">
+                        <div class="feature-card service-list-card">
                             <div class="feature-icon">
                                 @if($service->image)
                                     <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" style="width: 32px; height: 32px; border-radius: 6px;">
@@ -70,10 +189,10 @@
                 <span class="label">Jadwal Praktek</span>
             </div>
 
-            <div class="features-grid reveal-stagger" style="display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 24px;">
+            <div class="schedules-grid reveal-stagger">
                 @forelse($groupedSchedules ?? [] as $doctorId => $doctorSchedules)
                     @php $doctor = $doctorSchedules->first()->doctor; @endphp
-                    <div class="feature-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid var(--border-soft); box-shadow: var(--shadow-sm); padding: 24px;">
+                    <div class="schedule-card">
                         @if($doctor->image)
                             <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{ $doctor->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
                         @else
