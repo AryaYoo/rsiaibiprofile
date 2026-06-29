@@ -6,10 +6,12 @@ use App\Models\Setting;
 use App\Models\Service;
 use App\Models\Gallery;
 use App\Models\Appointment;
+use App\Models\Doctor;
 use App\Services\ScheduleService;
 use App\Services\DoctorService;
 use App\Services\NewsService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ComproController extends Controller
 {
@@ -120,7 +122,14 @@ class ComproController extends Controller
 
     public function pendaftaranUmum()
     {
-        return view('compro.pendaftaran-umum');
+        $doctors = Doctor::where('is_active', true)
+            ->orderBy('specialty')
+            ->orderBy('name')
+            ->get();
+
+        $poliList = $doctors->pluck('specialty')->unique()->filter()->values();
+
+        return view('compro.pendaftaran-umum', compact('doctors', 'poliList'));
     }
 
     public function pendaftaranUmumStore(Request $request)
@@ -129,20 +138,52 @@ class ComproController extends Controller
             'nama'        => 'required|string|max:255',
             'email'       => 'required|email|max:255',
             'no_telp'     => 'required|string|max:20',
-            'tujuan_poli' => 'required|string|max:255',
+            'tujuan_poli' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::exists('doctors', 'specialty')->where('is_active', true),
+            ],
+            'doctor_id'   => [
+                'required',
+                Rule::exists('doctors', 'id')->where(function ($query) use ($request) {
+                    return $query->where('is_active', true)
+                        ->where('specialty', $request->tujuan_poli);
+                }),
+            ],
             'pesan'       => 'required|string',
         ]);
 
-        Appointment::create($request->only([
-            'nama', 'email', 'no_telp', 'tujuan_poli', 'pesan',
+        $appointment = Appointment::create($request->only([
+            'nama', 'email', 'no_telp', 'tujuan_poli', 'doctor_id', 'pesan',
         ]));
 
+        $appointment->update([
+            'kode_pendaftaran' => $this->generateKodePendaftaran($appointment),
+        ]);
+
+        $appointment->load('doctor');
+
         return redirect()->route('compro.pendaftaran.umum')
-            ->with('success', 'Pendaftaran janji Anda telah berhasil dikirim! Tim kami akan menghubungi Anda melalui WhatsApp atau email untuk konfirmasi jadwal.');
+            ->with('success', 'Pendaftaran janji Anda telah berhasil dikirim! Tim kami akan menghubungi Anda melalui WhatsApp atau email untuk konfirmasi jadwal.')
+            ->with('appointment_receipt', [
+                'kode' => $appointment->kode_pendaftaran,
+                'nama' => $appointment->nama,
+                'email' => $appointment->email,
+                'no_telp' => $appointment->no_telp,
+                'tujuan_poli' => $appointment->tujuan_poli,
+                'dokter' => $appointment->doctor?->name,
+                'tanggal' => $appointment->created_at->format('d/m/Y H:i'),
+            ]);
     }
 
     public function pendaftaranBpjs()
     {
         return view('compro.pendaftaran-bpjs');
+    }
+
+    private function generateKodePendaftaran(Appointment $appointment): string
+    {
+        return 'IBI' . now()->format('ymd') . strtoupper(base_convert($appointment->id, 10, 36));
     }
 }

@@ -14,10 +14,17 @@ class Appointment extends Model
         'no_telp',
         'email',
         'tujuan_poli',
+        'doctor_id',
+        'kode_pendaftaran',
         'pesan',
         'status',
         'catatan_admin',
     ];
+
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 
     public function getStatusLabelAttribute(): string
     {

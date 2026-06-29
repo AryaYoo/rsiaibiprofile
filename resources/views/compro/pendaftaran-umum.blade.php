@@ -67,16 +67,6 @@
             {{-- Form Card --}}
             <div class="pend-form-wrap">
 
-                @if(session('success'))
-                    <div class="pend-alert pend-alert--success">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <strong>Pendaftaran Berhasil Dikirim!</strong>
-                            <span>{{ session('success') }}</span>
-                        </div>
-                    </div>
-                @endif
-
                 <form action="{{ route('compro.pendaftaran.umum.store') }}" method="POST" id="pendaftaranForm" novalidate>
                     @csrf
 
@@ -151,13 +141,30 @@
                                         <i class="fas fa-hospital pend-input-icon"></i>
                                         <select id="tujuan_poli" name="tujuan_poli" required class="pend-input pend-select">
                                             <option value="" disabled selected>-- Pilih Poli --</option>
-                                            <option value="Poli Anak" {{ old('tujuan_poli') === 'Poli Anak' ? 'selected' : '' }}>Poli Anak</option>
-                                            <option value="Poli Penyakit Dalam" {{ old('tujuan_poli') === 'Poli Penyakit Dalam' ? 'selected' : '' }}>Poli Penyakit Dalam</option>
-                                            <option value="Poli OBGYN" {{ old('tujuan_poli') === 'Poli OBGYN' ? 'selected' : '' }}>Poli OBGYN</option>
+                                            @foreach($poliList as $poli)
+                                                <option value="{{ $poli }}" {{ old('tujuan_poli') === $poli ? 'selected' : '' }}>{{ $poli }}</option>
+                                            @endforeach
                                         </select>
                                         <i class="fas fa-chevron-down pend-select-arrow"></i>
                                     </div>
                                     <span class="pend-field-error" id="err-tujuan_poli"></span>
+                                </div>
+
+                                <div class="pend-field" data-required>
+                                    <label for="doctor_id">Pilih Dokter <span class="req">*</span></label>
+                                    <div class="pend-input-wrap pend-input-wrap--select">
+                                        <i class="fas fa-user-md pend-input-icon"></i>
+                                        <select id="doctor_id" name="doctor_id" required class="pend-input pend-select" disabled>
+                                            <option value="" disabled selected>-- Pilih poli terlebih dahulu --</option>
+                                            @foreach($doctors as $doctor)
+                                                <option value="{{ $doctor->id }}" data-specialty="{{ $doctor->specialty }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                    {{ $doctor->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <i class="fas fa-chevron-down pend-select-arrow"></i>
+                                    </div>
+                                    <span class="pend-field-error" id="err-doctor_id"></span>
                                 </div>
 
                                 <div class="pend-field" data-required>
@@ -208,6 +215,8 @@
                                                 id="sum-email">—</strong></div>
                                         <div style="grid-column: span 2;"><span>Tujuan Poli</span><strong
                                                 id="sum-poli">—</strong></div>
+                                        <div style="grid-column: span 2;"><span>Dokter</span><strong
+                                                id="sum-dokter">—</strong></div>
                                         <div style="grid-column: span 2;">
                                             <span>Keluhan / Pesan</span>
                                             <p id="sum-pesan"
@@ -1022,19 +1031,23 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let currentStep = 1;
         const TOTAL_STEPS = 3;
+        const appointmentReceipt = @json(session('appointment_receipt'));
 
         document.addEventListener('DOMContentLoaded', function () {
             // Adjust height initially
             setTimeout(adjustFormHeight, 150);
+            setupDoctorOptions();
+            showReceiptPopup();
 
             // If there were validation errors, unlock step 2 and go there
             @if($errors->any())
                 unlockStep(2);
                 unlockStep(3);
-                @if($errors->has('tujuan_poli') || $errors->has('pesan'))
+                @if($errors->has('tujuan_poli') || $errors->has('doctor_id') || $errors->has('pesan'))
                     goToStep(2);
                 @endif
             @else
@@ -1106,10 +1119,15 @@
 
             if (step === 2) {
                 const poli = document.getElementById('tujuan_poli');
+                const doctor = document.getElementById('doctor_id');
                 const pesan = document.getElementById('pesan');
 
                 if (!poli.value) {
                     showError('err-tujuan_poli', 'Tujuan poli wajib dipilih.', poli);
+                    isValid = false;
+                }
+                if (!doctor.value) {
+                    showError('err-doctor_id', 'Dokter wajib dipilih sesuai poli.', doctor);
                     isValid = false;
                 }
                 if (!pesan.value.trim()) {
@@ -1124,6 +1142,225 @@
         function showError(errId, message, inputEl) {
             document.getElementById(errId).textContent = message;
             if (inputEl) inputEl.classList.add('is-error');
+        }
+
+        function setupDoctorOptions() {
+            const poliSelect = document.getElementById('tujuan_poli');
+            const doctorSelect = document.getElementById('doctor_id');
+            if (!poliSelect || !doctorSelect) return;
+
+            const doctorOptions = Array.from(doctorSelect.querySelectorAll('option[data-specialty]'));
+            const placeholder = doctorSelect.querySelector('option:not([data-specialty])');
+            const oldDoctorId = "{{ old('doctor_id') }}";
+
+            function filterDoctors() {
+                const selectedPoli = poliSelect.value;
+                let visibleCount = 0;
+
+                doctorOptions.forEach(option => {
+                    const isMatch = option.dataset.specialty === selectedPoli;
+                    option.hidden = !isMatch;
+                    option.disabled = !isMatch;
+                    if (isMatch) visibleCount++;
+                });
+
+                doctorSelect.disabled = !selectedPoli || visibleCount === 0;
+
+                const selectedOption = doctorSelect.selectedOptions[0];
+                if (!selectedOption || selectedOption.hidden || selectedOption.disabled) {
+                    doctorSelect.value = '';
+                }
+
+                if (placeholder) {
+                    placeholder.textContent = selectedPoli
+                        ? (visibleCount ? '-- Pilih Dokter --' : '-- Belum ada dokter untuk poli ini --')
+                        : '-- Pilih poli terlebih dahulu --';
+                }
+
+                if (oldDoctorId && selectedPoli) {
+                    const oldOption = doctorOptions.find(option => option.value === oldDoctorId && option.dataset.specialty === selectedPoli);
+                    if (oldOption) doctorSelect.value = oldDoctorId;
+                }
+            }
+
+            poliSelect.addEventListener('change', () => {
+                doctorSelect.value = '';
+                filterDoctors();
+                adjustFormHeight();
+            });
+
+            filterDoctors();
+        }
+
+        function showReceiptPopup() {
+            if (!appointmentReceipt || typeof Swal === 'undefined') return;
+
+            Swal.fire({
+                title: 'Pendaftaran Berhasil',
+                html: buildReceiptHtml(appointmentReceipt),
+                icon: 'success',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Simpan PNG',
+                denyButtonText: 'Cetak / PDF',
+                cancelButtonText: 'Tutup',
+                allowOutsideClick: false,
+                customClass: {
+                    popup: 'pend-receipt-popup',
+                    htmlContainer: 'pend-receipt-html',
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    downloadReceiptImage(appointmentReceipt);
+                    showReceiptPopup();
+                } else if (result.isDenied) {
+                    printReceipt(appointmentReceipt);
+                    showReceiptPopup();
+                }
+            });
+        }
+
+        function buildReceiptHtml(receipt) {
+            return `
+                <div id="receiptPreview" style="text-align:left; border:1px solid #e4ebe2; border-radius:14px; overflow:hidden; font-family:'Plus Jakarta Sans', Arial, sans-serif;">
+                    <div style="background:#123524; color:#fff; padding:18px 20px;">
+                        <div style="font-size:12px; opacity:.8; font-weight:700; text-transform:uppercase; letter-spacing:.8px;">Bukti Pendaftaran RSIA IBI</div>
+                        <div style="font-size:28px; line-height:1.1; font-weight:900; letter-spacing:1px; margin-top:6px;">${escapeHtml(receipt.kode)}</div>
+                    </div>
+                    <div style="padding:18px 20px; display:grid; gap:10px; color:#1a2e1a;">
+                        ${receiptRow('Nama', receipt.nama)}
+                        ${receiptRow('No. HP', receipt.no_telp)}
+                        ${receiptRow('Email', receipt.email || '-')}
+                        ${receiptRow('Poli', receipt.tujuan_poli)}
+                        ${receiptRow('Dokter', receipt.dokter || '-')}
+                        ${receiptRow('Tanggal Daftar', receipt.tanggal)}
+                    </div>
+                    <div style="background:#f5f7f3; color:#5a6b5a; padding:12px 20px; font-size:12px; line-height:1.5;">
+                        Tunjukkan bukti ini kepada petugas saat tiba di lokasi untuk validasi pendaftaran.
+                    </div>
+                </div>
+            `;
+        }
+
+        function receiptRow(label, value) {
+            return `
+                <div style="display:grid; grid-template-columns:120px 1fr; gap:12px; align-items:start;">
+                    <span style="font-size:12px; color:#5a6b5a; font-weight:800; text-transform:uppercase;">${escapeHtml(label)}</span>
+                    <strong style="font-size:14px; color:#123524; font-weight:800;">${escapeHtml(value || '-')}</strong>
+                </div>
+            `;
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;',
+            }[char]));
+        }
+
+        function downloadReceiptImage(receipt) {
+            const canvas = document.createElement('canvas');
+            const width = 900;
+            const height = 640;
+            const ratio = window.devicePixelRatio || 1;
+            canvas.width = width * ratio;
+            canvas.height = height * ratio;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+
+            const ctx = canvas.getContext('2d');
+            ctx.scale(ratio, ratio);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = '#123524';
+            ctx.fillRect(0, 0, width, 170);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 22px Arial';
+            ctx.fillText('BUKTI PENDAFTARAN RSIA IBI', 54, 58);
+            ctx.font = '900 54px Arial';
+            ctx.fillText(receipt.kode || '-', 54, 126);
+
+            ctx.fillStyle = '#f5f7f3';
+            ctx.fillRect(54, 205, width - 108, 330);
+            ctx.strokeStyle = '#e4ebe2';
+            ctx.strokeRect(54, 205, width - 108, 330);
+
+            const rows = [
+                ['Nama', receipt.nama],
+                ['No. HP', receipt.no_telp],
+                ['Email', receipt.email || '-'],
+                ['Poli', receipt.tujuan_poli],
+                ['Dokter', receipt.dokter || '-'],
+                ['Tanggal Daftar', receipt.tanggal],
+            ];
+
+            rows.forEach((row, index) => {
+                const y = 255 + (index * 42);
+                ctx.fillStyle = '#5a6b5a';
+                ctx.font = '700 18px Arial';
+                ctx.fillText(row[0], 90, y);
+                ctx.fillStyle = '#123524';
+                ctx.font = '700 20px Arial';
+                ctx.fillText(String(row[1] || '-'), 300, y);
+            });
+
+            ctx.fillStyle = '#5a6b5a';
+            ctx.font = '16px Arial';
+            ctx.fillText('Tunjukkan bukti ini kepada petugas saat tiba di lokasi untuk validasi pendaftaran.', 54, 590);
+
+            const link = document.createElement('a');
+            link.download = `bukti-pendaftaran-${receipt.kode || 'rsia-ibi'}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function printReceipt(receipt) {
+            const printWindow = window.open('', '_blank', 'width=720,height=900');
+            if (!printWindow) return;
+
+            printWindow.document.write(`
+                <!doctype html>
+                <html>
+                <head>
+                    <title>Bukti Pendaftaran ${escapeHtml(receipt.kode || '')}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 0; padding: 32px; color: #1a2e1a; }
+                        .receipt { border: 1px solid #e4ebe2; border-radius: 14px; overflow: hidden; max-width: 620px; margin: 0 auto; }
+                        .head { background: #123524; color: white; padding: 24px; }
+                        .label { font-size: 12px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; opacity: .8; }
+                        .code { font-size: 42px; font-weight: 900; letter-spacing: 1px; margin-top: 8px; }
+                        .body { padding: 24px; display: grid; gap: 14px; }
+                        .row { display: grid; grid-template-columns: 150px 1fr; gap: 16px; }
+                        .row span { color: #5a6b5a; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+                        .row strong { color: #123524; font-size: 15px; }
+                        .note { background: #f5f7f3; color: #5a6b5a; padding: 16px 24px; font-size: 13px; line-height: 1.5; }
+                    </style>
+                </head>
+                <body>
+                    <div class="receipt">
+                        <div class="head">
+                            <div class="label">Bukti Pendaftaran RSIA IBI</div>
+                            <div class="code">${escapeHtml(receipt.kode || '-')}</div>
+                        </div>
+                        <div class="body">
+                            ${receiptRow('Nama', receipt.nama)}
+                            ${receiptRow('No. HP', receipt.no_telp)}
+                            ${receiptRow('Email', receipt.email || '-')}
+                            ${receiptRow('Poli', receipt.tujuan_poli)}
+                            ${receiptRow('Dokter', receipt.dokter || '-')}
+                            ${receiptRow('Tanggal Daftar', receipt.tanggal)}
+                        </div>
+                        <div class="note">Tunjukkan bukti ini kepada petugas saat tiba di lokasi untuk validasi pendaftaran.</div>
+                    </div>
+                    <script>window.onload = () => window.print();<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
 
         function nextStep(from) {
@@ -1224,6 +1461,8 @@
             document.getElementById('sum-email').textContent = document.getElementById('email').value || '—';
             document.getElementById('sum-hp').textContent = document.getElementById('no_telp').value || '—';
             document.getElementById('sum-poli').textContent = document.getElementById('tujuan_poli').value || '—';
+            const doctorSelect = document.getElementById('doctor_id');
+            document.getElementById('sum-dokter').textContent = doctorSelect.selectedOptions[0]?.textContent.trim() || '—';
             document.getElementById('sum-pesan').textContent = document.getElementById('pesan').value || '—';
         }
     </script>

@@ -32,6 +32,12 @@
                 <h3 class="font-bold text-gray-800">Data Diri Pasien</h3>
             </div>
             <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+                @if($appointment->kode_pendaftaran)
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Kode Pendaftaran</p>
+                    <p class="text-emerald-700 font-extrabold tracking-wide">{{ $appointment->kode_pendaftaran }}</p>
+                </div>
+                @endif
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Nama Lengkap</p>
                     <p class="text-gray-900 font-semibold">{{ $appointment->nama }}</p>
@@ -62,6 +68,12 @@
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Tujuan Poli</p>
                     <p class="text-gray-900 font-semibold">{{ $appointment->tujuan_poli }}</p>
                 </div>
+                @if($appointment->doctor)
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Dokter</p>
+                    <p class="text-gray-900 font-semibold">{{ $appointment->doctor->name }}</p>
+                </div>
+                @endif
                 @if($appointment->pesan)
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Keluhan / Pesan</p>

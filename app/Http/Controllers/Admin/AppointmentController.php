@@ -10,7 +10,7 @@ class AppointmentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Appointment::latest();
+        $query = Appointment::with('doctor')->latest();
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -24,7 +24,8 @@ class AppointmentController extends Controller
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%')
                   ->orWhere('no_telp', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
+                  ->orWhere('email', 'like', '%' . $request->search . '%')
+                  ->orWhere('kode_pendaftaran', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -42,6 +43,8 @@ class AppointmentController extends Controller
 
     public function show(Appointment $appointment)
     {
+        $appointment->load('doctor');
+
         return view('admin.appointments.show', compact('appointment'));
     }
 

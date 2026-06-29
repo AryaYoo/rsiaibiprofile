@@ -44,7 +44,7 @@
                         melalui aplikasi <strong>Mobile JKN</strong> — layanan resmi BPJS Kesehatan yang tersedia gratis di
                         smartphone Anda.</p>
                     <div class="bpjs-store-badges">
-                        <a href="https://play.google.com/store/apps/details?id=app.bpjskesehatan.mobile" target="_blank"
+                        <a href="https://play.google.com/store/apps/details?id=app.bpjs.mobile&hl=id" target="_blank"
                             rel="noopener" class="bpjs-store-btn bpjs-store-btn--play">
                             <i class="fab fa-google-play"></i>
                             <div>
@@ -52,7 +52,7 @@
                                 <strong>Google Play</strong>
                             </div>
                         </a>
-                        <a href="https://apps.apple.com/id/app/mobile-jkn/id1035916095" target="_blank" rel="noopener"
+                        <a href="https://apps.apple.com/id/app/mobile-jkn/id1237601115" target="_blank" rel="noopener"
                             class="bpjs-store-btn bpjs-store-btn--apple">
                             <i class="fab fa-apple"></i>
                             <div>

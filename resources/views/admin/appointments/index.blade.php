@@ -98,6 +98,9 @@
                 <td class="px-5 py-4 text-sm text-gray-400">{{ $appointments->firstItem() + $loop->index }}</td>
                 <td class="px-5 py-4">
                     <div class="font-bold text-sm text-gray-900">{{ $item->nama }}</div>
+                    @if($item->kode_pendaftaran)
+                        <div class="text-[11px] font-bold text-emerald-700">{{ $item->kode_pendaftaran }}</div>
+                    @endif
                     <div class="text-xs text-gray-400">{{ $item->no_telp }}</div>
                     @if($item->email)
                         <div class="text-xs text-gray-400">{{ $item->email }}</div>
@@ -105,6 +108,9 @@
                 </td>
                 <td class="px-5 py-4">
                     <div class="text-sm font-semibold text-gray-800">{{ $item->tujuan_poli }}</div>
+                    @if($item->doctor)
+                        <div class="text-xs text-gray-400">{{ $item->doctor->name }}</div>
+                    @endif
                 </td>
                 <td class="px-5 py-4">
                     @php
