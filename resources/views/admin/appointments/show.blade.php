@@ -63,19 +63,23 @@
                 </div>
                 <h3 class="font-bold text-gray-800">Informasi Kunjungan</h3>
             </div>
-            <div class="p-6 grid grid-cols-1 gap-5">
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Tanggal Kunjungan</p>
+                    <p class="text-emerald-700 font-extrabold">{{ $appointment->tanggal_kunjungan ? \Carbon\Carbon::parse($appointment->tanggal_kunjungan)->format('d/m/Y') : '-' }}</p>
+                </div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Tujuan Poli</p>
                     <p class="text-gray-900 font-semibold">{{ $appointment->tujuan_poli }}</p>
                 </div>
                 @if($appointment->doctor)
-                <div>
+                <div class="md:col-span-2">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Dokter</p>
                     <p class="text-gray-900 font-semibold">{{ $appointment->doctor->name }}</p>
                 </div>
                 @endif
                 @if($appointment->pesan)
-                <div>
+                <div class="md:col-span-2">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Keluhan / Pesan</p>
                     <p class="text-gray-700 bg-gray-50 rounded-xl p-4 leading-relaxed text-sm">{{ $appointment->pesan }}</p>
                 </div>

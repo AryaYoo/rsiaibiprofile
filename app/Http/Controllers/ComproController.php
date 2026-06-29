@@ -122,7 +122,10 @@ class ComproController extends Controller
 
     public function pendaftaranUmum()
     {
-        $doctors = Doctor::where('is_active', true)
+        $doctors = Doctor::with(['schedules' => function ($q) {
+                $q->where('is_active', true);
+            }])
+            ->where('is_active', true)
             ->orderBy('specialty')
             ->orderBy('name')
             ->get();
@@ -135,27 +138,28 @@ class ComproController extends Controller
     public function pendaftaranUmumStore(Request $request)
     {
         $request->validate([
-            'nama'        => 'required|string|max:255',
-            'email'       => 'required|email|max:255',
-            'no_telp'     => 'required|string|max:20',
-            'tujuan_poli' => [
+            'nama'              => 'required|string|max:255',
+            'email'             => 'required|email|max:255',
+            'no_telp'           => 'required|string|max:20',
+            'tanggal_kunjungan' => 'required|date|after_or_equal:today',
+            'tujuan_poli'       => [
                 'required',
                 'string',
                 'max:255',
                 Rule::exists('doctors', 'specialty')->where('is_active', true),
             ],
-            'doctor_id'   => [
+            'doctor_id'         => [
                 'required',
                 Rule::exists('doctors', 'id')->where(function ($query) use ($request) {
                     return $query->where('is_active', true)
                         ->where('specialty', $request->tujuan_poli);
                 }),
             ],
-            'pesan'       => 'required|string',
+            'pesan'             => 'required|string',
         ]);
 
         $appointment = Appointment::create($request->only([
-            'nama', 'email', 'no_telp', 'tujuan_poli', 'doctor_id', 'pesan',
+            'nama', 'email', 'no_telp', 'tanggal_kunjungan', 'tujuan_poli', 'doctor_id', 'pesan',
         ]));
 
         $appointment->update([
@@ -167,13 +171,14 @@ class ComproController extends Controller
         return redirect()->route('compro.pendaftaran.umum')
             ->with('success', 'Pendaftaran janji Anda telah berhasil dikirim! Tim kami akan menghubungi Anda melalui WhatsApp atau email untuk konfirmasi jadwal.')
             ->with('appointment_receipt', [
-                'kode' => $appointment->kode_pendaftaran,
-                'nama' => $appointment->nama,
-                'email' => $appointment->email,
-                'no_telp' => $appointment->no_telp,
-                'tujuan_poli' => $appointment->tujuan_poli,
-                'dokter' => $appointment->doctor?->name,
-                'tanggal' => $appointment->created_at->format('d/m/Y H:i'),
+                'kode'              => $appointment->kode_pendaftaran,
+                'nama'              => $appointment->nama,
+                'email'             => $appointment->email,
+                'no_telp'           => $appointment->no_telp,
+                'tanggal_kunjungan' => \Carbon\Carbon::parse($appointment->tanggal_kunjungan)->format('d/m/Y'),
+                'tujuan_poli'       => $appointment->tujuan_poli,
+                'dokter'            => $appointment->doctor?->name,
+                'tanggal'           => $appointment->created_at->format('d/m/Y H:i'),
             ]);
     }
 

@@ -111,6 +111,9 @@
                     @if($item->doctor)
                         <div class="text-xs text-gray-400">{{ $item->doctor->name }}</div>
                     @endif
+                    @if($item->tanggal_kunjungan)
+                        <div class="text-[11px] text-emerald-700 font-semibold mt-1"><i class="far fa-calendar-alt mr-1"></i>{{ \Carbon\Carbon::parse($item->tanggal_kunjungan)->format('d/m/Y') }}</div>
+                    @endif
                 </td>
                 <td class="px-5 py-4">
                     @php

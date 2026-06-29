@@ -13,6 +13,7 @@ class Appointment extends Model
         'nama',
         'no_telp',
         'email',
+        'tanggal_kunjungan',
         'tujuan_poli',
         'doctor_id',
         'kode_pendaftaran',

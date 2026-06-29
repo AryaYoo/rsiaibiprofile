@@ -135,19 +135,33 @@
                             </div>
 
                             <div class="pend-fields">
-                                <div class="pend-field" data-required>
-                                    <label for="tujuan_poli">Tujuan Periksa / Poli <span class="req">*</span></label>
-                                    <div class="pend-input-wrap pend-input-wrap--select">
-                                        <i class="fas fa-hospital pend-input-icon"></i>
-                                        <select id="tujuan_poli" name="tujuan_poli" required class="pend-input pend-select">
-                                            <option value="" disabled selected>-- Pilih Poli --</option>
-                                            @foreach($poliList as $poli)
-                                                <option value="{{ $poli }}" {{ old('tujuan_poli') === $poli ? 'selected' : '' }}>{{ $poli }}</option>
-                                            @endforeach
-                                        </select>
-                                        <i class="fas fa-chevron-down pend-select-arrow"></i>
+                                <div class="pend-field-row pend-field-row--date-poli">
+                                    <div class="pend-field" data-required>
+                                        <label for="tanggal_kunjungan">Tanggal Kunjungan <span class="req">*</span></label>
+                                        <div class="pend-input-wrap">
+                                            <i class="fas fa-calendar-alt pend-input-icon"></i>
+                                            <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan"
+                                                value="{{ old('tanggal_kunjungan', date('Y-m-d')) }}"
+                                                min="{{ date('Y-m-d') }}"
+                                                class="pend-input" required>
+                                        </div>
+                                        <span class="pend-field-error" id="err-tanggal_kunjungan"></span>
                                     </div>
-                                    <span class="pend-field-error" id="err-tujuan_poli"></span>
+
+                                    <div class="pend-field" data-required>
+                                        <label for="tujuan_poli">Tujuan Periksa / Poli <span class="req">*</span></label>
+                                        <div class="pend-input-wrap pend-input-wrap--select">
+                                            <i class="fas fa-hospital pend-input-icon"></i>
+                                            <select id="tujuan_poli" name="tujuan_poli" required class="pend-input pend-select">
+                                                <option value="" disabled selected>-- Pilih Poli --</option>
+                                                @foreach($poliList as $poli)
+                                                    <option value="{{ $poli }}" {{ old('tujuan_poli') === $poli ? 'selected' : '' }}>{{ $poli }}</option>
+                                                @endforeach
+                                            </select>
+                                            <i class="fas fa-chevron-down pend-select-arrow"></i>
+                                        </div>
+                                        <span class="pend-field-error" id="err-tujuan_poli"></span>
+                                    </div>
                                 </div>
 
                                 <div class="pend-field" data-required>
@@ -156,11 +170,6 @@
                                         <i class="fas fa-user-md pend-input-icon"></i>
                                         <select id="doctor_id" name="doctor_id" required class="pend-input pend-select" disabled>
                                             <option value="" disabled selected>-- Pilih poli terlebih dahulu --</option>
-                                            @foreach($doctors as $doctor)
-                                                <option value="{{ $doctor->id }}" data-specialty="{{ $doctor->specialty }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
-                                                    {{ $doctor->name }}
-                                                </option>
-                                            @endforeach
                                         </select>
                                         <i class="fas fa-chevron-down pend-select-arrow"></i>
                                     </div>
@@ -213,8 +222,8 @@
                                         <div><span>No. HP / WhatsApp</span><strong id="sum-hp">—</strong></div>
                                         <div style="grid-column: span 2;"><span>Email</span><strong
                                                 id="sum-email">—</strong></div>
-                                        <div style="grid-column: span 2;"><span>Tujuan Poli</span><strong
-                                                id="sum-poli">—</strong></div>
+                                        <div><span>Tanggal Kunjungan</span><strong id="sum-tgl-kunjungan">—</strong></div>
+                                        <div><span>Tujuan Poli</span><strong id="sum-poli">—</strong></div>
                                         <div style="grid-column: span 2;"><span>Dokter</span><strong
                                                 id="sum-dokter">—</strong></div>
                                         <div style="grid-column: span 2;">
@@ -241,7 +250,7 @@
                                     <span class="pend-submit-text"><i class="fas fa-paper-plane"></i> Kirim
                                         Pendaftaran</span>
                                     <span class="pend-submit-loading" style="display:none;"><i
-                                            class="fas fa-spinner fa-spin"></i> Mengirim...</span>
+                                            class="fas fa-circle-notch fa-spin"></i> Mengirim...</span>
                                 </button>
                             </div>
                         </div>
@@ -574,6 +583,10 @@
             gap: 20px;
         }
 
+        .pend-field-row--date-poli {
+            grid-template-columns: 1fr 1.6fr;
+        }
+
         .pend-field {
             display: flex;
             flex-direction: column;
@@ -810,6 +823,7 @@
         .pend-btn-submit {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: var(--white);
@@ -827,6 +841,20 @@
         .pend-btn-submit:hover {
             transform: translateY(-3px);
             box-shadow: 0 14px 28px rgba(18, 53, 36, 0.3);
+        }
+
+        .pend-submit-text,
+        .pend-submit-loading {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pend-submit-loading i {
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
         }
 
         /* ============================================
@@ -949,6 +977,11 @@
                 gap: 12px;
             }
 
+            .pend-field-row--date-poli {
+                grid-template-columns: 1fr 1.5fr !important;
+                gap: 10px !important;
+            }
+
             .pend-field label {
                 font-size: 0.75rem;
             }
@@ -1026,6 +1059,183 @@
                 width: 24px;
                 margin-bottom: 14px;
             }
+
+            .pend-field-row--date-poli {
+                grid-template-columns: 135px 1fr !important;
+                gap: 8px !important;
+            }
+        }
+
+        /* ============================================
+           SWEETALERT RECEIPT POPUP STYLING & MOBILE RESPONSIVE
+           ============================================ */
+        .swal2-popup.pend-receipt-popup {
+            border-radius: 24px !important;
+            padding: 24px 20px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            box-shadow: 0 20px 50px rgba(18, 53, 36, 0.2) !important;
+            max-width: 480px !important;
+            width: 92vw !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-title {
+            font-size: 1.5rem !important;
+            font-weight: 800 !important;
+            color: var(--primary) !important;
+            margin-bottom: 12px !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-html-container {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-icon.swal2-success {
+            border-color: var(--primary-light) !important;
+            color: var(--primary-light) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-icon.swal2-success [class^='swal2-success-line'] {
+            background-color: var(--primary-light) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-icon.swal2-success .swal2-success-ring {
+            border-color: rgba(62, 123, 39, 0.3) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-actions {
+            margin-top: 20px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+
+        /* Buttons Styling consistent with main theme */
+        .swal2-popup.pend-receipt-popup .swal2-confirm {
+            grid-column: 1 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 0.9rem !important;
+            padding: 12px 16px !important;
+            box-shadow: 0 4px 12px rgba(18, 53, 36, 0.2) !important;
+            transition: var(--transition) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-confirm:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(18, 53, 36, 0.3) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-deny {
+            grid-column: 2 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            background: var(--primary-light) !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 0.9rem !important;
+            padding: 12px 16px !important;
+            box-shadow: 0 4px 12px rgba(62, 123, 39, 0.2) !important;
+            transition: var(--transition) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-deny:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(62, 123, 39, 0.3) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-cancel {
+            grid-column: 1 / -1 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            background: var(--bg-main) !important;
+            color: var(--text-muted) !important;
+            border: 1.5px solid var(--border-soft) !important;
+            border-radius: 12px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 0.9rem !important;
+            padding: 12px 16px !important;
+            transition: var(--transition) !important;
+        }
+
+        .swal2-popup.pend-receipt-popup .swal2-cancel:hover {
+            background: var(--border-soft) !important;
+            color: var(--primary) !important;
+        }
+
+        /* Mobile Responsiveness for Receipt Popup */
+        @media (max-width: 600px) {
+            .swal2-popup.pend-receipt-popup {
+                padding: 16px 14px !important;
+                max-height: 94vh !important;
+                overflow-y: auto !important;
+                border-radius: 20px !important;
+            }
+
+            .swal2-popup.pend-receipt-popup .swal2-icon {
+                margin: 8px auto 8px !important;
+                transform: scale(0.8) !important;
+            }
+
+            .swal2-popup.pend-receipt-popup .swal2-title {
+                font-size: 1.2rem !important;
+                margin-bottom: 8px !important;
+            }
+
+            .swal2-popup.pend-receipt-popup .swal2-actions {
+                margin-top: 14px !important;
+                gap: 8px !important;
+            }
+
+            .swal2-popup.pend-receipt-popup .swal2-actions button {
+                padding: 11px 10px !important;
+                font-size: 0.84rem !important;
+            }
+
+            #receiptPreview {
+                border-radius: 12px !important;
+            }
+
+            #receiptPreview > div:first-child {
+                padding: 12px 14px !important;
+            }
+
+            #receiptPreview > div:first-child > div:last-child {
+                font-size: 22px !important;
+            }
+
+            #receiptPreview > div:nth-child(2) {
+                padding: 12px 14px !important;
+                gap: 8px !important;
+            }
+
+            #receiptPreview > div:nth-child(2) > div {
+                grid-template-columns: 105px 1fr !important;
+                gap: 8px !important;
+            }
+
+            #receiptPreview > div:nth-child(2) span {
+                font-size: 11px !important;
+            }
+
+            #receiptPreview > div:nth-child(2) strong {
+                font-size: 13px !important;
+                word-break: break-word !important;
+            }
+
+            #receiptPreview > div:last-child {
+                padding: 10px 14px !important;
+                font-size: 11px !important;
+            }
         }
     </style>
 @endsection
@@ -1036,6 +1246,8 @@
         let currentStep = 1;
         const TOTAL_STEPS = 3;
         const appointmentReceipt = @json(session('appointment_receipt'));
+        const doctorsData = @json($doctors);
+        let receiptSavedOrPrinted = false;
 
         document.addEventListener('DOMContentLoaded', function () {
             // Adjust height initially
@@ -1047,7 +1259,7 @@
             @if($errors->any())
                 unlockStep(2);
                 unlockStep(3);
-                @if($errors->has('tujuan_poli') || $errors->has('doctor_id') || $errors->has('pesan'))
+                @if($errors->has('tanggal_kunjungan') || $errors->has('tujuan_poli') || $errors->has('doctor_id') || $errors->has('pesan'))
                     goToStep(2);
                 @endif
             @else
@@ -1118,10 +1330,15 @@
             }
 
             if (step === 2) {
+                const tgl = document.getElementById('tanggal_kunjungan');
                 const poli = document.getElementById('tujuan_poli');
                 const doctor = document.getElementById('doctor_id');
                 const pesan = document.getElementById('pesan');
 
+                if (tgl && !tgl.value) {
+                    showError('err-tanggal_kunjungan', 'Tanggal kunjungan wajib diisi.', tgl);
+                    isValid = false;
+                }
                 if (!poli.value) {
                     showError('err-tujuan_poli', 'Tujuan poli wajib dipilih.', poli);
                     isValid = false;
@@ -1144,52 +1361,101 @@
             if (inputEl) inputEl.classList.add('is-error');
         }
 
+        function getDayNameIndo(dateStr) {
+            if (!dateStr) return '';
+            const dateObj = new Date(dateStr + 'T00:00:00');
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            return days[dateObj.getDay()];
+        }
+
         function setupDoctorOptions() {
+            const dateInput = document.getElementById('tanggal_kunjungan');
             const poliSelect = document.getElementById('tujuan_poli');
             const doctorSelect = document.getElementById('doctor_id');
             if (!poliSelect || !doctorSelect) return;
 
-            const doctorOptions = Array.from(doctorSelect.querySelectorAll('option[data-specialty]'));
-            const placeholder = doctorSelect.querySelector('option:not([data-specialty])');
             const oldDoctorId = "{{ old('doctor_id') }}";
 
-            function filterDoctors() {
+            function updateDoctors() {
                 const selectedPoli = poliSelect.value;
-                let visibleCount = 0;
+                const selectedDate = dateInput ? dateInput.value : '';
+                const dayName = getDayNameIndo(selectedDate);
 
-                doctorOptions.forEach(option => {
-                    const isMatch = option.dataset.specialty === selectedPoli;
-                    option.hidden = !isMatch;
-                    option.disabled = !isMatch;
-                    if (isMatch) visibleCount++;
+                doctorSelect.innerHTML = '';
+
+                if (!selectedPoli) {
+                    doctorSelect.disabled = true;
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.disabled = true;
+                    opt.selected = true;
+                    opt.textContent = '-- Pilih poli terlebih dahulu --';
+                    doctorSelect.appendChild(opt);
+                    return;
+                }
+
+                const filteredDoctors = doctorsData.filter(d => d.specialty === selectedPoli);
+
+                if (filteredDoctors.length === 0) {
+                    doctorSelect.disabled = true;
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.disabled = true;
+                    opt.selected = true;
+                    opt.textContent = '-- Belum ada dokter untuk poli ini --';
+                    doctorSelect.appendChild(opt);
+                    return;
+                }
+
+                doctorSelect.disabled = false;
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = '';
+                defaultOpt.disabled = true;
+                defaultOpt.selected = !oldDoctorId;
+                defaultOpt.textContent = '-- Pilih Dokter --';
+                doctorSelect.appendChild(defaultOpt);
+
+                filteredDoctors.forEach(doc => {
+                    const opt = document.createElement('option');
+                    opt.value = doc.id;
+
+                    let timeStr = '';
+                    if (dayName && doc.schedules && doc.schedules.length > 0) {
+                        const daySchedules = doc.schedules.filter(s => s.day === dayName && s.is_active);
+                        if (daySchedules.length > 0) {
+                            timeStr = daySchedules.map(s => s.time).join(', ');
+                        }
+                    }
+
+                    let label = doc.name;
+                    if (timeStr) {
+                        label += ` (${timeStr})`;
+                    } else if (dayName) {
+                        label += ` (Tidak ada jadwal pada ${dayName})`;
+                    }
+
+                    opt.textContent = label;
+                    if (oldDoctorId && String(doc.id) === String(oldDoctorId)) {
+                        opt.selected = true;
+                    }
+                    doctorSelect.appendChild(opt);
                 });
+            }
 
-                doctorSelect.disabled = !selectedPoli || visibleCount === 0;
-
-                const selectedOption = doctorSelect.selectedOptions[0];
-                if (!selectedOption || selectedOption.hidden || selectedOption.disabled) {
-                    doctorSelect.value = '';
-                }
-
-                if (placeholder) {
-                    placeholder.textContent = selectedPoli
-                        ? (visibleCount ? '-- Pilih Dokter --' : '-- Belum ada dokter untuk poli ini --')
-                        : '-- Pilih poli terlebih dahulu --';
-                }
-
-                if (oldDoctorId && selectedPoli) {
-                    const oldOption = doctorOptions.find(option => option.value === oldDoctorId && option.dataset.specialty === selectedPoli);
-                    if (oldOption) doctorSelect.value = oldDoctorId;
-                }
+            if (dateInput) {
+                dateInput.addEventListener('change', () => {
+                    updateDoctors();
+                    adjustFormHeight();
+                });
             }
 
             poliSelect.addEventListener('change', () => {
                 doctorSelect.value = '';
-                filterDoctors();
+                updateDoctors();
                 adjustFormHeight();
             });
 
-            filterDoctors();
+            updateDoctors();
         }
 
         function showReceiptPopup() {
@@ -1205,15 +1471,38 @@
                 denyButtonText: 'Cetak / PDF',
                 cancelButtonText: 'Tutup',
                 allowOutsideClick: false,
+                allowEscapeKey: false,
                 customClass: {
                     popup: 'pend-receipt-popup',
                     htmlContainer: 'pend-receipt-html',
                 },
+                didOpen: () => {
+                    const cancelBtn = Swal.getCancelButton();
+                    if (cancelBtn) {
+                        if (!receiptSavedOrPrinted) {
+                            cancelBtn.style.opacity = '0.5';
+                            cancelBtn.style.cursor = 'not-allowed';
+                        } else {
+                            cancelBtn.style.opacity = '1';
+                            cancelBtn.style.cursor = 'pointer';
+                        }
+
+                        cancelBtn.addEventListener('click', function (e) {
+                            if (!receiptSavedOrPrinted) {
+                                e.stopImmediatePropagation();
+                                e.preventDefault();
+                                Swal.showValidationMessage('Harap klik tombol simpan / cetak terlebih dahulu');
+                            }
+                        }, true);
+                    }
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
+                    receiptSavedOrPrinted = true;
                     downloadReceiptImage(appointmentReceipt);
                     showReceiptPopup();
                 } else if (result.isDenied) {
+                    receiptSavedOrPrinted = true;
                     printReceipt(appointmentReceipt);
                     showReceiptPopup();
                 }
@@ -1231,6 +1520,7 @@
                         ${receiptRow('Nama', receipt.nama)}
                         ${receiptRow('No. HP', receipt.no_telp)}
                         ${receiptRow('Email', receipt.email || '-')}
+                        ${receiptRow('Tgl Kunjungan', receipt.tanggal_kunjungan || '-')}
                         ${receiptRow('Poli', receipt.tujuan_poli)}
                         ${receiptRow('Dokter', receipt.dokter || '-')}
                         ${receiptRow('Tanggal Daftar', receipt.tanggal)}
@@ -1264,7 +1554,7 @@
         function downloadReceiptImage(receipt) {
             const canvas = document.createElement('canvas');
             const width = 900;
-            const height = 640;
+            const height = 680;
             const ratio = window.devicePixelRatio || 1;
             canvas.width = width * ratio;
             canvas.height = height * ratio;
@@ -1285,14 +1575,15 @@
             ctx.fillText(receipt.kode || '-', 54, 126);
 
             ctx.fillStyle = '#f5f7f3';
-            ctx.fillRect(54, 205, width - 108, 330);
+            ctx.fillRect(54, 205, width - 108, 370);
             ctx.strokeStyle = '#e4ebe2';
-            ctx.strokeRect(54, 205, width - 108, 330);
+            ctx.strokeRect(54, 205, width - 108, 370);
 
             const rows = [
                 ['Nama', receipt.nama],
                 ['No. HP', receipt.no_telp],
                 ['Email', receipt.email || '-'],
+                ['Tgl Kunjungan', receipt.tanggal_kunjungan || '-'],
                 ['Poli', receipt.tujuan_poli],
                 ['Dokter', receipt.dokter || '-'],
                 ['Tanggal Daftar', receipt.tanggal],
@@ -1310,7 +1601,7 @@
 
             ctx.fillStyle = '#5a6b5a';
             ctx.font = '16px Arial';
-            ctx.fillText('Tunjukkan bukti ini kepada petugas saat tiba di lokasi untuk validasi pendaftaran.', 54, 590);
+            ctx.fillText('Tunjukkan bukti ini kepada petugas saat tiba di lokasi untuk validasi pendaftaran.', 54, 630);
 
             const link = document.createElement('a');
             link.download = `bukti-pendaftaran-${receipt.kode || 'rsia-ibi'}.png`;
@@ -1350,6 +1641,7 @@
                             ${receiptRow('Nama', receipt.nama)}
                             ${receiptRow('No. HP', receipt.no_telp)}
                             ${receiptRow('Email', receipt.email || '-')}
+                            ${receiptRow('Tgl Kunjungan', receipt.tanggal_kunjungan || '-')}
                             ${receiptRow('Poli', receipt.tujuan_poli)}
                             ${receiptRow('Dokter', receipt.dokter || '-')}
                             ${receiptRow('Tanggal Daftar', receipt.tanggal)}
@@ -1460,6 +1752,13 @@
             document.getElementById('sum-nama').textContent = document.getElementById('nama').value || '—';
             document.getElementById('sum-email').textContent = document.getElementById('email').value || '—';
             document.getElementById('sum-hp').textContent = document.getElementById('no_telp').value || '—';
+            const tglVal = document.getElementById('tanggal_kunjungan').value;
+            if (tglVal) {
+                const parts = tglVal.split('-');
+                document.getElementById('sum-tgl-kunjungan').textContent = `${parts[2]}/${parts[1]}/${parts[0]}`;
+            } else {
+                document.getElementById('sum-tgl-kunjungan').textContent = '—';
+            }
             document.getElementById('sum-poli').textContent = document.getElementById('tujuan_poli').value || '—';
             const doctorSelect = document.getElementById('doctor_id');
             document.getElementById('sum-dokter').textContent = doctorSelect.selectedOptions[0]?.textContent.trim() || '—';
