@@ -115,4 +115,16 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Notification Address
+    |--------------------------------------------------------------------------
+    |
+    | Alamat email Front Office / Admin yang akan menerima notifikasi
+    | setiap kali ada booking baru masuk melalui formulir online.
+    | Atur nilai ini via MAIL_ADMIN_ADDRESS di file .env.
+    |
+    */
+    'admin_address' => env('MAIL_ADMIN_ADDRESS', null),
+
 ];

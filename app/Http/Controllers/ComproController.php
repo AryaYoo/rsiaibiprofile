@@ -12,6 +12,9 @@ use App\Services\DoctorService;
 use App\Services\NewsService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentConfirmationMail;
+use App\Mail\AppointmentNotificationMail;
 
 class ComproController extends Controller
 {
@@ -167,6 +170,25 @@ class ComproController extends Controller
         ]);
 
         $appointment->load('doctor');
+
+        // Kirim email konfirmasi ke pasien
+        try {
+            Mail::to($appointment->email)
+                ->send(new AppointmentConfirmationMail($appointment));
+        } catch (\Throwable $e) {
+            \Log::warning('Gagal kirim email konfirmasi ke pasien: ' . $e->getMessage());
+        }
+
+        // Kirim notifikasi ke Front Office / Admin
+        $adminEmail = config('mail.admin_address');
+        if ($adminEmail) {
+            try {
+                Mail::to($adminEmail)
+                    ->send(new AppointmentNotificationMail($appointment));
+            } catch (\Throwable $e) {
+                \Log::warning('Gagal kirim notifikasi ke admin: ' . $e->getMessage());
+            }
+        }
 
         return redirect()->route('compro.pendaftaran.umum')
             ->with('success', 'Pendaftaran janji Anda telah berhasil dikirim! Tim kami akan menghubungi Anda melalui WhatsApp atau email untuk konfirmasi jadwal.')
