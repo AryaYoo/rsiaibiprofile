@@ -1415,10 +1415,9 @@
                 defaultOpt.textContent = '-- Pilih Dokter --';
                 doctorSelect.appendChild(defaultOpt);
 
+                // Only show doctors that have schedule on the selected day
+                const availableDoctors = [];
                 filteredDoctors.forEach(doc => {
-                    const opt = document.createElement('option');
-                    opt.value = doc.id;
-
                     let timeStr = '';
                     if (dayName && doc.schedules && doc.schedules.length > 0) {
                         const daySchedules = doc.schedules.filter(s => s.day === dayName && s.is_active);
@@ -1427,13 +1426,29 @@
                         }
                     }
 
-                    let label = doc.name;
-                    if (timeStr) {
-                        label += ` (${timeStr})`;
-                    } else if (dayName) {
-                        label += ` (Tidak ada jadwal pada ${dayName})`;
-                    }
+                    // If a date is selected, skip doctors without schedule that day
+                    if (dayName && !timeStr) return;
 
+                    availableDoctors.push({ doc, timeStr });
+                });
+
+                if (availableDoctors.length === 0) {
+                    doctorSelect.disabled = true;
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.disabled = true;
+                    opt.selected = true;
+                    opt.textContent = dayName
+                        ? `-- Tidak ada dokter yang praktek pada hari ${dayName} --`
+                        : '-- Pilih Dokter --';
+                    doctorSelect.appendChild(opt);
+                    return;
+                }
+
+                availableDoctors.forEach(({ doc, timeStr }) => {
+                    const opt = document.createElement('option');
+                    opt.value = doc.id;
+                    const label = timeStr ? `${doc.name} (${timeStr})` : doc.name;
                     opt.textContent = label;
                     if (oldDoctorId && String(doc.id) === String(oldDoctorId)) {
                         opt.selected = true;
