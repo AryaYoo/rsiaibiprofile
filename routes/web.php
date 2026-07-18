@@ -71,6 +71,16 @@ Route::prefix('admienz')->group(function () {
         'show'    => 'admin.feedback.show',
         'destroy' => 'admin.feedback.destroy',
     ]);
+
+    // CMS Careers (Lowongan)
+    Route::resource('careers', App\Http\Controllers\Admin\CareerController::class)->names([
+        'index'   => 'admin.careers.index',
+        'create'  => 'admin.careers.create',
+        'store'   => 'admin.careers.store',
+        'edit'    => 'admin.careers.edit',
+        'update'  => 'admin.careers.update',
+        'destroy' => 'admin.careers.destroy',
+    ]);
     
     // Janji Online (Appointments)
     Route::get('appointments', [App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('admin.appointments.index');
@@ -98,6 +108,8 @@ Route::prefix('company-profile')->group(function () {
     Route::get('/pendaftaran/umum', [App\Http\Controllers\ComproController::class, 'pendaftaranUmum'])->name('compro.pendaftaran.umum');
     Route::post('/pendaftaran/umum', [App\Http\Controllers\ComproController::class, 'pendaftaranUmumStore'])->name('compro.pendaftaran.umum.store');
     Route::get('/pendaftaran/bpjs', [App\Http\Controllers\ComproController::class, 'pendaftaranBpjs'])->name('compro.pendaftaran.bpjs');
+    Route::get('/karir', [App\Http\Controllers\ComproController::class, 'karir'])->name('compro.karir');
+    Route::get('/karir/{id}', [App\Http\Controllers\ComproController::class, 'karirDetail'])->name('compro.karir.detail');
     Route::get('/under-development', function () {
         return view('compro.under-development');
     })->name('compro.under-development');

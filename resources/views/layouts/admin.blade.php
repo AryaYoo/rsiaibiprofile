@@ -35,6 +35,9 @@
                     <a href="{{ route('admin.schedules.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.schedules.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
                         <i class="fas fa-calendar-alt w-6"></i> Jadwal Dokter
                     </a>
+                    <a href="{{ route('admin.careers.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.careers.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                        <i class="fas fa-briefcase w-6"></i> Lowongan Kerja
+                    </a>
                 </div>
 
                 {{-- Dropdown Website --}}

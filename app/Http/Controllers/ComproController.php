@@ -7,6 +7,7 @@ use App\Models\Service;
 use App\Models\Gallery;
 use App\Models\Appointment;
 use App\Models\Doctor;
+use App\Models\Career;
 use App\Services\ScheduleService;
 use App\Services\DoctorService;
 use App\Services\NewsService;
@@ -207,6 +208,18 @@ class ComproController extends Controller
     public function pendaftaranBpjs()
     {
         return view('compro.pendaftaran-bpjs');
+    }
+
+    public function karir()
+    {
+        $careers = Career::where('is_active', true)->latest()->get();
+        return view('compro.karir', compact('careers'));
+    }
+
+    public function karirDetail($id)
+    {
+        $career = Career::where('is_active', true)->findOrFail($id);
+        return view('compro.karir-detail', compact('career'));
     }
 
     private function generateKodePendaftaran(Appointment $appointment): string

@@ -31,6 +31,12 @@
                         <li><a href="{{ url('https://www.tiktok.com/@rsiaibisurabaya') }}">Tiktok</a></li>
                     </ul>
                 </div>
+                <div class="footer-column">
+                    <h3>Karir</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ route('compro.karir') }}">Lowongan</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="copyright">
                 <p>&copy; {{ date('Y') }} RSIA IBI. Seluruh hak cipta dilindungi.</p>
