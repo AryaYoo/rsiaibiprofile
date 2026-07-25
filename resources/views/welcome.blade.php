@@ -275,107 +275,43 @@
             <!-- Swiper Carousel Container -->
             <div class="swiper testimonialSwiper reveal" style="padding: 20px 10px 48px 10px; margin-top: 30px;">
                 <div class="swiper-wrapper">
-                    {{-- Testimoni 1 --}}
-                    <div class="swiper-slide">
-                        <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">R</div>
-                                <div style="overflow: hidden;">
-                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Ri** d** Ha*******</h4>
-                                    <span style="font-size: 0.85rem; color: var(--text-muted);">5 bulan lalu</span>
+                    @forelse($testimonials as $item)
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
+                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                    @if($item->avatar)
+                                        <img src="{{ asset('storage/' . $item->avatar) }}" alt="{{ $item->name }}" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                                    @else
+                                        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">
+                                            {{ strtoupper(substr($item->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    <div style="overflow: hidden;">
+                                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ $item->name }}</h4>
+                                        @if($item->date_info)
+                                            <span style="font-size: 0.85rem; color: var(--text-muted);">{{ $item->date_info }}</span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">"Pengalaman pertama opname di rumah sakit ibi, pelayanan dan fasilitas sangat memuaskan.. dokter dan suster nya berpengalaman dibidang nya.. sukses terus untuk rumah sakit ibi Surabaya semakin baik kedepannya"</p>
-                        </div>
-                    </div>
-
-                    {{-- Testimoni 2 --}}
-                    <div class="swiper-slide">
-                        <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                <div style="width: 48px; height: 48px; border-radius: 50%; background: #795548; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">M</div>
-                                <div style="overflow: hidden;">
-                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Mu******* Lu******</h4>
-                                    <span style="font-size: 0.85rem; color: var(--text-muted);">sebulan lalu</span>
+                                <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $item->rating)
+                                            <i class="bi bi-star-fill"></i>
+                                        @else
+                                            <i class="bi bi-star"></i>
+                                        @endif
+                                    @endfor
                                 </div>
+                                <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">"{{ $item->content }}"</p>
                             </div>
-                            <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">"Penanganannya cepat , susternya ramah di dokternya baik bisa berbicara hapus dngn anak tantrum the best pokoknya terimakasih telah merawat anak saya semoga sukses aamiin"</p>
                         </div>
-                    </div>
-
-                    {{-- Testimoni 3 --}}
-                    <div class="swiper-slide">
-                        <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">F</div>
-                                <div style="overflow: hidden;">
-                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Fa**** Ma**</h4>
-                                    <span style="font-size: 0.85rem; color: var(--text-muted);">sebulan lalu</span>
-                                </div>
+                    @empty
+                        <div class="swiper-slide">
+                            <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; border: 1px solid var(--border-soft); text-align: center;">
+                                <p style="color: var(--text-muted); margin: 0;">Belum ada testimoni pasien.</p>
                             </div>
-                            <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">"serasa dirawat keluarga sendiri , pelayanan sangat ramah, baik, untuk smua staf, bidan , dokter , bahkan securitinya terima kasih"</p>
                         </div>
-                    </div>
-
-                    {{-- Testimoni 4 --}}
-                    <div class="swiper-slide">
-                        <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                <div style="width: 48px; height: 48px; border-radius: 50%; background: #8D6E63; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">S</div>
-                                <div style="overflow: hidden;">
-                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Su*** Ra**</h4>
-                                    <span style="font-size: 0.85rem; color: var(--text-muted);">8 bulan lalu</span>
-                                </div>
-                            </div>
-                            <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">"Masyallah pelayanannya cepat dan ramah..tempatnya bersih dan nyaman.. Alhamdulillah terima kasih Bapak/Ibu dokter dan para perawat.. terimakasih banyak RS IBI.. matursuwun"</p>
-                        </div>
-                    </div>
-
-                    {{-- Testimoni 4.5 --}}
-                    <div class="swiper-slide">
-                        <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                <div style="width: 48px; height: 48px; border-radius: 50%; background: #8D6E63; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">A</div>
-                                <div style="overflow: hidden;">
-                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">A** Wu*******</h4>
-                                    <span style="font-size: 0.85rem; color: var(--text-muted);">7 bulan lalu</span>
-                                </div>
-                            </div>
-                            <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">Pelayanan baik sangat memuaskan dan cepat tanggap dokter dan para bidannya bekerja secara efisien dan sangat bertanggung jawab juga melayani dengan baik dan sepenuh hati</p>
-                        </div>
-                    </div>
-
-                    {{-- Testimoni 5 --}}
-                    <div class="swiper-slide">
-                        <div class="testimonial-card" style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid var(--border-soft); display: flex; flex-direction: column; height: 100%;">
-                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                <div style="width: 48px; height: 48px; border-radius: 50%; background: #EF6C00; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">S</div>
-                                <div style="overflow: hidden;">
-                                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Su***** Am*</h4>
-                                    <span style="font-size: 0.85rem; color: var(--text-muted);">2 bulan lalu</span>
-                                </div>
-                            </div>
-                            <div style="color: #FFB800; font-size: 0.9rem; margin-bottom: 12px;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0; font-style: italic;">"Sangat puas..semua nakes dan petugasnya ramah2 dan respon cepat.dokter anak nya jg menjelaskan dg detail dan sabar"</p>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
                 <!-- Pagination -->
                 <div class="swiper-pagination"></div>

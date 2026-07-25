@@ -37,6 +37,7 @@ class ComproController extends Controller
     {
         $services = Service::where('category', 'medis')->limit(6)->get();
         $promotions = \App\Models\Promotion::where('is_active', true)->orderBy('order')->get();
+        $testimonials = \App\Models\Testimonial::where('is_active', true)->orderBy('sort_order', 'asc')->latest()->get();
         
         $hariIndo = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $todayString = $hariIndo[date('w')];
@@ -47,7 +48,7 @@ class ComproController extends Controller
         $heroBg = $firstPromo && $firstPromo->background ? asset('storage/' . $firstPromo->background) : asset('images/hero-background.svg');
         $heroVideo = $firstPromo && $firstPromo->video ? asset('storage/' . $firstPromo->video) : null;
             
-        return view('welcome', compact('services', 'promotions', 'todaySchedules', 'todayString', 'heroBg', 'heroVideo'));
+        return view('welcome', compact('services', 'promotions', 'testimonials', 'todaySchedules', 'todayString', 'heroBg', 'heroVideo'));
     }
 
     public function tentang()

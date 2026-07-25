@@ -41,8 +41,8 @@
                 </div>
 
                 {{-- Dropdown Website --}}
-                <div x-data="{ open: {{ request()->routeIs('admin.promotions.*', 'admin.news.*', 'admin.services.*', 'admin.gallery.*', 'admin.instagram.*', 'admin.settings.*') ? 'true' : 'false' }} }" class="space-y-1">
-                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-lg font-['Merriweather_Sans'] text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none {{ request()->routeIs('admin.promotions.*', 'admin.news.*', 'admin.services.*', 'admin.gallery.*', 'admin.instagram.*', 'admin.settings.*') ? 'text-emerald-700 font-bold bg-emerald-50/50' : '' }}">
+                <div x-data="{ open: {{ request()->routeIs('admin.promotions.*', 'admin.news.*', 'admin.services.*', 'admin.gallery.*', 'admin.instagram.*', 'admin.testimonials.*', 'admin.settings.*') ? 'true' : 'false' }} }" class="space-y-1">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-lg font-['Merriweather_Sans'] text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none {{ request()->routeIs('admin.promotions.*', 'admin.news.*', 'admin.services.*', 'admin.gallery.*', 'admin.instagram.*', 'admin.testimonials.*', 'admin.settings.*') ? 'text-emerald-700 font-bold bg-emerald-50/50' : '' }}">
                         <span class="flex items-center"><i class="fas fa-globe w-6"></i> Website</span>
                         <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
                     </button>
@@ -61,6 +61,9 @@
                         </a>
                         <a href="{{ route('admin.instagram.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.instagram.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
                             <i class="fab fa-instagram w-5 mr-2 text-xs"></i> Instagram
+                        </a>
+                        <a href="{{ route('admin.testimonials.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.testimonials.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-quote-right w-5 mr-2 text-xs"></i> Testimoni
                         </a>
                         <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.settings.index') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
                             <i class="fas fa-cog w-5 mr-2 text-xs"></i> Pengaturan

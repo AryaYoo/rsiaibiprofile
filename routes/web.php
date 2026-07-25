@@ -72,6 +72,16 @@ Route::prefix('admienz')->group(function () {
         'destroy' => 'admin.feedback.destroy',
     ]);
 
+    // CMS Testimonials
+    Route::resource('testimonials', App\Http\Controllers\Admin\TestimonialController::class)->names([
+        'index'   => 'admin.testimonials.index',
+        'create'  => 'admin.testimonials.create',
+        'store'   => 'admin.testimonials.store',
+        'edit'    => 'admin.testimonials.edit',
+        'update'  => 'admin.testimonials.update',
+        'destroy' => 'admin.testimonials.destroy',
+    ]);
+
     // CMS Careers (Lowongan)
     Route::resource('careers', App\Http\Controllers\Admin\CareerController::class)->names([
         'index'   => 'admin.careers.index',
