@@ -19,7 +19,10 @@ class Career extends Model
         'description',
         'day_to_day_tasks',
         'requirements',
+        'apply_type',
         'apply_link',
+        'contact_email',
+        'contact_whatsapp',
         'is_active',
     ];
 

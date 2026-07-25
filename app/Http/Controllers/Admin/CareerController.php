@@ -31,11 +31,14 @@ class CareerController extends Controller
             'description' => 'required|string',
             'day_to_day_tasks' => 'nullable|string',
             'requirements' => 'nullable|string',
-            'apply_link' => 'nullable|url|max:255',
+            'apply_type' => 'nullable|string|in:google_form,email',
+            'apply_link' => 'nullable|string|max:255',
+            'contact_email' => 'nullable|email|max:255',
+            'contact_whatsapp' => 'nullable|string|max:50',
             'is_active' => 'nullable|boolean',
         ], [
             'salary_max.gte' => 'Gaji maksimal harus lebih besar atau sama dengan gaji minimal.',
-            'apply_link.url' => 'Tautan Google Form / lamaran harus berupa format URL valid.'
+            'contact_email.email' => 'Format email kontak tidak valid.'
         ]);
 
         $career = new Career();
@@ -48,7 +51,10 @@ class CareerController extends Controller
         $career->description = $validated['description'];
         $career->day_to_day_tasks = $validated['day_to_day_tasks'];
         $career->requirements = $validated['requirements'];
-        $career->apply_link = $validated['apply_link'];
+        $career->apply_type = $validated['apply_type'] ?? null;
+        $career->apply_link = $validated['apply_link'] ?? null;
+        $career->contact_email = $validated['contact_email'] ?? null;
+        $career->contact_whatsapp = $validated['contact_whatsapp'] ?? null;
         $career->is_active = $request->has('is_active');
         $career->save();
 
@@ -72,11 +78,14 @@ class CareerController extends Controller
             'description' => 'required|string',
             'day_to_day_tasks' => 'nullable|string',
             'requirements' => 'nullable|string',
-            'apply_link' => 'nullable|url|max:255',
+            'apply_type' => 'nullable|string|in:google_form,email',
+            'apply_link' => 'nullable|string|max:255',
+            'contact_email' => 'nullable|email|max:255',
+            'contact_whatsapp' => 'nullable|string|max:50',
             'is_active' => 'nullable|boolean',
         ], [
             'salary_max.gte' => 'Gaji maksimal harus lebih besar atau sama dengan gaji minimal.',
-            'apply_link.url' => 'Tautan Google Form / lamaran harus berupa format URL valid.'
+            'contact_email.email' => 'Format email kontak tidak valid.'
         ]);
 
         $career->title = $validated['title'];
@@ -88,7 +97,10 @@ class CareerController extends Controller
         $career->description = $validated['description'];
         $career->day_to_day_tasks = $validated['day_to_day_tasks'];
         $career->requirements = $validated['requirements'];
-        $career->apply_link = $validated['apply_link'];
+        $career->apply_type = $validated['apply_type'] ?? null;
+        $career->apply_link = $validated['apply_link'] ?? null;
+        $career->contact_email = $validated['contact_email'] ?? null;
+        $career->contact_whatsapp = $validated['contact_whatsapp'] ?? null;
         $career->is_active = $request->has('is_active');
         $career->save();
 

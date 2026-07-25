@@ -105,16 +105,87 @@
                                     </div>
                                 </div>
                             @endif
+
+                            @php
+                                $waNumber = $career->contact_whatsapp ? preg_replace('/[^0-9]/', '', $career->contact_whatsapp) : null;
+                                if ($waNumber && str_starts_with($waNumber, '0')) {
+                                    $waNumber = '62' . substr($waNumber, 1);
+                                }
+                            @endphp
+
+                            @if($career->contact_email || $career->contact_whatsapp)
+                                <div style="padding-top: 16px; border-top: 1px dashed var(--border-soft); margin-top: 8px;">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">Kontak Information</div>
+                                    @if($career->contact_email)
+                                        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; margin-bottom: 6px;">
+                                            <i class="bi bi-envelope-at" style="color: var(--primary-light);"></i>
+                                            <a href="mailto:{{ $career->contact_email }}" style="color: var(--primary); text-decoration: underline;">{{ $career->contact_email }}</a>
+                                        </div>
+                                    @endif
+                                    @if($career->contact_whatsapp)
+                                        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem;">
+                                            <i class="bi bi-whatsapp" style="color: #25D366;"></i>
+                                            <a href="https://wa.me/{{ $waNumber }}" target="_blank" rel="noopener noreferrer" style="color: #059669; font-weight: 600; text-decoration: underline;">
+                                                {{ $career->contact_whatsapp }}
+                                            </a>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
 
-                        {{-- Apply Button --}}
-                        @if($career->apply_link)
-                            <a href="{{ $career->apply_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-accent" style="width: 100%; justify-content: center; height: 48px; font-size: 0.95rem; border-radius: 10px;">
+                        {{-- Apply Button & Logic --}}
+                        @php
+                            $hasLink = !empty(trim($career->apply_link ?? ''));
+                            $isEmailType = $career->apply_type === 'email' || (filter_var($career->apply_link, FILTER_VALIDATE_EMAIL) || str_contains($career->apply_link ?? '', '@'));
+                        @endphp
+
+                        @if($hasLink && $isEmailType)
+                            {{-- Kondisi 3: Email / Gmail --}}
+                            @php
+                                $emailAddress = trim($career->apply_link);
+                                if (str_starts_with($emailAddress, 'mailto:')) {
+                                    $emailAddress = substr($emailAddress, 7);
+                                }
+                            @endphp
+                            <a href="mailto:{{ $emailAddress }}?subject=Lamaran Pekerjaan - {{ urlencode($career->title) }}" class="btn btn-accent" style="width: 100%; justify-content: center; height: 48px; font-size: 0.95rem; border-radius: 10px;">
+                                <i class="bi bi-envelope-paper-fill mr-2"></i> Lamar via Email (Gmail)
+                            </a>
+                            <div style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">
+                                Kirim berkas ke: <strong>{{ $emailAddress }}</strong>
+                            </div>
+                        @elseif($hasLink)
+                            {{-- Kondisi 2: Google Form / Link --}}
+                            <a href="{{ str_starts_with($career->apply_link, 'http') ? $career->apply_link : 'https://' . $career->apply_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-accent" style="width: 100%; justify-content: center; height: 48px; font-size: 0.95rem; border-radius: 10px;">
                                 Lamar Pekerjaan Ini <i class="bi bi-box-arrow-up-right ml-2" style="font-size: 0.8rem;"></i>
                             </a>
                         @else
-                            <div style="text-align: center; font-size: 0.9rem; color: var(--text-muted); padding: 12px; border: 1px dashed var(--border-soft); border-radius: 8px; background: white;">
-                                Silakan kirimkan CV & lamaran Anda ke email RSIA IBI atau hubungi kontak resmi kami.
+                            {{-- Kondisi 1: Dikosongkan --}}
+                            <div style="padding: 16px; border: 1px dashed #10B981; border-radius: 12px; background: #F0FDF4; text-align: center;">
+                                <div style="font-weight: 700; color: #065F46; font-size: 0.95rem; margin-bottom: 6px;">
+                                    <i class="bi bi-info-circle-fill mr-1"></i> Informasi Lamaran
+                                </div>
+                                <p style="font-size: 0.85rem; color: #047857; margin: 0 0 10px 0; line-height: 1.5;">
+                                    Silakan kirimkan CV & Surat Lamaran Anda melalui email atau kontak resmi kami.
+                                </p>
+
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    @if($career->contact_email)
+                                        <a href="mailto:{{ $career->contact_email }}?subject=Lamaran Pekerjaan - {{ urlencode($career->title) }}" class="btn" style="width: 100%; justify-content: center; height: 38px; font-size: 0.85rem; border-radius: 8px; background: #059669; color: white;">
+                                            <i class="bi bi-envelope-fill mr-2"></i> Kirim Email Lamaran
+                                        </a>
+                                    @endif
+                                    @if($career->contact_whatsapp)
+                                        <a href="https://wa.me/{{ $waNumber }}?text=Halo%20RSIA%20IBI,%20saya%20ingin%20mengirimkan%20lamaran%20pekerjaan%20posisi%20{{ urlencode($career->title) }}" target="_blank" rel="noopener noreferrer" class="btn" style="width: 100%; justify-content: center; height: 38px; font-size: 0.85rem; border-radius: 8px; background: #25D366; color: white;">
+                                            <i class="bi bi-whatsapp mr-2"></i> Hubungi via WhatsApp
+                                        </a>
+                                    @endif
+                                    @if(!$career->contact_email && !$career->contact_whatsapp)
+                                        <div style="font-size: 0.8rem; color: #047857; font-style: italic;">
+                                            Hubungi kontak sekretariat / HRD RSIA IBI Surabaya.
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         @endif
 
