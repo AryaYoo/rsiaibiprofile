@@ -18,6 +18,11 @@ class ScheduleService
         return $this->scheduleRepository->all($perPage);
     }
 
+    public function getFilteredSchedules($search = null, $specialty = null, $day = null, $status = null, $perPage = 50)
+    {
+        return $this->scheduleRepository->allFiltered($search, $specialty, $day, $status, $perPage);
+    }
+
     public function storeSchedule(array $data)
     {
         return $this->scheduleRepository->create($data);

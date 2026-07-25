@@ -32,8 +32,10 @@ class DoctorController extends Controller
             'name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'is_active' => 'boolean'
+            'is_active' => 'nullable|boolean'
         ]);
+
+        $validated['is_active'] = $request->has('is_active');
 
         $this->doctorService->storeDoctor($validated, $request->file('image'));
 
@@ -52,8 +54,10 @@ class DoctorController extends Controller
             'name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'is_active' => 'boolean'
+            'is_active' => 'nullable|boolean'
         ]);
+
+        $validated['is_active'] = $request->has('is_active');
 
         $this->doctorService->updateDoctor($id, $validated, $request->file('image'));
 

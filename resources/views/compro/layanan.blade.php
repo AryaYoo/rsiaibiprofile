@@ -186,13 +186,63 @@
     <section id="jadwal-layanan" data-nav-label="Jadwal Dokter" class="section-padding" style="background: white; border-top: 1px solid var(--border-soft);">
         <div class="container">
             <div class="section-title reveal">
-                <span class="label">Jadwal Praktek</span>
+                <span class="label">Jadwal Praktek Dokter</span>
+                <h2>Pencarian & Jadwal dokter</h2>
+                <p>Cari dokter atau filter berdasarkan spesialisasi & hari praktik</p>
+            </div>
+
+            {{-- Filter & Search Bar --}}
+            <div class="schedule-filter-bar reveal" style="background: var(--bg-main); padding: 20px; border-radius: 16px; border: 1px solid var(--border-soft); margin-bottom: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; align-items: center;" class="filter-grid">
+                    {{-- Input Search --}}
+                    <div style="position: relative;">
+                        <i class="bi bi-search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1rem;"></i>
+                        <input type="text" id="doctor-search" placeholder="Cari nama dokter atau spesialisasi..." 
+                            style="width: 100%; padding: 12px 16px 12px 44px; border-radius: 12px; border: 1px solid var(--border-soft); outline: none; font-size: 0.95rem; background: white; transition: all 0.2s;"
+                            onkeyup="filterDoctorSchedules()">
+                    </div>
+
+                    {{-- Filter Spesialisasi --}}
+                    <div>
+                        <select id="specialty-filter" onchange="filterDoctorSchedules()" 
+                            style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border-soft); outline: none; font-size: 0.95rem; background: white; color: var(--text-main);">
+                            <option value="">Semua Spesialisasi</option>
+                            @php
+                                $specialties = collect($groupedSchedules ?? [])->map(fn($s) => $s->first()->doctor->specialty ?? 'Umum')->unique()->filter()->values();
+                            @endphp
+                            @foreach($specialties as $spec)
+                                <option value="{{ $spec }}">{{ $spec }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Filter Hari Praktik --}}
+                    <div>
+                        <select id="day-filter" onchange="filterDoctorSchedules()" 
+                            style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border-soft); outline: none; font-size: 0.95rem; background: white; color: var(--text-main);">
+                            <option value="">Semua Hari Praktik</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                            <option value="Minggu">Minggu</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="schedules-grid reveal-stagger">
                 @forelse($groupedSchedules ?? [] as $doctorId => $doctorSchedules)
-                    @php $doctor = $doctorSchedules->first()->doctor; @endphp
-                    <div class="schedule-card">
+                    @php 
+                        $doctor = $doctorSchedules->first()->doctor;
+                        $doctorDays = strtolower(implode(',', $doctorSchedules->pluck('day')->toArray()));
+                    @endphp
+                    <div class="schedule-card" 
+                        data-name="{{ strtolower($doctor->name) }}" 
+                        data-specialty="{{ strtolower($doctor->specialty ?? 'Umum') }}"
+                        data-days="{{ $doctorDays }}">
                         @if($doctor->image)
                             <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{ $doctor->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
                         @else
@@ -229,8 +279,23 @@
                         <h3 style="color: var(--text-muted);">Belum ada jadwal dokter yang tersedia.</h3>
                     </div>
                 @endforelse
+
+                {{-- Empty filter result container --}}
+                <div id="no-schedule-results" style="display: none; grid-column: 1 / -1; text-align: center; padding: 48px; background: white; border-radius: 16px; border: 1px dashed var(--border-soft);">
+                    <i class="fas fa-search-minus" style="font-size: 3rem; color: var(--border-soft); margin-bottom: 16px;"></i>
+                    <h3 style="color: var(--text-muted); margin-bottom: 8px;">Tidak ada dokter yang cocok</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Coba gunakan kata kunci pencarian atau filter yang berbeda.</p>
+                </div>
             </div>
         </div>
+
+        <style>
+            @media (max-width: 768px) {
+                .filter-grid {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+        </style>
 
         <script>
             const tabs = document.querySelectorAll('.tab-btn');
@@ -245,6 +310,37 @@
                     document.getElementById(tab.dataset.tab).style.display = 'block';
                 });
             });
+
+            function filterDoctorSchedules() {
+                const searchVal = (document.getElementById('doctor-search')?.value || '').toLowerCase().trim();
+                const specialtyVal = (document.getElementById('specialty-filter')?.value || '').toLowerCase().trim();
+                const dayVal = (document.getElementById('day-filter')?.value || '').toLowerCase().trim();
+
+                const cards = document.querySelectorAll('.schedule-card');
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const name = card.getAttribute('data-name') || '';
+                    const specialty = card.getAttribute('data-specialty') || '';
+                    const days = card.getAttribute('data-days') || '';
+
+                    const matchSearch = !searchVal || name.includes(searchVal) || specialty.includes(searchVal);
+                    const matchSpecialty = !specialtyVal || specialty === specialtyVal;
+                    const matchDay = !dayVal || days.includes(dayVal);
+
+                    if (matchSearch && matchSpecialty && matchDay) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                const noResultsEl = document.getElementById('no-schedule-results');
+                if (noResultsEl) {
+                    noResultsEl.style.display = (visibleCount === 0 && cards.length > 0) ? 'block' : 'none';
+                }
+            }
         </script>
     </section>
 

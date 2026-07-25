@@ -19,6 +19,37 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         return $this->model->with('doctor')->latest()->paginate($perPage);
     }
 
+    public function allFiltered($search = null, $specialty = null, $day = null, $status = null, $perPage = 50)
+    {
+        $query = $this->model->with('doctor')->latest();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->whereHas('doctor', function($dq) use ($search) {
+                    $dq->where('name', 'like', "%{$search}%")
+                      ->orWhere('specialty', 'like', "%{$search}%");
+                })->orWhere('day', 'like', "%{$search}%")
+                  ->orWhere('time', 'like', "%{$search}%");
+            });
+        }
+
+        if ($specialty) {
+            $query->whereHas('doctor', function($dq) use ($specialty) {
+                $dq->where('specialty', $specialty);
+            });
+        }
+
+        if ($day) {
+            $query->where('day', 'like', "%{$day}%");
+        }
+
+        if ($status !== null && $status !== '') {
+            $query->where('is_active', $status == '1' || $status === 'active');
+        }
+
+        return $query->paginate($perPage)->appends(request()->query());
+    }
+
     public function getActiveSchedulesWithDoctors()
     {
         return $this->model->with('doctor')

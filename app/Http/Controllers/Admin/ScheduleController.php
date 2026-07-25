@@ -18,10 +18,18 @@ class ScheduleController extends Controller
         $this->doctorService = $doctorService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $schedules = $this->scheduleService->getAllSchedules();
-        return view('admin.schedules.index', compact('schedules'));
+        $search = $request->query('search');
+        $specialty = $request->query('specialty');
+        $day = $request->query('day');
+        $status = $request->query('status');
+
+        $schedules = $this->scheduleService->getFilteredSchedules($search, $specialty, $day, $status);
+        $doctors = $this->doctorService->getAllDoctors();
+        $specialties = $doctors->pluck('specialty')->filter()->unique()->values();
+
+        return view('admin.schedules.index', compact('schedules', 'specialties', 'search', 'specialty', 'day', 'status'));
     }
 
     public function create()
@@ -36,8 +44,10 @@ class ScheduleController extends Controller
             'doctor_id' => 'required|exists:doctors,id',
             'day' => 'required|string|max:255',
             'time' => 'required|string|max:255',
-            'is_active' => 'boolean'
+            'is_active' => 'nullable|boolean'
         ]);
+
+        $validated['is_active'] = $request->has('is_active');
 
         $this->scheduleService->storeSchedule($validated);
 
@@ -57,8 +67,10 @@ class ScheduleController extends Controller
             'doctor_id' => 'required|exists:doctors,id',
             'day' => 'required|string|max:255',
             'time' => 'required|string|max:255',
-            'is_active' => 'boolean'
+            'is_active' => 'nullable|boolean'
         ]);
+
+        $validated['is_active'] = $request->has('is_active');
 
         $this->scheduleService->updateSchedule($id, $validated);
 

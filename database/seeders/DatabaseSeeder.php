@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             InstagramPostSeeder::class,
             NewsSeeder::class,
             ScheduleSeeder::class,
+            TestimonialSeeder::class,
         ]);
     }
 }
