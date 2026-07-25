@@ -147,12 +147,15 @@
                                 if (str_starts_with($emailAddress, 'mailto:')) {
                                     $emailAddress = substr($emailAddress, 7);
                                 }
+                                $emailSubject = rawurlencode('Lamaran Pekerjaan - ' . $career->title);
+                                $emailBody = rawurlencode("Kepada Yth. Tim HRD RSIA IBI Surabaya,\n\nSaya bermaksud untuk mengajukan surat lamaran pekerjaan untuk posisi " . $career->title . ".\n\nTerlampir CV dan dokumen pendukung saya.\n\nTerima kasih.");
+                                $mailtoUrl = "mailto:" . $emailAddress . "?subject=" . $emailSubject . "&body=" . $emailBody;
                             @endphp
-                            <a href="mailto:{{ $emailAddress }}?subject=Lamaran Pekerjaan - {{ urlencode($career->title) }}" class="btn btn-accent" style="width: 100%; justify-content: center; height: 48px; font-size: 0.95rem; border-radius: 10px;">
-                                <i class="bi bi-envelope-paper-fill mr-2"></i> Lamar via Email (Gmail)
+                            <a href="{{ $mailtoUrl }}" class="btn btn-accent" style="width: 100%; justify-content: center; height: 48px; font-size: 0.95rem; border-radius: 10px;">
+                                <i class="bi bi-envelope-fill mr-2"></i> Lamar via Email
                             </a>
                             <div style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">
-                                Kirim berkas ke: <strong>{{ $emailAddress }}</strong>
+                                Mengirim ke: <strong>{{ $emailAddress }}</strong>
                             </div>
                         @elseif($hasLink)
                             {{-- Kondisi 2: Google Form / Link --}}
@@ -171,12 +174,17 @@
 
                                 <div style="display: flex; flex-direction: column; gap: 8px;">
                                     @if($career->contact_email)
-                                        <a href="mailto:{{ $career->contact_email }}?subject=Lamaran Pekerjaan - {{ urlencode($career->title) }}" class="btn" style="width: 100%; justify-content: center; height: 38px; font-size: 0.85rem; border-radius: 8px; background: #059669; color: white;">
+                                        @php
+                                            $cEmailSubject = rawurlencode('Lamaran Pekerjaan - ' . $career->title);
+                                            $cEmailBody = rawurlencode("Kepada Yth. Tim HRD RSIA IBI Surabaya,\n\nSaya bermaksud untuk mengajukan surat lamaran pekerjaan untuk posisi " . $career->title . ".\n\nTerlampir CV dan dokumen pendukung saya.\n\nTerima kasih.");
+                                            $cMailtoUrl = "mailto:" . trim($career->contact_email) . "?subject=" . $cEmailSubject . "&body=" . $cEmailBody;
+                                        @endphp
+                                        <a href="{{ $cMailtoUrl }}" class="btn" style="width: 100%; justify-content: center; height: 38px; font-size: 0.85rem; border-radius: 8px; background: #059669; color: white;">
                                             <i class="bi bi-envelope-fill mr-2"></i> Kirim Email Lamaran
                                         </a>
                                     @endif
                                     @if($career->contact_whatsapp)
-                                        <a href="https://wa.me/{{ $waNumber }}?text=Halo%20RSIA%20IBI,%20saya%20ingin%20mengirimkan%20lamaran%20pekerjaan%20posisi%20{{ urlencode($career->title) }}" target="_blank" rel="noopener noreferrer" class="btn" style="width: 100%; justify-content: center; height: 38px; font-size: 0.85rem; border-radius: 8px; background: #25D366; color: white;">
+                                        <a href="https://wa.me/{{ $waNumber }}?text=Halo%20RSIA%20IBI,%20saya%20ingin%20mengirimkan%20lamaran%20pekerjaan%20posisi%20{{ rawurlencode($career->title) }}" target="_blank" rel="noopener noreferrer" class="btn" style="width: 100%; justify-content: center; height: 38px; font-size: 0.85rem; border-radius: 8px; background: #25D366; color: white;">
                                             <i class="bi bi-whatsapp mr-2"></i> Hubungi via WhatsApp
                                         </a>
                                     @endif
