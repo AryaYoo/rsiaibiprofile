@@ -23,7 +23,7 @@
                 </div>
                 <div class="about-profile-photo" style="text-align: center;">
                     <img src="{{ asset('images/direktur.jpg') }}" alt="Direktur RSIA IBI" style="width: 100%; border-radius: 20px; box-shadow: var(--shadow-lg);">
-                    <p style="margin-top: 16px; color: var(--text-muted); font-weight: 700; font-size: 0.9rem;">Dr. Ramli Tarigan (Direktur)</p>
+                    <p style="margin-top: 16px; color: var(--text-muted); font-weight: 700; font-size: 0.9rem;">drg. Elfi Asriningdiah (Direktur)</p>
                 </div>
             </div>
         </div>
