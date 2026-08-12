@@ -9,7 +9,7 @@
 </div>
 
 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-    <form action="{{ route('admin.promotions.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+    <form id="createPromoForm" action="{{ route('admin.promotions.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
         @csrf
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -41,10 +41,10 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Gambar Promosi <span class="text-red-500">*</span>
-                        <span class="text-xs text-gray-400 ml-1">(Slider box kanan hero)</span>
+                        <span class="text-xs text-gray-400 ml-1">(Slider box kanan hero, Max: 5MB)</span>
                     </label>
                     <div class="relative group h-32 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center transition-all hover:border-emerald-500 overflow-hidden">
-                        <input type="file" name="image" required class="absolute inset-0 opacity-0 cursor-pointer z-10" id="imageInput" accept="image/*">
+                        <input type="file" name="image" class="absolute inset-0 opacity-0 cursor-pointer z-10" id="imageInput" accept="image/*">
                         <img id="previewImage" class="absolute inset-0 w-full h-full object-cover hidden">
                         <div id="placeholderImage" class="text-center">
                             <i class="fas fa-image text-2xl text-gray-300 mb-1"></i>
@@ -57,7 +57,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Background Hero (Image)
-                        <span class="text-xs text-gray-400 ml-1">(Latar belakang statis)</span>
+                        <span class="text-xs text-gray-400 ml-1">(Latar belakang statis, Max: 10MB)</span>
                     </label>
                     <div class="relative group h-32 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center transition-all hover:border-blue-500 overflow-hidden">
                         <input type="file" name="background" class="absolute inset-0 opacity-0 cursor-pointer z-10" id="bgInput" accept="image/*">
@@ -84,7 +84,7 @@
                         <div id="placeholderVideo" class="text-center">
                             <i class="fas fa-video text-2xl text-gray-300 mb-1"></i>
                             <p class="text-xs text-gray-500">Upload Video Loop (MP4)</p>
-                            <p class="text-[10px] text-emerald-600 mt-1 font-bold">Max: 5MB | Durasi: 15-30 detik</p>
+                            <p class="text-[10px] text-emerald-600 mt-1 font-bold">Max: 20MB | Durasi: 15-30 detik</p>
                         </div>
                     </div>
                 </div>
@@ -105,6 +105,7 @@
         const input = document.getElementById(inputId);
         const preview = document.getElementById(previewId);
         const placeholder = document.getElementById(placeholderId);
+        if(!input) return;
         input.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
@@ -122,14 +123,91 @@
     setupPreview('bgInput', 'previewBg', 'placeholderBg');
 
     // Video preview
-    document.getElementById('videoInput').addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            document.getElementById('videoMeta').classList.remove('hidden');
-            document.getElementById('placeholderVideo').classList.add('hidden');
-            document.getElementById('videoName').innerText = file.name;
-        }
-    });
+    const videoInput = document.getElementById('videoInput');
+    if(videoInput) {
+        videoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                document.getElementById('videoMeta').classList.remove('hidden');
+                document.getElementById('placeholderVideo').classList.add('hidden');
+                document.getElementById('videoName').innerText = file.name;
+            }
+        });
+    }
+
+    // Form submission validation with SweetAlert2
+    const form = document.getElementById('createPromoForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const imageFile = document.getElementById('imageInput').files[0];
+            const bgFile = document.getElementById('bgInput').files[0];
+            const videoFile = document.getElementById('videoInput').files[0];
+
+            // 1. Validasi Gambar Utama (Required)
+            if (!imageFile) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Gambar Promosi Belum Dipilih!',
+                    text: 'Silakan pilih file gambar promosi (slider) terlebih dahulu sebelum menyimpan data.',
+                    confirmButtonColor: '#059669',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            // 2. Validasi Ukuran Gambar Utama (Max 5MB)
+            if (imageFile.size > 5 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ukuran Gambar Promosi Terlalu Besar!',
+                    text: 'Ukuran file gambar slider maksimal 5 MB. Silakan pilih file yang lebih kecil.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            // 3. Validasi Ukuran Background Image (Max 10MB)
+            if (bgFile && bgFile.size > 10 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ukuran Background Image Terlalu Besar!',
+                    text: 'Ukuran file background hero maksimal 10 MB. Silakan pilih file yang lebih kecil.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            // 4. Validasi Ukuran Video (Max 20MB)
+            if (videoFile && videoFile.size > 20 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ukuran Video Loop Terlalu Besar!',
+                    text: 'Ukuran file video loop maksimal 20 MB. Silakan pilih file video yang lebih kecil.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            // Tampilkan Loading Indicator SweetAlert2 saat submit
+            Swal.fire({
+                title: 'Menyimpan Promosi Baru...',
+                html: 'Mohon tunggu sebentar, file media sedang diunggah dan diproses oleh server.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                customClass: { popup: 'rounded-2xl' }
+            });
+
+            form.submit();
+        });
+    }
 </script>
 @endsection
 @endsection

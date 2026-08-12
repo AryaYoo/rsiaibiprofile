@@ -12,6 +12,7 @@
         h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather Sans', sans-serif; font-weight: 700; }
     </style>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('styles')
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -126,18 +127,60 @@
 
             <!-- Scrollable Area -->
             <div class="flex-1 overflow-y-auto p-6 md:p-8">
-                @if(session('success'))
-                    <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
                 @yield('content')
             </div>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: {!! json_encode(session('success')) !!},
+                    confirmButtonColor: '#059669',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        confirmButton: 'px-6 py-2.5 rounded-xl font-bold'
+                    }
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan!',
+                    text: {!! json_encode(session('error')) !!},
+                    confirmButtonColor: '#dc2626',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        confirmButton: 'px-6 py-2.5 rounded-xl font-bold'
+                    }
+                });
+            @endif
+
+            @if($errors->any())
+                let errorMessages = '<ul style="text-align: left; margin: 0; padding-left: 1.2rem; font-size: 0.95rem; line-height: 1.6; color: #4b5563;">';
+                @foreach($errors->all() as $error)
+                    errorMessages += '<li style="margin-bottom: 6px;">{{ $error }}</li>';
+                @endforeach
+                errorMessages += '</ul>';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Menyimpan Data!',
+                    html: '<div style="margin-top: 8px; margin-bottom: 8px;">Mohon periksa kembali inputan Anda:</div>' + errorMessages,
+                    confirmButtonColor: '#dc2626',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        confirmButton: 'px-6 py-2.5 rounded-xl font-bold'
+                    }
+                });
+            @endif
+        });
+    </script>
     @yield('scripts')
 </body>
 </html>

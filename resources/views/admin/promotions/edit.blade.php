@@ -9,7 +9,7 @@
 </div>
 
 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-    <form action="{{ route('admin.promotions.update', $promotion) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+    <form id="editPromoForm" action="{{ route('admin.promotions.update', $promotion) }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
         @csrf @method('PUT')
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -34,16 +34,20 @@
             <div class="space-y-6">
                 {{-- Gambar Promosi --}}
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Gambar Promosi</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Gambar Promosi <span class="text-xs text-gray-400 ml-1">(Max: 5MB)</span>
+                    </label>
                     <div class="relative group h-32 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl flex items-center justify-center transition-all hover:border-emerald-500 overflow-hidden">
                         <input type="file" name="image" class="absolute inset-0 opacity-0 cursor-pointer z-10" id="imageInput" accept="image/*">
-                        <img id="previewImage" src="{{ asset('storage/' . $promotion->image) }}" class="absolute inset-0 w-full h-full object-cover">
+                        <img id="previewImage" src="{{ $promotion->image_url }}" class="absolute inset-0 w-full h-full object-cover">
                     </div>
                 </div>
 
                 {{-- Background Image --}}
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Background Image</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Background Image <span class="text-xs text-gray-400 ml-1">(Max: 10MB)</span>
+                    </label>
                     <div class="relative group h-32 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl flex items-center justify-center transition-all hover:border-blue-500 overflow-hidden">
                         <input type="file" name="background" class="absolute inset-0 opacity-0 cursor-pointer z-10" id="bgInput" accept="image/*">
                         @if($promotion->background)
@@ -69,7 +73,7 @@
                             <div class="text-center text-gray-400" id="videoPlaceholder">
                                 <i class="fas fa-video text-2xl mb-1"></i>
                                 <p class="text-xs">Belum ada video</p>
-                                <p class="text-[10px] text-emerald-600 mt-1 font-bold">Max: 5MB | Durasi: 15-30s</p>
+                                <p class="text-[10px] text-emerald-600 mt-1 font-bold">Max: 20MB | Durasi: 15-30s</p>
                             </div>
                         @endif
                     </div>
@@ -108,18 +112,79 @@
     setupPreview('imageInput', 'previewImage');
     setupPreview('bgInput', 'previewBg', 'placeholderBg');
 
-    document.getElementById('videoInput').addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const container = this.parentElement;
-            container.innerHTML = `
-                <input type="file" name="video" class="absolute inset-0 opacity-0 cursor-pointer z-10" id="videoInput" accept="video/*">
-                <div class="text-center text-emerald-600 font-bold">
-                    <i class="fas fa-file-video text-2xl mb-1"></i>
-                    <p class="text-xs">${file.name}</p>
-                </div>`;
-        }
-    });
+    const videoInput = document.getElementById('videoInput');
+    if(videoInput) {
+        videoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const container = this.parentElement;
+                container.innerHTML = `
+                    <input type="file" name="video" class="absolute inset-0 opacity-0 cursor-pointer z-10" id="videoInput" accept="video/*">
+                    <div class="text-center text-emerald-600 font-bold">
+                        <i class="fas fa-file-video text-2xl mb-1"></i>
+                        <p class="text-xs">${file.name}</p>
+                    </div>`;
+            }
+        });
+    }
+
+    const editForm = document.getElementById('editPromoForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const imageFile = document.getElementById('imageInput').files[0];
+            const bgFile = document.getElementById('bgInput').files[0];
+            const videoElem = document.getElementById('videoInput');
+            const videoFile = videoElem ? videoElem.files[0] : null;
+
+            if (imageFile && imageFile.size > 5 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ukuran Gambar Promosi Terlalu Besar!',
+                    text: 'Ukuran file gambar slider maksimal 5 MB. Silakan pilih file yang lebih kecil.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            if (bgFile && bgFile.size > 10 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ukuran Background Image Terlalu Besar!',
+                    text: 'Ukuran file background hero maksimal 10 MB. Silakan pilih file yang lebih kecil.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            if (videoFile && videoFile.size > 20 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ukuran Video Loop Terlalu Besar!',
+                    text: 'Ukuran file video loop maksimal 20 MB. Silakan pilih file video yang lebih kecil.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'px-6 py-2.5 rounded-xl font-bold' }
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Mengupdate Data Promosi...',
+                html: 'Mohon tunggu sebentar, data sedang disimpan ke server.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                customClass: { popup: 'rounded-2xl' }
+            });
+
+            editForm.submit();
+        });
+    }
 </script>
 @endsection
 @endsection

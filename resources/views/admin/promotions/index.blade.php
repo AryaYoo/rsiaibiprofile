@@ -20,9 +20,9 @@
                 <a href="{{ route('admin.promotions.edit', $promo) }}" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-emerald-600 hover:bg-emerald-50 transition-colors">
                     <i class="fas fa-edit"></i>
                 </a>
-                <form action="{{ route('admin.promotions.destroy', $promo) }}" method="POST" onsubmit="return confirm('Hapus promosi ini?')">
+                <form action="{{ route('admin.promotions.destroy', $promo) }}" method="POST" class="delete-promo-form">
                     @csrf @method('DELETE')
-                    <button type="submit" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors">
+                    <button type="button" onclick="confirmDeletePromo(this)" class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors" title="Hapus Promosi">
                         <i class="fas fa-trash"></i>
                     </button>
                 </form>
@@ -49,4 +49,37 @@
     </div>
     @endforeach
 </div>
+
+@section('scripts')
+<script>
+    function confirmDeletePromo(button) {
+        const form = button.closest('form');
+        Swal.fire({
+            title: 'Hapus Promosi Ini?',
+            text: 'Promosi yang dihapus tidak dapat dikembalikan lagi.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Hapus Promosi',
+            cancelButtonText: 'Batal',
+            customClass: {
+                popup: 'rounded-2xl',
+                confirmButton: 'px-5 py-2.5 rounded-xl font-bold',
+                cancelButton: 'px-5 py-2.5 rounded-xl font-bold'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Menghapus...',
+                    text: 'Mohon tunggu sebentar.',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+                form.submit();
+            }
+        });
+    }
+</script>
+@endsection
 @endsection
