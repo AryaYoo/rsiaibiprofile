@@ -13,6 +13,28 @@
     {{-- News Grid --}}
     <section id="news-list" data-nav-label="Daftar Berita" class="section-padding" style="background: var(--bg-main);">
         <div class="container">
+            {{-- Search Bar --}}
+            <div class="news-search-wrapper" style="max-width: 580px; margin: 0 auto 36px auto;">
+                <form action="{{ route('compro.berita') }}" method="GET" style="display: flex; gap: 10px;">
+                    <div style="position: relative; flex: 1;">
+                        <i class="bi bi-search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1rem;"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari berita atau artikel..." style="width: 100%; padding: 12px 40px 12px 44px; border-radius: 12px; border: 1px solid var(--border-soft); background: white; font-size: 0.95rem; outline: none; transition: all 0.2s ease; box-shadow: var(--shadow-sm);" onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(18, 53, 36, 0.1)';" onblur="this.style.borderColor='var(--border-soft)'; this.style.boxShadow='var(--shadow-sm)';">
+                        @if(request('search'))
+                            <a href="{{ route('compro.berita') }}" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); text-decoration: none; font-size: 1.2rem; font-weight: bold;" title="Hapus pencarian">&times;</a>
+                        @endif
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 12px; padding: 12px 24px; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="bi bi-search"></i> Cari
+                    </button>
+                </form>
+                @if(request('search'))
+                    <div style="margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+                        Menampilkan hasil pencarian untuk: <strong>"{{ request('search') }}"</strong>
+                        <a href="{{ route('compro.berita') }}" style="color: var(--primary); font-weight: 600; margin-left: 8px; text-decoration: underline;">Reset Pencarian</a>
+                    </div>
+                @endif
+            </div>
+
             <div class="news-grid reveal-stagger">
                 @forelse($news as $item)
                 <div class="news-card">
@@ -29,18 +51,24 @@
                     </div>
                 </div>
                 @empty
-                <div class="text-center py-5 w-100" style="grid-column: 1 / -1;">
+                <div class="text-center py-5 w-100" style="grid-column: 1 / -1; padding: 48px 24px; background: white; border-radius: 16px; border: 1px dashed var(--border-soft);">
                     <div class="mb-4">
                         <i class="bi bi-journal-x" style="font-size: 4rem; color: var(--border-soft);"></i>
                     </div>
-                    <h3 class="text-muted">Belum ada berita atau artikel yang diterbitkan.</h3>
-                    <p class="text-muted">Silakan kembali lagi nanti untuk informasi terbaru.</p>
+                    @if(request('search'))
+                        <h3 class="text-muted" style="font-size: 1.25rem; margin-bottom: 8px;">Tidak ada berita yang cocok dengan kata kunci "{{ request('search') }}".</h3>
+                        <p class="text-muted" style="margin-bottom: 16px;">Coba gunakan kata kunci lain atau reset pencarian Anda.</p>
+                        <a href="{{ route('compro.berita') }}" class="btn btn-outline-primary" style="border-radius: 10px; padding: 8px 20px;">Lihat Semua Berita</a>
+                    @else
+                        <h3 class="text-muted" style="font-size: 1.25rem; margin-bottom: 8px;">Belum ada berita atau artikel yang diterbitkan.</h3>
+                        <p class="text-muted">Silakan kembali lagi nanti untuk informasi terbaru.</p>
+                    @endif
                 </div>
                 @endforelse
             </div>
 
-            <div style="margin-top: 48px; display: flex; justify-content: center;">
-                {{ $news->links() }}
+            <div class="pagination-wrapper" style="margin-top: 48px; display: flex; justify-content: center;">
+                {{ $news->withQueryString()->links() }}
             </div>
         </div>
     </section>
@@ -156,6 +184,73 @@
 
     .news-link:hover {
         color: var(--accent, #85A947);
+    }
+
+    /* Pagination Styling */
+    .pagination-wrapper .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0;
+    }
+
+    .pagination-wrapper .page-item .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 10px;
+        background: white;
+        border: 1px solid var(--border-soft, #e4ebe2);
+        color: var(--text-main, #123524);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .pagination-wrapper .page-item.active .page-link {
+        background: var(--primary, #123524);
+        color: white;
+        border-color: var(--primary, #123524);
+        box-shadow: 0 4px 10px rgba(18, 53, 36, 0.2);
+    }
+
+    .pagination-wrapper .page-item.disabled .page-link {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: #f8f9fa;
+        color: var(--text-muted, #5a6b5a);
+    }
+
+    .pagination-wrapper .page-item .page-link:hover:not(.active):not(.disabled) {
+        background: var(--primary-soft, #eef4ed);
+        color: var(--primary, #123524);
+        border-color: var(--primary-light, #3E7B27);
+    }
+
+    .pagination-wrapper nav[role="navigation"] svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .pagination-wrapper nav[role="navigation"] .flex {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .pagination-wrapper nav[role="navigation"] p {
+        margin: 0 0 12px 0;
+        font-size: 0.88rem;
+        color: var(--text-muted, #5a6b5a);
+        text-align: center;
     }
 </style>
 @endsection

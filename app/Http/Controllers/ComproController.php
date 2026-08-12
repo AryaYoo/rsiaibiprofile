@@ -74,11 +74,12 @@ class ComproController extends Controller
         return view('compro.layanan', compact('medis', 'administrasi', 'groupedSchedules'));
     }
 
-    public function berita()
+    public function berita(\Illuminate\Http\Request $request)
     {
-        $news = $this->newsService->getPublishedNews();
+        $search = $request->input('search');
+        $news = $this->newsService->getPublishedNews(9, $search);
         $instagramPosts = \App\Models\InstagramPost::where('is_active', true)->latest()->get();
-        return view('compro.berita', compact('news', 'instagramPosts'));
+        return view('compro.berita', compact('news', 'instagramPosts', 'search'));
     }
 
     public function beritaDetail($slug)

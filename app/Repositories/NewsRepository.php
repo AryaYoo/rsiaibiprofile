@@ -22,9 +22,17 @@ class NewsRepository implements NewsRepositoryInterface
         return $this->model->latest()->get();
     }
 
-    public function getPublishedNews($perPage = 9)
+    public function getPublishedNews($perPage = 9, $search = null)
     {
-        return $this->model->where('is_published', true)->latest()->paginate($perPage);
+        return $this->model->where('is_published', true)
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate($perPage);
     }
 
     public function getBySlug($slug)

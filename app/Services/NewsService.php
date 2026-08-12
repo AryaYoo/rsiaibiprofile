@@ -16,9 +16,9 @@ class NewsService
         $this->newsRepository = $newsRepository;
     }
 
-    public function getPublishedNews($perPage = 9)
+    public function getPublishedNews($perPage = 9, $search = null)
     {
-        return $this->newsRepository->getPublishedNews($perPage);
+        return $this->newsRepository->getPublishedNews($perPage, $search);
     }
 
     public function getNewsBySlug($slug)
