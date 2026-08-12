@@ -39,7 +39,7 @@
                 @forelse($news as $item)
                 <div class="news-card">
                     <div class="news-card-image">
-                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://via.placeholder.com/400x250' }}" alt="{{ $item->title }}">
+                        <img src="{{ $item->image_url }}" alt="{{ $item->title }}" onerror="this.onerror=null; this.src='{{ asset('images/default-news.svg') }}';">
                     </div>
                     <div class="news-card-body">
                         <span class="news-date">

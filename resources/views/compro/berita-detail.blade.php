@@ -173,7 +173,7 @@
                 </div>
                 <h1>{{ $item->title }}</h1>
                 
-                <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://via.placeholder.com/1200x600' }}" class="news-main-image" alt="{{ $item->title }}">
+                <img src="{{ $item->image_url }}" class="news-main-image" alt="{{ $item->title }}" onerror="this.onerror=null; this.src='{{ asset('images/default-news.svg') }}';">
                 
                 <div class="news-body">
                     {!! nl2br(e($item->content)) !!}
@@ -197,7 +197,7 @@
                     <div class="rec-list">
                         @forelse($recommendations as $rec)
                         <a href="{{ route('compro.berita.detail', $rec->slug) }}" class="rec-item">
-                            <img src="{{ $rec->image ? asset('storage/' . $rec->image) : 'https://via.placeholder.com/400x250' }}" class="rec-image" alt="{{ $rec->title }}">
+                            <img src="{{ $rec->image_url }}" class="rec-image" alt="{{ $rec->title }}" onerror="this.onerror=null; this.src='{{ asset('images/default-news.svg') }}';">
                             <span class="rec-date">{{ $rec->created_at->format('d M Y') }}</span>
                             <span class="rec-title">{{ Str::limit($rec->title, 60) }}</span>
                         </a>
