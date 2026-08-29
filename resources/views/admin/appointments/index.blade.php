@@ -12,10 +12,7 @@
         <h2 class="text-2xl font-bold text-gray-900">Janji Online</h2>
         <p class="text-gray-500">Kelola dan pantau semua pendaftaran janji online dari pasien.</p>
     </div>
-    <div class="mt-4 md:mt-0 flex items-center gap-2">
-        <button @click="sopHighlightOpen = true" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 text-sm">
-            <i class="fas fa-bell"></i> Highlight SOP Reschedule
-        </button>
+    <div class="mt-4 md:mt-0">
         <button @click="sopOpen = true" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 text-sm">
             <i class="fas fa-book-open"></i> SOP Janji Online
         </button>
@@ -197,15 +194,15 @@
              x-transition:leave-start="opacity-100 scale-100 translate-y-0"
              x-transition:leave-end="opacity-0 scale-95 translate-y-4">
              
-            <!-- Header Modal -->
-            <div class="px-6 py-5 border-b border-red-100 flex items-center justify-between bg-gradient-to-r from-red-50 via-red-50/40 to-white">
+            <!-- Header Modal (Kuning) -->
+            <div class="px-6 py-5 border-b border-amber-100 flex items-center justify-between bg-gradient-to-r from-amber-50 via-amber-50/40 to-white">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 bg-red-600 text-white rounded-2xl flex items-center justify-center shadow-md shadow-red-600/20">
+                    <div class="w-11 h-11 bg-amber-500 text-white rounded-2xl flex items-center justify-center shadow-md shadow-amber-500/20">
                         <i class="fas fa-exclamation-triangle text-xl"></i>
                     </div>
                     <div>
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-red-100 text-red-800 uppercase tracking-wide mb-0.5">
-                            <i class="fas fa-bullhorn text-[10px]"></i> SOP Penting Front Office
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 uppercase tracking-wide mb-0.5">
+                            <i class="fas fa-bullhorn text-[10px]"></i> SOP PENTING FRONT OFFICE
                         </div>
                         <h3 class="font-bold text-gray-900 text-base md:text-lg">Penanganan Pembatalan & Perubahan Jadwal</h3>
                     </div>
