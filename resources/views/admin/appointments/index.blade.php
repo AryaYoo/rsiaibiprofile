@@ -176,9 +176,11 @@
     </table>
 </div>
 
-<div class="mt-4">
-    {{ $appointments->links() }}
+@if($appointments->hasPages())
+<div class="mt-5 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+    {{ $appointments->withQueryString()->links() }}
 </div>
+@endif
 
 <!-- HIGHLIGHT SOP POPUP MODAL (FIRST TIME / RESCHEDULE ALERT) -->
 <div x-show="sopHighlightOpen" 
