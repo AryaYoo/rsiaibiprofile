@@ -10,6 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather Sans', sans-serif; font-weight: 700; }
+        [x-cloak] { display: none !important; }
     </style>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

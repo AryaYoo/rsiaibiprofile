@@ -3,18 +3,9 @@
 @section('content')
 <div x-data="{ 
     sopOpen: false, 
-    sopHighlightOpen: false,
+    sopHighlightOpen: true,
     activeTab: 'alur',
-    copiedHighlight: false,
-    init() {
-        if (!localStorage.getItem('rsia_sop_reschedule_acknowledged_v1')) {
-            this.sopHighlightOpen = true;
-        }
-    },
-    ackSopHighlight() {
-        localStorage.setItem('rsia_sop_reschedule_acknowledged_v1', 'true');
-        this.sopHighlightOpen = false;
-    }
+    copiedHighlight: false
 }">
 <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
     <div>
@@ -207,19 +198,19 @@
              x-transition:leave-end="opacity-0 scale-95 translate-y-4">
              
             <!-- Header Modal -->
-            <div class="px-6 py-5 border-b border-amber-100 flex items-center justify-between bg-gradient-to-r from-amber-50 via-amber-50/50 to-white">
+            <div class="px-6 py-5 border-b border-red-100 flex items-center justify-between bg-gradient-to-r from-red-50 via-red-50/40 to-white">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 bg-amber-500 text-white rounded-2xl flex items-center justify-center shadow-md shadow-amber-500/20">
-                        <i class="fas fa-calendar-times text-xl"></i>
+                    <div class="w-11 h-11 bg-red-600 text-white rounded-2xl flex items-center justify-center shadow-md shadow-red-600/20">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
                     </div>
                     <div>
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 uppercase tracking-wide mb-0.5">
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-red-100 text-red-800 uppercase tracking-wide mb-0.5">
                             <i class="fas fa-bullhorn text-[10px]"></i> SOP Penting Front Office
                         </div>
                         <h3 class="font-bold text-gray-900 text-base md:text-lg">Penanganan Pembatalan & Perubahan Jadwal</h3>
                     </div>
                 </div>
-                <button @click="ackSopHighlight()" class="text-gray-400 hover:text-gray-600 p-2 rounded-xl hover:bg-gray-100 transition-colors" title="Tutup">
+                <button @click="sopHighlightOpen = false" class="text-gray-400 hover:text-gray-600 p-2 rounded-xl hover:bg-gray-100 transition-colors" title="Tutup">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
@@ -227,29 +218,29 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4 text-sm text-gray-600 leading-relaxed">
                 
-                <!-- Notice Alert -->
-                <div class="bg-amber-50 border-l-4 border-amber-500 rounded-r-2xl p-4 text-amber-900 flex gap-3.5 items-start shadow-sm">
-                    <i class="fas fa-exclamation-circle text-amber-600 text-lg mt-0.5 flex-shrink-0"></i>
+                <!-- Notice Alert (Merah) -->
+                <div class="bg-red-50 border-l-4 border-red-500 rounded-r-2xl p-4 text-red-900 flex gap-3.5 items-start shadow-sm">
+                    <i class="fas fa-exclamation-circle text-red-600 text-lg mt-0.5 flex-shrink-0"></i>
                     <div class="text-xs md:text-sm">
-                        <p class="font-bold text-amber-950 mb-1">Pengingat SOP Pembatalan Booking:</p>
-                        <p>Ketika terjadi pembatalan booking (misal <strong>jadwal dokter berubah atau dokter berhalangan praktek</strong>), mohon <strong>jangan lupa segera menghubungi pasien</strong> dan mengirimkan pesan berikut melalui kontak WhatsApp pasien.</p>
+                        <p class="font-bold text-red-950 mb-1">Pengingat SOP Pembatalan Booking:</p>
+                        <p>Ketika terjadi pembatalan booking (misal <strong>jadwal dokter berubah atau dokter berhalangan praktek</strong>), mohon <strong>jangan lupa segera menghubungi pasien</strong> dan mengirimkan pesan berikut melalui kontak <strong>WhatsApp atau email pasien</strong>.</p>
                     </div>
                 </div>
 
                 <!-- Template Reschedule Box (Sesuai Gambar) -->
                 <div class="space-y-2.5 pt-1" x-data="{ copied: false }">
                     <div class="flex justify-between items-center flex-wrap gap-2">
-                        <span class="font-extrabold text-xs md:text-sm text-gray-900 uppercase tracking-wide flex items-center gap-1.5 text-amber-800">
+                        <span class="font-extrabold text-xs md:text-sm text-gray-900 uppercase tracking-wide flex items-center gap-1.5 text-red-800">
                             2. TEMPLATE RESCHEDULE (DOKTER BATAL PRAKTEK)
                         </span>
                         <button @click="navigator.clipboard.writeText($refs.highlightTemplate.innerText.trim()); copied = true; setTimeout(() => copied = false, 2000)"
-                                class="bg-amber-100 hover:bg-amber-200 text-amber-900 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                                class="bg-red-100 hover:bg-red-200 text-red-900 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
                             <i class="fas" :class="copied ? 'fa-check text-emerald-700' : 'fa-copy'"></i>
                             <span x-text="copied ? 'Tersalin!' : 'Salin Template'"></span>
                         </button>
                     </div>
                     
-                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 md:p-5 font-mono text-xs md:text-sm text-slate-700 whitespace-pre-line leading-relaxed shadow-inner" x-ref="highlightTemplate">Halo Bapak/Ibu Pasien, saya petugas Front Office RSIA IBI Surabaya.
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 md:p-5 font-mono text-xs md:text-sm text-slate-700 whitespace-pre-line leading-relaxed shadow-inner select-all" x-ref="highlightTemplate">Halo Bapak/Ibu Pasien, saya petugas Front Office RSIA IBI Surabaya.
 
 Terkait pendaftaran online Anda ([KODE_BOOKING]) untuk dr. [NAMA_DOKTER] pada tanggal [TANGGAL_AWAL], kami menginfokan bahwa dokter yang bersangkutan berhalangan praktek pada waktu tersebut.
 
@@ -268,10 +259,10 @@ Mohon konfirmasi opsi mana yang Bapak/Ibu pilih. Terima kasih atas pengertiannya
 
             <!-- Footer -->
             <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
-                <button @click="ackSopHighlight(); sopOpen = true; activeTab = 'dokter'" class="text-xs font-bold text-gray-600 hover:text-emerald-700 transition-colors flex items-center justify-center gap-1.5 py-1">
+                <button @click="sopHighlightOpen = false; sopOpen = true; activeTab = 'dokter'" class="text-xs font-bold text-gray-600 hover:text-emerald-700 transition-colors flex items-center justify-center gap-1.5 py-1">
                     <i class="fas fa-book-open"></i> Pelajari Alur SOP Lengkap
                 </button>
-                <button @click="ackSopHighlight()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 active:scale-95">
+                <button @click="sopHighlightOpen = false" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 active:scale-95">
                     <i class="fas fa-check-circle"></i> Siap, saya mengerti
                 </button>
             </div>

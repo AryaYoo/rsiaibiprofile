@@ -31,10 +31,16 @@ class AppointmentController extends Controller
 
         $appointments = $query->paginate(15)->withQueryString();
 
-        $totalMenunggu    = Appointment::where('status', 'menunggu')->count();
-        $totalDikonfirmasi = Appointment::where('status', 'dikonfirmasi')->count();
-        $totalDibatalkan  = Appointment::where('status', 'dibatalkan')->count();
-        $poliList         = Appointment::select('tujuan_poli')->distinct()->pluck('tujuan_poli');
+        $statusCounts = Appointment::toBase()->selectRaw("
+            COALESCE(SUM(CASE WHEN status = 'menunggu' THEN 1 ELSE 0 END), 0) as menunggu,
+            COALESCE(SUM(CASE WHEN status = 'dikonfirmasi' THEN 1 ELSE 0 END), 0) as dikonfirmasi,
+            COALESCE(SUM(CASE WHEN status = 'dibatalkan' THEN 1 ELSE 0 END), 0) as dibatalkan
+        ")->first();
+
+        $totalMenunggu     = (int) ($statusCounts->menunggu ?? 0);
+        $totalDikonfirmasi = (int) ($statusCounts->dikonfirmasi ?? 0);
+        $totalDibatalkan   = (int) ($statusCounts->dibatalkan ?? 0);
+        $poliList          = Appointment::whereNotNull('tujuan_poli')->where('tujuan_poli', '!=', '')->distinct()->pluck('tujuan_poli');
 
         return view('admin.appointments.index', compact(
             'appointments', 'totalMenunggu', 'totalDikonfirmasi', 'totalDibatalkan', 'poliList'
