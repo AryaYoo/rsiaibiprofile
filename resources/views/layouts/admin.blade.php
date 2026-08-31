@@ -26,17 +26,31 @@
                 </h1>
             </div>
             <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-                {{-- Tanpa Dropdown --}}
+                {{-- Dashboard --}}
                 <div class="space-y-1">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
                         <i class="fas fa-chart-line w-6"></i> Dashboard
                     </a>
-                    <a href="{{ route('admin.doctors.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.doctors.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
-                        <i class="fas fa-user-md w-6"></i> Master Dokter
-                    </a>
-                    <a href="{{ route('admin.schedules.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.schedules.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
-                        <i class="fas fa-calendar-alt w-6"></i> Jadwal Dokter
-                    </a>
+                </div>
+
+                {{-- Dropdown Dokter --}}
+                <div x-data="{ open: {{ request()->routeIs('admin.doctors.*', 'admin.schedules.*') ? 'true' : 'false' }} }" class="space-y-1">
+                    <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-3 rounded-lg font-['Merriweather_Sans'] text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none {{ request()->routeIs('admin.doctors.*', 'admin.schedules.*') ? 'text-emerald-700 font-bold bg-emerald-50/50' : '' }}">
+                        <span class="flex items-center"><i class="fas fa-user-md w-6"></i> Dokter</span>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
+                    </button>
+                    <div x-show="open" x-transition.opacity.duration.200ms class="pl-4 space-y-1" style="display: none;">
+                        <a href="{{ route('admin.doctors.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.doctors.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-user-md w-5 mr-2 text-xs"></i> Master Dokter
+                        </a>
+                        <a href="{{ route('admin.schedules.index') }}" class="flex items-center px-4 py-2 rounded-lg font-['Merriweather_Sans'] text-sm {{ request()->routeIs('admin.schedules.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                            <i class="fas fa-calendar-alt w-5 mr-2 text-xs"></i> Jadwal Dokter
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Lowongan Kerja --}}
+                <div class="space-y-1">
                     <a href="{{ route('admin.careers.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.careers.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
                         <i class="fas fa-briefcase w-6"></i> Lowongan Kerja
                     </a>
@@ -96,6 +110,13 @@
                             <i class="fas fa-comment-dots w-5 mr-2 text-xs"></i> Kritik & Saran
                         </a>
                     </div>
+                </div>
+
+                {{-- Survey --}}
+                <div class="space-y-1">
+                    <a href="{{ route('admin.surveys.index') }}" class="flex items-center px-4 py-3 rounded-lg font-['Merriweather_Sans'] {{ request()->routeIs('admin.surveys.*') ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-gray-600 hover:bg-gray-100' }}">
+                        <i class="fas fa-poll-h w-6"></i> Survey
+                    </a>
                 </div>
             </nav>
             <div class="p-4 border-t border-gray-200">

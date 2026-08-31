@@ -98,6 +98,9 @@ Route::prefix('admienz')->group(function () {
     Route::patch('appointments/{appointment}/status', [App\Http\Controllers\Admin\AppointmentController::class, 'updateStatus'])->name('admin.appointments.updateStatus');
     Route::delete('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
     
+    // CMS Surveys (Placeholder)
+    Route::get('surveys', [App\Http\Controllers\Admin\SurveyController::class, 'index'])->name('admin.surveys.index');
+    
     // Future CMS Routes
     // Route::resource('news', NewsController::class);
     // Route::resource('services', ServiceController::class);
