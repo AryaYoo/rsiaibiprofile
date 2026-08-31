@@ -261,6 +261,9 @@
             counters.forEach(counter => observer.observe(counter));
         });
     </script>
+
+    {{-- Per-page scripts --}}
+    @stack('scripts')
 </body>
 
 </html>
