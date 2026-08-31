@@ -98,8 +98,13 @@ Route::prefix('admienz')->group(function () {
     Route::patch('appointments/{appointment}/status', [App\Http\Controllers\Admin\AppointmentController::class, 'updateStatus'])->name('admin.appointments.updateStatus');
     Route::delete('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
     
-    // CMS Surveys (Placeholder)
-    Route::get('surveys', [App\Http\Controllers\Admin\SurveyController::class, 'index'])->name('admin.surveys.index');
+    // CMS Surveys
+    Route::resource('surveys', App\Http\Controllers\Admin\SurveyController::class)->names('admin.surveys');
+    Route::post('surveys/{survey}/toggle', [App\Http\Controllers\Admin\SurveyController::class, 'toggleStatus'])->name('admin.surveys.toggle');
+    Route::get('surveys/{survey}/questions', [App\Http\Controllers\Admin\SurveyController::class, 'questions'])->name('admin.surveys.questions');
+    Route::post('surveys/{survey}/questions', [App\Http\Controllers\Admin\SurveyController::class, 'storeQuestions'])->name('admin.surveys.questions.store');
+    Route::get('surveys/{survey}/insights', [App\Http\Controllers\Admin\SurveyController::class, 'insights'])->name('admin.surveys.insights');
+    Route::get('surveys/{survey}/export', [App\Http\Controllers\Admin\SurveyController::class, 'export'])->name('admin.surveys.export');
     
     // Future CMS Routes
     // Route::resource('news', NewsController::class);
@@ -110,6 +115,9 @@ Route::prefix('admienz')->group(function () {
 });
 
 Route::prefix('company-profile')->group(function () {
+    Route::get('/surveys', [App\Http\Controllers\ComproController::class, 'surveys'])->name('compro.surveys');
+    Route::get('/surveys/{survey}', [App\Http\Controllers\ComproController::class, 'showSurvey'])->name('compro.surveys.show');
+    Route::post('/surveys/{survey}/submit', [App\Http\Controllers\ComproController::class, 'submitSurvey'])->name('compro.surveys.submit');
     Route::get('/layanan', [App\Http\Controllers\ComproController::class, 'layanan'])->name('compro.layanan');
     Route::get('/tentang', [App\Http\Controllers\ComproController::class, 'tentang'])->name('compro.tentang');
     Route::get('/berita', [App\Http\Controllers\ComproController::class, 'berita'])->name('compro.berita');

@@ -52,12 +52,47 @@
     {{-- Script tambahan per halaman --}}
     @stack('scripts')
 
+    <!-- Survey Float -->
+    <a href="{{ route('compro.surveys') }}" class="survey-float" title="Survey Kepuasan">
+        <i class="fa-solid fa-clipboard-list"></i>
+    </a>
+
     <!-- WhatsApp Float -->
     <a href="https://wa.me/6285852963005" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
         <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" width="50" height="50">
     </a>
 
     <style>
+        .survey-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 104px;
+            right: 32px;
+            background-color: var(--primary-light);
+            color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 8px 24px rgba(62, 123, 39, 0.25);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+        }
+
+        .survey-float:hover {
+            transform: scale(1.1);
+            background-color: var(--primary);
+            box-shadow: 0 12px 32px rgba(18, 53, 36, 0.3);
+            color: #fff;
+        }
+
+        .survey-float i {
+            font-size: 24px;
+        }
+
         .whatsapp-float {
             position: fixed;
             width: 60px;

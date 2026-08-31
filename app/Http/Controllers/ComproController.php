@@ -224,6 +224,52 @@ class ComproController extends Controller
         return view('compro.karir-detail', compact('career'));
     }
 
+    public function surveys()
+    {
+        $surveys = \App\Models\Survey::where('is_active', true)->withCount('questions')->latest()->get();
+        return view('compro.surveys.index', compact('surveys'));
+    }
+
+    public function showSurvey(\App\Models\Survey $survey)
+    {
+        if (!$survey->is_active) {
+            abort(404);
+        }
+        $survey->load('questions');
+        return view('compro.surveys.show', compact('survey'));
+    }
+
+    public function submitSurvey(Request $request, \App\Models\Survey $survey)
+    {
+        if (!$survey->is_active) {
+            abort(404);
+        }
+
+        $request->validate([
+            'respondent_name' => 'nullable|string|max:255',
+            'respondent_email' => 'nullable|email|max:255',
+            'answers' => 'required|array',
+        ]);
+
+        $response = \App\Models\SurveyResponse::create([
+            'survey_id' => $survey->id,
+            'respondent_name' => $request->respondent_name,
+            'respondent_email' => $request->respondent_email,
+        ]);
+
+        foreach ($request->answers as $questionId => $value) {
+            if ($value !== null && $value !== '') {
+                \App\Models\SurveyAnswer::create([
+                    'survey_response_id' => $response->id,
+                    'survey_question_id' => $questionId,
+                    'answer_value' => is_array($value) ? implode(', ', $value) : $value,
+                ]);
+            }
+        }
+
+        return redirect()->route('compro.surveys')->with('success', 'Terima kasih! Tanggapan Anda telah berhasil dikirim.');
+    }
+
     private function generateKodePendaftaran(Appointment $appointment): string
     {
         return 'IBI' . now()->format('ymd') . strtoupper(base_convert($appointment->id, 10, 36));
