@@ -1,6 +1,33 @@
 @extends('layouts.admin')
 
 @section('content')
+<script>
+    function printSurveyQR(title, url) {
+        const printWindow = window.open('', '', 'width=600,height=650');
+        const qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url);
+        printWindow.document.write(
+            '<html><head>' +
+            '<title>Cetak QR Code - ' + title + '</title>' +
+            '<style>' +
+            'body { font-family: sans-serif; text-align: center; padding: 40px; }' +
+            'h2 { color: #123524; margin-bottom: 8px; font-size: 22px; }' +
+            'p { color: #666; margin-bottom: 24px; font-size: 14px; }' +
+            'img { width: 260px; height: 260px; border: 12px solid #edf4eb; border-radius: 16px; }' +
+            '.url { margin-top: 20px; font-size: 12px; color: #888; word-break: break-all; }' +
+            '</style>' +
+            '</head><body>' +
+            '<h2>RSIA IBI SURABAYA</h2>' +
+            '<p>Kuesioner: <strong>' + title + '</strong><br>Scan QR Code di bawah untuk mengisi survey</p>' +
+            '<img src="' + qrSrc + '" />' +
+            '<div class="url">' + url + '</div>' +
+            '</body></html>'
+        );
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(function() { printWindow.print(); printWindow.close(); }, 500);
+    }
+</script>
+
 <div x-data="{ 
     addModal: false, 
     editModal: false, 
@@ -17,30 +44,7 @@
         setTimeout(() => this.copied = false, 2000);
     },
     printQR() {
-        const printWindow = window.open('', '', 'width=600,height=650');
-        printWindow.document.write(`
-            <html>
-                <head>
-                    <title>Cetak QR Code - ${this.qrTitle}</title>
-                    <style>
-                        body { font-family: sans-serif; text-align: center; padding: 40px; }
-                        h2 { color: #123524; margin-bottom: 8px; font-size: 22px; }
-                        p { color: #666; margin-bottom: 24px; font-size: 14px; }
-                        img { width: 260px; height: 260px; border: 12px solid #edf4eb; border-radius: 16px; }
-                        .url { margin-top: 20px; font-size: 12px; color: #888; word-break: break-all; }
-                    </style>
-                </head>
-                <body>
-                    <h2>RSIA IBI SURABAYA</h2>
-                    <p>Kuesioner: <strong>${this.qrTitle}</strong><br>Scan QR Code di bawah untuk mengisi survey</p>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(this.qrUrl)}" />
-                    <div class="url">${this.qrUrl}</div>
-                </body>
-            </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
+        printSurveyQR(this.qrTitle, this.qrUrl);
     }
 }">
     <!-- Header & Floating Toggle Banner -->
