@@ -29,6 +29,7 @@
     @yield('styles')
 
     {{-- Made with love -Yohanes Mahardika A- --}}
+    <style>[x-cloak] { display: none !important; }</style>
 </head>
 
 <body>
@@ -42,6 +43,9 @@
 
     {{-- Footer --}}
     @include('layouts.partials.footer-company')
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
