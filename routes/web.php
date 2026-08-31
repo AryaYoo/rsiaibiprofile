@@ -99,6 +99,7 @@ Route::prefix('admienz')->group(function () {
     Route::delete('appointments/{appointment}', [App\Http\Controllers\Admin\AppointmentController::class, 'destroy'])->name('admin.appointments.destroy');
     
     // CMS Surveys
+    Route::post('surveys/toggle-floating', [App\Http\Controllers\Admin\SurveyController::class, 'toggleFloating'])->name('admin.surveys.toggle-floating');
     Route::resource('surveys', App\Http\Controllers\Admin\SurveyController::class)->names('admin.surveys');
     Route::post('surveys/{survey}/toggle', [App\Http\Controllers\Admin\SurveyController::class, 'toggleStatus'])->name('admin.surveys.toggle');
     Route::get('surveys/{survey}/questions', [App\Http\Controllers\Admin\SurveyController::class, 'questions'])->name('admin.surveys.questions');

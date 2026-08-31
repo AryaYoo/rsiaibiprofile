@@ -52,10 +52,15 @@
     {{-- Script tambahan per halaman --}}
     @stack('scripts')
 
+    @php
+        $showSurveyFloat = \App\Models\Setting::where('key', 'show_survey_floating_button')->value('value') ?? '1';
+    @endphp
+    @if($showSurveyFloat === '1' || $showSurveyFloat === 'true' || $showSurveyFloat === true)
     <!-- Survey Float -->
     <a href="{{ route('compro.surveys') }}" class="survey-float" title="Survey Kepuasan">
         <i class="fa-solid fa-clipboard-list"></i>
     </a>
+    @endif
 
     <!-- WhatsApp Float -->
     <a href="https://wa.me/6285852963005" class="whatsapp-float" target="_blank" rel="noopener noreferrer">

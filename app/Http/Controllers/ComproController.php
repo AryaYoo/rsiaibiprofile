@@ -236,7 +236,13 @@ class ComproController extends Controller
             abort(404);
         }
         $survey->load('questions');
-        return view('compro.surveys.show', compact('survey'));
+
+        // Generate Math Anti-Robot Challenge
+        $captchaNum1 = rand(2, 8);
+        $captchaNum2 = rand(1, 9);
+        session(['survey_captcha' => $captchaNum1 + $captchaNum2]);
+
+        return view('compro.surveys.show', compact('survey', 'captchaNum1', 'captchaNum2'));
     }
 
     public function submitSurvey(Request $request, \App\Models\Survey $survey)
@@ -246,15 +252,37 @@ class ComproController extends Controller
         }
 
         $request->validate([
-            'respondent_name' => 'nullable|string|max:255',
-            'respondent_email' => 'nullable|email|max:255',
+            'respondent_name' => 'required|string|max:255',
+            'respondent_email' => 'required|email|max:255',
+            'respondent_phone' => 'required|string|max:25',
+            'respondent_age' => 'nullable|numeric|min:1|max:120',
+            'respondent_gender' => 'nullable|string|in:Laki-laki,Perempuan',
+            'captcha_answer' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $expected = session('survey_captcha');
+                    if ($expected === null || (int)$value !== (int)$expected) {
+                        $fail('Jawaban verifikasi anti-robot tidak tepat. Silakan coba lagi.');
+                    }
+                },
+            ],
             'answers' => 'required|array',
+        ], [
+            'respondent_name.required' => 'Nama lengkap wajib diisi.',
+            'respondent_email.required' => 'Email wajib diisi.',
+            'respondent_email.email' => 'Format email tidak valid.',
+            'respondent_phone.required' => 'Nomor WhatsApp / HP wajib diisi.',
+            'captcha_answer.required' => 'Konfirmasi anti-robot wajib dijawab.',
+            'answers.required' => 'Pertanyaan kuesioner wajib diisi.',
         ]);
 
         $response = \App\Models\SurveyResponse::create([
             'survey_id' => $survey->id,
             'respondent_name' => $request->respondent_name,
+            'respondent_phone' => $request->respondent_phone,
             'respondent_email' => $request->respondent_email,
+            'respondent_age' => $request->respondent_age,
+            'respondent_gender' => $request->respondent_gender,
         ]);
 
         foreach ($request->answers as $questionId => $value) {
@@ -266,6 +294,8 @@ class ComproController extends Controller
                 ]);
             }
         }
+
+        session()->forget('survey_captcha');
 
         return redirect()->route('compro.surveys')->with('success', 'Terima kasih! Tanggapan Anda telah berhasil dikirim.');
     }

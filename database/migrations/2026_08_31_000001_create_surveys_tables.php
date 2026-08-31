@@ -32,7 +32,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('survey_id')->constrained('surveys')->onDelete('cascade');
             $table->string('respondent_name')->nullable();
+            $table->string('respondent_phone')->nullable();
             $table->string('respondent_email')->nullable();
+            $table->string('respondent_age')->nullable();
+            $table->string('respondent_gender')->nullable();
             $table->timestamps();
         });
 

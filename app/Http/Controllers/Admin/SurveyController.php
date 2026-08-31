@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyResponse;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SurveyController extends Controller
@@ -13,7 +14,22 @@ class SurveyController extends Controller
     public function index()
     {
         $surveys = Survey::withCount('responses')->latest()->get();
-        return view('admin.surveys.index', compact('surveys'));
+        $showFloating = Setting::where('key', 'show_survey_floating_button')->value('value') ?? '1';
+        return view('admin.surveys.index', compact('surveys', 'showFloating'));
+    }
+
+    public function toggleFloating()
+    {
+        $current = Setting::where('key', 'show_survey_floating_button')->value('value') ?? '1';
+        $newValue = ($current === '1' || $current === 'true' || $current === true) ? '0' : '1';
+        
+        Setting::updateOrCreate(
+            ['key' => 'show_survey_floating_button'],
+            ['value' => $newValue, 'group' => 'survey']
+        );
+
+        $statusText = $newValue === '1' ? 'ditampilkan' : 'disembunyikan';
+        return redirect()->route('admin.surveys.index')->with('success', "Tombol floating survey di website berhasil {$statusText}.");
     }
 
     public function store(Request $request)
@@ -182,7 +198,7 @@ class SurveyController extends Controller
             fputcsv($file, []); // Empty row
 
             // Build Header Row
-            $header = ['No', 'Nama Responden', 'Email Responden', 'Tanggal Pengisian'];
+            $header = ['No', 'Nama Responden', 'No. WhatsApp/HP', 'Email', 'Usia', 'Jenis Kelamin', 'Tanggal Pengisian'];
             foreach ($survey->questions as $question) {
                 $header[] = $question->question_text;
             }
@@ -193,7 +209,10 @@ class SurveyController extends Controller
                 $row = [
                     $index + 1,
                     $response->respondent_name ?? 'Anonim',
+                    $response->respondent_phone ?? '-',
                     $response->respondent_email ?? '-',
+                    $response->respondent_age ? $response->respondent_age . ' Thn' : '-',
+                    $response->respondent_gender ?? '-',
                     $response->created_at->format('d/m/Y H:i'),
                 ];
 

@@ -12,7 +12,10 @@ class SurveyResponse extends Model
     protected $fillable = [
         'survey_id',
         'respondent_name',
+        'respondent_phone',
         'respondent_email',
+        'respondent_age',
+        'respondent_gender',
     ];
 
     public function survey()
