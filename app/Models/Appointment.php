@@ -16,6 +16,8 @@ class Appointment extends Model
         'tanggal_kunjungan',
         'tujuan_poli',
         'doctor_id',
+        'jam_praktik',
+        'sesi',
         'kode_pendaftaran',
         'pesan',
         'status',

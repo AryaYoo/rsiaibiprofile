@@ -231,6 +231,12 @@
                     <span class="detail-label">Dokter</span>
                     <span class="detail-value">{{ $appointment->doctor?->name ?? '-' }}</span>
                 </div>
+                @if($appointment->jam_praktik || $appointment->sesi)
+                <div class="detail-row">
+                    <span class="detail-label">Jam Praktik</span>
+                    <span class="detail-value">{{ $appointment->jam_praktik ?: $appointment->sesi }} WIB</span>
+                </div>
+                @endif
                 <div class="detail-row">
                     <span class="detail-label">Status</span>
                     <span class="detail-value">⏳ Menunggu Konfirmasi</span>

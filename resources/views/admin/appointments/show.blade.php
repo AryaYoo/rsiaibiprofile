@@ -73,9 +73,18 @@
                     <p class="text-gray-900 font-semibold">{{ $appointment->tujuan_poli }}</p>
                 </div>
                 @if($appointment->doctor)
-                <div class="md:col-span-2">
+                <div class="{{ ($appointment->jam_praktik || $appointment->sesi) ? '' : 'md:col-span-2' }}">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Dokter</p>
                     <p class="text-gray-900 font-semibold">{{ $appointment->doctor->name }}</p>
+                </div>
+                @endif
+                @if($appointment->jam_praktik || $appointment->sesi)
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Jam Praktik</p>
+                    <p class="text-emerald-700 font-extrabold flex items-center gap-1.5">
+                        <i class="far fa-clock text-sm"></i>
+                        {{ $appointment->jam_praktik ?: $appointment->sesi }} WIB
+                    </p>
                 </div>
                 @endif
                 @if($appointment->pesan)

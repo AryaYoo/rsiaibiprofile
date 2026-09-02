@@ -124,9 +124,16 @@
                     @if($item->doctor)
                         <div class="text-xs text-gray-400">{{ $item->doctor->name }}</div>
                     @endif
-                    @if($item->tanggal_kunjungan)
-                        <div class="text-[11px] text-emerald-700 font-semibold mt-1"><i class="far fa-calendar-alt mr-1"></i>{{ \Carbon\Carbon::parse($item->tanggal_kunjungan)->format('d/m/Y') }}</div>
-                    @endif
+                    <div class="flex flex-wrap items-center gap-2 mt-1">
+                        @if($item->tanggal_kunjungan)
+                            <div class="text-[11px] text-emerald-700 font-semibold"><i class="far fa-calendar-alt mr-1"></i>{{ \Carbon\Carbon::parse($item->tanggal_kunjungan)->format('d/m/Y') }}</div>
+                        @endif
+                        @if($item->jam_praktik || $item->sesi)
+                            <span class="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-1.5 py-0.5 rounded border border-emerald-200">
+                                <i class="far fa-clock mr-1"></i>{{ $item->jam_praktik ?: $item->sesi }}
+                            </span>
+                        @endif
+                    </div>
                 </td>
                 <td class="px-5 py-4">
                     @php
@@ -385,6 +392,7 @@ Mengonfirmasi pendaftaran janji online Anda:
 - Poli: [POLI_TUJUAN]
 - Dokter: [NAMA_DOKTER]
 - Tanggal Kunjungan: [TANGGAL_KUNJUNGAN]
+- Jam Praktik: [JAM_PRAKTIK]
 
 Pendaftaran Anda telah kami konfirmasi di sistem. Silakan datang ke rumah sakit 15 menit sebelum jadwal dokter dimulai dan tunjukkan kode booking ini ke petugas Front Office. Terima kasih.</div>
                     </div>

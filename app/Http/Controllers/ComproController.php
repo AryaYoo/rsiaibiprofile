@@ -161,12 +161,18 @@ class ComproController extends Controller
                         ->where('specialty', $request->tujuan_poli);
                 }),
             ],
+            'jam_praktik'       => 'nullable|string|max:100',
             'pesan'             => 'required|string',
         ]);
 
-        $appointment = Appointment::create($request->only([
-            'nama', 'email', 'no_telp', 'tanggal_kunjungan', 'tujuan_poli', 'doctor_id', 'pesan',
-        ]));
+        $data = $request->only([
+            'nama', 'email', 'no_telp', 'tanggal_kunjungan', 'tujuan_poli', 'doctor_id', 'jam_praktik', 'pesan',
+        ]);
+        if (!empty($request->jam_praktik)) {
+            $data['sesi'] = $request->jam_praktik;
+        }
+
+        $appointment = Appointment::create($data);
 
         $appointment->update([
             'kode_pendaftaran' => $this->generateKodePendaftaran($appointment),
@@ -203,6 +209,7 @@ class ComproController extends Controller
                 'tanggal_kunjungan' => \Carbon\Carbon::parse($appointment->tanggal_kunjungan)->format('d/m/Y'),
                 'tujuan_poli'       => $appointment->tujuan_poli,
                 'dokter'            => $appointment->doctor?->name,
+                'jam_praktik'       => $appointment->jam_praktik ?: $appointment->sesi,
                 'tanggal'           => $appointment->created_at->format('d/m/Y H:i'),
             ]);
     }

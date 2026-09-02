@@ -173,6 +173,7 @@
                                         </select>
                                         <i class="fas fa-chevron-down pend-select-arrow"></i>
                                     </div>
+                                    <input type="hidden" name="jam_praktik" id="jam_praktik" value="{{ old('jam_praktik') }}">
                                     <span class="pend-field-error" id="err-doctor_id"></span>
                                 </div>
 
@@ -1372,9 +1373,11 @@
             const dateInput = document.getElementById('tanggal_kunjungan');
             const poliSelect = document.getElementById('tujuan_poli');
             const doctorSelect = document.getElementById('doctor_id');
+            const jamInput = document.getElementById('jam_praktik');
             if (!poliSelect || !doctorSelect) return;
 
             const oldDoctorId = "{{ old('doctor_id') }}";
+            const oldJamPraktik = "{{ old('jam_praktik') }}";
 
             function updateDoctors() {
                 const selectedPoli = poliSelect.value;
@@ -1382,6 +1385,7 @@
                 const dayName = getDayNameIndo(selectedDate);
 
                 doctorSelect.innerHTML = '';
+                if (jamInput) jamInput.value = '';
 
                 if (!selectedPoli) {
                     doctorSelect.disabled = true;
@@ -1418,18 +1422,20 @@
                 // Only show doctors that have schedule on the selected day
                 const availableDoctors = [];
                 filteredDoctors.forEach(doc => {
-                    let timeStr = '';
                     if (dayName && doc.schedules && doc.schedules.length > 0) {
                         const daySchedules = doc.schedules.filter(s => s.day === dayName && s.is_active);
                         if (daySchedules.length > 0) {
-                            timeStr = daySchedules.map(s => s.time).join(', ');
+                            daySchedules.forEach(sched => {
+                                availableDoctors.push({ doc: doc, time: sched.time || '' });
+                            });
+                            return;
                         }
                     }
 
                     // If a date is selected, skip doctors without schedule that day
-                    if (dayName && !timeStr) return;
+                    if (dayName) return;
 
-                    availableDoctors.push({ doc, timeStr });
+                    availableDoctors.push({ doc: doc, time: '' });
                 });
 
                 if (availableDoctors.length === 0) {
@@ -1445,17 +1451,36 @@
                     return;
                 }
 
-                availableDoctors.forEach(({ doc, timeStr }) => {
+                let isSelectedFound = false;
+                availableDoctors.forEach(({ doc, time }) => {
                     const opt = document.createElement('option');
                     opt.value = doc.id;
-                    const label = timeStr ? `${doc.name} (${timeStr})` : doc.name;
-                    opt.textContent = label;
-                    if (oldDoctorId && String(doc.id) === String(oldDoctorId)) {
+                    if (time) {
+                        opt.dataset.time = time;
+                        opt.textContent = `${doc.name} (${time})`;
+                    } else {
+                        opt.textContent = doc.name;
+                    }
+                    if (!isSelectedFound && oldDoctorId && String(doc.id) === String(oldDoctorId) && (!oldJamPraktik || time === oldJamPraktik)) {
                         opt.selected = true;
+                        isSelectedFound = true;
+                        if (jamInput) jamInput.value = time;
                     }
                     doctorSelect.appendChild(opt);
                 });
+
+                // If an option was selected automatically (e.g. from old input), ensure jamInput has its time
+                if (doctorSelect.selectedOptions[0] && doctorSelect.selectedOptions[0].dataset.time) {
+                    if (jamInput) jamInput.value = doctorSelect.selectedOptions[0].dataset.time;
+                }
             }
+
+            doctorSelect.addEventListener('change', () => {
+                const selOpt = doctorSelect.selectedOptions[0];
+                const time = selOpt ? (selOpt.dataset.time || '') : '';
+                if (jamInput) jamInput.value = time;
+                adjustFormHeight();
+            });
 
             if (dateInput) {
                 dateInput.addEventListener('change', () => {
@@ -1525,6 +1550,10 @@
         }
 
         function buildReceiptHtml(receipt) {
+            const dokterDisplay = receipt.dokter
+                ? (receipt.jam_praktik ? `${receipt.dokter} (${receipt.jam_praktik})` : receipt.dokter)
+                : '-';
+
             return `
                 <div id="receiptPreview" style="text-align:left; border:1px solid #e4ebe2; border-radius:14px; overflow:hidden; font-family:'Plus Jakarta Sans', Arial, sans-serif;">
                     <div style="background:#123524; color:#fff; padding:18px 20px;">
@@ -1537,7 +1566,7 @@
                         ${receiptRow('Email', receipt.email || '-')}
                         ${receiptRow('Tgl Kunjungan', receipt.tanggal_kunjungan || '-')}
                         ${receiptRow('Poli', receipt.tujuan_poli)}
-                        ${receiptRow('Dokter', receipt.dokter || '-')}
+                        ${receiptRow('Dokter', dokterDisplay)}
                         ${receiptRow('Tanggal Daftar', receipt.tanggal)}
                     </div>
                     <div style="background:#f5f7f3; color:#5a6b5a; padding:12px 20px; font-size:12px; line-height:1.5;">
@@ -1594,13 +1623,17 @@
             ctx.strokeStyle = '#e4ebe2';
             ctx.strokeRect(54, 205, width - 108, 370);
 
+            const dokterDisplay = receipt.dokter
+                ? (receipt.jam_praktik ? `${receipt.dokter} (${receipt.jam_praktik})` : receipt.dokter)
+                : '-';
+
             const rows = [
                 ['Nama', receipt.nama],
                 ['No. HP', receipt.no_telp],
                 ['Email', receipt.email || '-'],
                 ['Tgl Kunjungan', receipt.tanggal_kunjungan || '-'],
                 ['Poli', receipt.tujuan_poli],
-                ['Dokter', receipt.dokter || '-'],
+                ['Dokter', dokterDisplay],
                 ['Tanggal Daftar', receipt.tanggal],
             ];
 
@@ -1627,6 +1660,10 @@
         function printReceipt(receipt) {
             const printWindow = window.open('', '_blank', 'width=720,height=900');
             if (!printWindow) return;
+
+            const dokterDisplay = receipt.dokter
+                ? (receipt.jam_praktik ? `${receipt.dokter} (${receipt.jam_praktik})` : receipt.dokter)
+                : '-';
 
             printWindow.document.write(`
                 <!doctype html>
@@ -1658,7 +1695,7 @@
                             ${receiptRow('Email', receipt.email || '-')}
                             ${receiptRow('Tgl Kunjungan', receipt.tanggal_kunjungan || '-')}
                             ${receiptRow('Poli', receipt.tujuan_poli)}
-                            ${receiptRow('Dokter', receipt.dokter || '-')}
+                            ${receiptRow('Dokter', dokterDisplay)}
                             ${receiptRow('Tanggal Daftar', receipt.tanggal)}
                         </div>
                         <div class="note">Tunjukkan bukti ini kepada petugas saat tiba di lokasi untuk validasi pendaftaran.</div>
