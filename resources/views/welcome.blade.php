@@ -211,32 +211,42 @@
             </div>
 
             <div class="schedules-grid reveal-stagger">
-                @forelse($todaySchedules ?? [] as $schedule)
+                @forelse($todaySchedules ?? [] as $doctorSchedules)
+                    @php
+                        $doctor = $doctorSchedules->first()?->doctor;
+                        $firstSchedule = $doctorSchedules->first();
+                    @endphp
+                    @if($doctor && $firstSchedule)
                     <div class="schedule-card">
-                        @if($schedule->doctor->image)
-                            <img src="{{ asset('storage/' . $schedule->doctor->image) }}" alt="{{ $schedule->doctor->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
+                        @if($doctor->image)
+                            <img src="{{ asset('storage/' . $doctor->image) }}" alt="{{ $doctor->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 16px; border: 2px solid var(--border-soft);">
                         @else
                             <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; margin-bottom: 16px;">
-                                {{ substr($schedule->doctor->name, 0, 1) }}
+                                {{ substr($doctor->name, 0, 1) }}
                             </div>
                         @endif
                         
-                        <h3 style="margin-bottom: 4px;">{{ $schedule->doctor->name }}</h3>
+                        <h3 style="margin-bottom: 4px;">{{ $doctor->name }}</h3>
                         <span style="display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 16px;">
-                            {{ $schedule->doctor->specialty ?? 'Umum' }}
+                            {{ $doctor->specialty ?? 'Umum' }}
                         </span>
                         
-                        <div style="width: 100%; text-align: left; background: var(--bg-main); padding: 12px; border-radius: 8px; margin-top: auto;">
+                        <div style="width: 100%; text-align: left; background: var(--bg-main); padding: 12px 14px; border-radius: 8px; margin-top: auto;">
                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
                                 <i class="far fa-calendar-alt text-emerald-600 mr-2 w-5"></i>
-                                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">{{ $schedule->day }}</span>
+                                <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-main);">{{ $firstSchedule->day }}</span>
                             </div>
-                            <div style="display: flex; align-items: center;">
-                                <i class="far fa-clock text-emerald-600 mr-2 w-5"></i>
-                                <span style="font-size: 0.9rem; color: var(--text-muted);">{{ $schedule->time }}</span>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                @foreach($doctorSchedules as $sched)
+                                    <div style="display: flex; align-items: center;">
+                                        <i class="far fa-clock text-emerald-600 mr-2 w-5"></i>
+                                        <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">{{ $sched->time }}</span>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
+                    @endif
                 @empty
                     <div style="grid-column: 1 / -1; text-align: center; padding: 48px; background: white; border-radius: 16px; border: 1px dashed var(--border-soft);">
                         <i class="fas fa-calendar-times" style="font-size: 3rem; color: var(--border-soft); margin-bottom: 16px;"></i>

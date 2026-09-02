@@ -42,7 +42,18 @@ class ComproController extends Controller
         $hariIndo = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $todayString = $hariIndo[date('w')];
         
-        $todaySchedules = $this->scheduleService->getTodaySchedules($todayString);
+        $todaySchedules = $this->scheduleService->getTodaySchedules($todayString)
+            ->filter(fn($schedule) => $schedule->doctor && $schedule->doctor->is_active)
+            ->groupBy('doctor_id')
+            ->map(function ($schedules) {
+                return $schedules->sortBy(function ($s) {
+                    preg_match('/(\d{1,2})[.:](\d{2})/', $s->time, $matches);
+                    if ($matches) {
+                        return sprintf('%02d:%02d', (int)$matches[1], (int)$matches[2]);
+                    }
+                    return $s->time;
+                });
+            });
 
         $firstPromo = $promotions->first();
         $heroBg = $firstPromo && $firstPromo->background ? asset('storage/' . $firstPromo->background) : asset('images/hero-background.svg');
